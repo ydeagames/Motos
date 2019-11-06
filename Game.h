@@ -44,7 +44,7 @@ public:
     // Properties
     void GetDefaultSize( int& width, int& height ) const;
 
-	void ChangeFullscreen(BOOL flag);
+	void ChangeFullscreen(bool flag);
 
 private:
 
@@ -55,6 +55,9 @@ private:
 
     void CreateDeviceDependentResources();
     void CreateWindowSizeDependentResources();
+
+	// ウィンドウ
+	HWND                                    m_window;
 
     // Device resources.
     std::unique_ptr<DX::DeviceResources>    m_deviceResources;
