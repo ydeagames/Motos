@@ -7,6 +7,8 @@
 #include "DeviceResources.h"
 #include "StepTimer.h"
 
+class GameObjectManager;
+
 
 // A basic game implementation that creates a D3D11 device and
 // provides a game loop.
@@ -19,6 +21,7 @@ public:
 public:
 
     Game() noexcept(false);
+	~Game();
 
     // Initialization and management
     void Initialize(HWND window, int width, int height);
@@ -58,4 +61,20 @@ private:
 
     // Rendering loop timer.
     DX::StepTimer                           m_timer;
+
+	// ビュー行列
+	DirectX::SimpleMath::Matrix				m_view;
+
+	// 射影行列
+	DirectX::SimpleMath::Matrix				m_projection;
+
+	// マウス
+	std::unique_ptr<DirectX::Mouse>			m_pMouse;
+
+	std::unique_ptr<DirectX::Keyboard>      m_pKeyboard;
+
+	// コモンステート
+	std::unique_ptr<DirectX::CommonStates>	m_pState;
+
+	std::unique_ptr<GameObjectManager>      m_pGameObjectManager;
 };

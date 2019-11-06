@@ -5,6 +5,9 @@
 #include "pch.h"
 #include "Game.h"
 
+#include "GameObjectManager.h"
+#include "GameContext.h"
+
 extern void ExitGame();
 
 using namespace DirectX;
@@ -17,14 +20,27 @@ Game::Game() noexcept(false)
     m_deviceResources->RegisterDeviceNotify(this);
 }
 
+Game::~Game()
+{
+}
+
 // Initialize the Direct3D resources required to run.
 void Game::Initialize(HWND window, int width, int height)
 {
+	// マウスの作成
+	m_pMouse = std::make_unique<Mouse>();
+	m_pMouse->SetWindow(window);
+
+	m_pKeyboard = std::make_unique<Keyboard>();
+
+
     m_deviceResources->SetWindow(window, width, height);
 
     m_deviceResources->CreateDeviceResources();
     CreateDeviceDependentResources();
 
+	// コモンステート作成
+	m_pState = std::make_unique<CommonStates>(m_deviceResources->GetD3DDevice());
     m_deviceResources->CreateWindowSizeDependentResources();
     CreateWindowSizeDependentResources();
 
@@ -34,6 +50,12 @@ void Game::Initialize(HWND window, int width, int height)
     m_timer.SetFixedTimeStep(true);
     m_timer.SetTargetElapsedSeconds(1.0 / 60);
     */
+
+	m_pGameObjectManager = std::make_unique<GameObjectManager>();
+
+
+	GameContext::Register<DX::DeviceResources>(m_deviceResources);
+	GameContext::Register<GameObjectManager>(m_pGameObjectManager);
 }
 
 #pragma region Frame Update
@@ -55,6 +77,7 @@ void Game::Update(DX::StepTimer const& timer)
 
     // TODO: Add your game logic here.
     elapsedTime;
+	m_pGameObjectManager->Update(elapsedTime);
 }
 #pragma endregion
 
@@ -75,6 +98,7 @@ void Game::Render()
 
     // TODO: Add your rendering code here.
     context;
+	m_pGameObjectManager->Render(m_view, m_projection);
 
     m_deviceResources->PIXEndEvent();
 
