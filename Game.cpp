@@ -7,6 +7,12 @@
 
 #include "GameObjectManager.h"
 #include "GameContext.h"
+#include "GameStateManager.h"
+#include "DebugFont.h"
+
+#include "PlayState.h"
+#include "TitleState.h"
+#include "PauseState.h"
 
 extern void ExitGame();
 
@@ -31,10 +37,10 @@ void Game::Initialize(HWND window, int width, int height)
 	m_window = window;
 
 	// マウスの作成
-	m_pMouse = std::make_unique<Mouse>();
-	m_pMouse->SetWindow(window);
+	m_mouse = std::make_unique<Mouse>();
+	m_mouse->SetWindow(window);
 
-	m_pKeyboard = std::make_unique<Keyboard>();
+	m_keyboard = std::make_unique<Keyboard>();
 
 
 	m_deviceResources->SetWindow(window, width, height);
@@ -43,7 +49,8 @@ void Game::Initialize(HWND window, int width, int height)
 	CreateDeviceDependentResources();
 
 	// コモンステート作成
-	m_pState = std::make_unique<CommonStates>(m_deviceResources->GetD3DDevice());
+	m_state = std::make_unique<CommonStates>(m_deviceResources->GetD3DDevice());
+	GameContext::Register<DirectX::CommonStates>(m_state);
 	m_deviceResources->CreateWindowSizeDependentResources();
 	CreateWindowSizeDependentResources();
 
@@ -54,11 +61,23 @@ void Game::Initialize(HWND window, int width, int height)
 	m_timer.SetTargetElapsedSeconds(1.0 / 60);
 	*/
 
-	m_pGameObjectManager = std::make_unique<GameObjectManager>();
+	m_gameObjectManager = std::make_unique<GameObjectManager>();
 
 
 	GameContext::Register<DX::DeviceResources>(m_deviceResources);
-	GameContext::Register<GameObjectManager>(m_pGameObjectManager);
+	GameContext::Register<GameObjectManager>(m_gameObjectManager);
+
+
+	DebugFont* debugFont = DebugFont::GetInstance();
+	debugFont->create(m_deviceResources->GetD3DDevice(), m_deviceResources->GetD3DDeviceContext());
+
+
+	m_gameStateManager = std::make_unique<GameStateManager>();
+	m_gameStateManager->RegisterState<TitleState>("Title");
+	m_gameStateManager->RegisterState<PlayState>("Play");
+	m_gameStateManager->RegisterState<PauseState>("Pause");
+	m_gameStateManager->SetStartState("Title");
+	GameContext::Register<GameStateManager>(m_gameStateManager);
 }
 
 #pragma region Frame Update
@@ -80,7 +99,8 @@ void Game::Update(DX::StepTimer const& timer)
 
 	// TODO: Add your game logic here.
 	elapsedTime;
-	m_pGameObjectManager->Update(elapsedTime);
+	m_gameObjectManager->Update(elapsedTime);
+	m_gameStateManager->Update(elapsedTime);
 }
 #pragma endregion
 
@@ -101,7 +121,8 @@ void Game::Render()
 
 	// TODO: Add your rendering code here.
 	context;
-	m_pGameObjectManager->Render(m_view, m_projection);
+	m_gameObjectManager->Render(m_view, m_projection);
+	m_gameStateManager->Render();
 
 	m_deviceResources->PIXEndEvent();
 

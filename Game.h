@@ -8,6 +8,7 @@
 #include "StepTimer.h"
 
 class GameObjectManager;
+class GameStateManager;
 
 
 // A basic game implementation that creates a D3D11 device and
@@ -72,12 +73,14 @@ private:
 	DirectX::SimpleMath::Matrix				m_projection;
 
 	// マウス
-	std::unique_ptr<DirectX::Mouse>			m_pMouse;
+	std::unique_ptr<DirectX::Mouse>			m_mouse;
 
-	std::unique_ptr<DirectX::Keyboard>      m_pKeyboard;
+	std::unique_ptr<DirectX::Keyboard>      m_keyboard;
 
 	// コモンステート
-	std::unique_ptr<DirectX::CommonStates>	m_pState;
+	std::unique_ptr<DirectX::CommonStates>	m_state;
 
-	std::unique_ptr<GameObjectManager>      m_pGameObjectManager;
+	std::unique_ptr<GameObjectManager>      m_gameObjectManager;
+
+	std::unique_ptr<GameStateManager>       m_gameStateManager;
 };
