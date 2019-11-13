@@ -100,7 +100,7 @@ void Game::Initialize(HWND window, int width, int height)
 	// ビューポートの矩形領域の設定（ゲーム画面）
 	m_viewportGame = CD3D11_VIEWPORT(0.0f, 0.0f, static_cast<float>(960), static_cast<float>(720));
 	// ビューポートの矩形領域の設定（情報画面）
-	m_viewportInfo = CD3D11_VIEWPORT(static_cast<float>(960), 0.0f, static_cast<float>(320), static_cast<float>(720));
+	m_viewportInfo = CD3D11_VIEWPORT(static_cast<float>(960), 0.0f, static_cast<float>(InfoWindow::SCREEN_W), static_cast<float>(InfoWindow::SCREEN_H));
 
 	//GameContext::Get<GameObjectManager>()->Add(std::make_unique<Ball>());
 }
