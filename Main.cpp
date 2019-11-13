@@ -73,7 +73,7 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, 
 
 		AdjustWindowRect(&rc, WS_OVERLAPPEDWINDOW, FALSE);
 
-		HWND hwnd = CreateWindowExW(0, L"MotosWindowClass", L"Motos", WS_OVERLAPPEDWINDOW,
+		HWND hwnd = CreateWindowExW(0, L"MotosWindowClass", L"Motos", /*WS_OVERLAPPEDWINDOW*/WS_OVERLAPPED | WS_CAPTION | WS_SYSMENU | WS_MINIMIZEBOX,
 			CW_USEDEFAULT, CW_USEDEFAULT, rc.right - rc.left, rc.bottom - rc.top, nullptr, nullptr, hInstance,
 			nullptr);
 		// TODO: Change to CreateWindowExW(WS_EX_TOPMOST, L"MotosWindowClass", L"Motos", WS_POPUP,

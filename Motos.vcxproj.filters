@@ -29,6 +29,12 @@
     <ClInclude Include="PlayState.h" />
     <ClInclude Include="TitleState.h" />
     <ClInclude Include="Utilities.h" />
+    <ClInclude Include="Collider.h" />
+    <ClInclude Include="CollisionManager.h" />
+    <ClInclude Include="SphereCollider.h" />
+    <ClInclude Include="BoxCollider.h" />
+    <ClInclude Include="ObjectManager.h" />
+    <ClInclude Include="InfoWindow.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -44,6 +50,12 @@
     <ClCompile Include="PlayState.cpp" />
     <ClCompile Include="TitleState.cpp" />
     <ClCompile Include="DebugFont.cpp" />
+    <ClCompile Include="Collider.cpp" />
+    <ClCompile Include="CollisionManager.cpp" />
+    <ClCompile Include="SphereCollider.cpp" />
+    <ClCompile Include="BoxCollider.cpp" />
+    <ClCompile Include="ObjectManager.cpp" />
+    <ClCompile Include="InfoWindow.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resource.rc" />

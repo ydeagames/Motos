@@ -20,6 +20,11 @@ GameObject::~GameObject()
 
 
 
+void GameObject::OnCollision(GameObject* object)
+{
+}
+
+
 
 void GameObject::Invalidate()
 {

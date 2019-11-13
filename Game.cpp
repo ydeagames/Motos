@@ -5,10 +5,13 @@
 #include "pch.h"
 #include "Game.h"
 
+#include "ObjectManager.h"
 #include "GameObjectManager.h"
+#include "CollisionManager.h"
 #include "GameContext.h"
 #include "GameStateManager.h"
 #include "DebugFont.h"
+#include "InfoWindow.h"
 
 #include "PlayState.h"
 #include "TitleState.h"
@@ -61,11 +64,7 @@ void Game::Initialize(HWND window, int width, int height)
 	m_timer.SetTargetElapsedSeconds(1.0 / 60);
 	*/
 
-	m_gameObjectManager = std::make_unique<GameObjectManager>();
-
-
-	GameContext::Register<DX::DeviceResources>(m_deviceResources);
-	GameContext::Register<GameObjectManager>(m_gameObjectManager);
+	m_objectManager = std::make_unique<ObjectManager>();
 
 
 	DebugFont* debugFont = DebugFont::GetInstance();
@@ -77,7 +76,33 @@ void Game::Initialize(HWND window, int width, int height)
 	m_gameStateManager->RegisterState<PlayState>("Play");
 	m_gameStateManager->RegisterState<PauseState>("Pause");
 	m_gameStateManager->SetStartState("Title");
+
+
+	m_collisionManager = std::make_unique<CollisionManager>();
+	m_collisionManager->AllowCollision("Ball", "Box");
+	m_collisionManager->AllowCollision("Box", "Box");
+
+
 	GameContext::Register<GameStateManager>(m_gameStateManager);
+	GameContext::Register<DX::DeviceResources>(m_deviceResources);
+	GameContext::Register<ObjectManager>(m_objectManager);
+	GameContext::Register<CollisionManager>(m_collisionManager);
+
+
+	// 情報ウィンドウ生成
+	m_pInfoWindow = std::make_unique<InfoWindow>();
+	// 情報ウィンドウ初期化
+	m_pInfoWindow->Initialize();
+	// 生ポインタを登録
+	GameContext::Register<InfoWindow>(m_pInfoWindow.get());
+	// 情報ウィンドウを登録
+	m_objectManager->GetInfoOM()->Add(std::move(m_pInfoWindow));
+	// ビューポートの矩形領域の設定（ゲーム画面）
+	m_viewportGame = CD3D11_VIEWPORT(0.0f, 0.0f, static_cast<float>(960), static_cast<float>(720));
+	// ビューポートの矩形領域の設定（情報画面）
+	m_viewportInfo = CD3D11_VIEWPORT(static_cast<float>(960), 0.0f, static_cast<float>(320), static_cast<float>(720));
+
+	//GameContext::Get<GameObjectManager>()->Add(std::make_unique<Ball>());
 }
 
 #pragma region Frame Update
@@ -99,7 +124,9 @@ void Game::Update(DX::StepTimer const& timer)
 
 	// TODO: Add your game logic here.
 	elapsedTime;
-	m_gameObjectManager->Update(elapsedTime);
+	m_objectManager->GetGameOM()->Update(elapsedTime);
+	m_objectManager->GetInfoOM()->Update(elapsedTime);
+	m_collisionManager->DetectCollision();
 	m_gameStateManager->Update(elapsedTime);
 }
 #pragma endregion
@@ -121,8 +148,40 @@ void Game::Render()
 
 	// TODO: Add your rendering code here.
 	context;
-	m_gameObjectManager->Render(m_view, m_projection);
-	m_gameStateManager->Render();
+	
+	{
+		//----------------------//
+		// ゲーム画面の描画 //
+		//----------------------//
+		// ビューポートを変更する（左側へ描画エリアを変更する）
+		context->RSSetViewports(1, &m_viewportGame);
+		m_sprites->Begin(SpriteSortMode_Deferred, m_state->NonPremultiplied());
+		// TODO: ビュー行列とプロジェクション行列を設定
+		SimpleMath::Matrix viewMat, projMat;
+		// ゲーム画面のオブジェクト描画
+		m_objectManager->GetGameOM()->Render(viewMat, projMat);
+		m_sprites->End(); // <---スプライトの描画はここでまとめて行われている
+		//------------------------------//
+		// ゲーム画面の描画（ここまで） //
+		//------------------------------//
+		//------------------//
+		// 情報画面の描画 //
+		//------------------//
+		// ビューポートを変更する（右側へ描画エリアを変更する）
+		context->RSSetViewports(1, &m_viewportInfo);
+		m_sprites->Begin(SpriteSortMode_Deferred, m_state->NonPremultiplied());
+		// 情報画面のオブジェクト描画
+		m_objectManager->GetInfoOM()->Render(viewMat, projMat);
+		m_sprites->End(); // <---スプライトの描画はここでまとめて行われている
+		//------------------------------//
+		// 情報画面の描画（ここまで） //
+		//------------------------------//
+		// ビューポートを変更する（画面全体）
+		auto viewport = m_deviceResources->GetScreenViewport();
+		context->RSSetViewports(1, &viewport);
+		// ゲームステートの描画
+		m_gameStateManager->Render();
+	}
 
 	m_deviceResources->PIXEndEvent();
 
@@ -231,9 +290,21 @@ void Game::ChangeFullscreen(bool flag)
 void Game::CreateDeviceDependentResources()
 {
 	auto device = m_deviceResources->GetD3DDevice();
+	auto context = m_deviceResources->GetD3DDeviceContext();
 
 	// TODO: Initialize device dependent objects here (independent of window size).
 	device;
+	context;
+
+	// コモンステート作成
+	m_state = std::make_unique<CommonStates>(m_deviceResources->GetD3DDevice());
+	GameContext::Register<DirectX::CommonStates>(m_state);
+	// スプライトバッチの作成
+	m_sprites = std::make_unique<SpriteBatch>(context);
+	GameContext::Register<SpriteBatch>(m_sprites);
+	// スプライトフォントの作成
+	m_font = std::make_unique<SpriteFont>(device, L"SegoeUI_18.spritefont");
+	GameContext::Register<SpriteFont>(m_font);
 }
 
 // Allocate all memory resources that change on a window SizeChanged event.
