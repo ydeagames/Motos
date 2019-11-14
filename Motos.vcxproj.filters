@@ -8,6 +8,9 @@
       <UniqueIdentifier>05cc9420-c977-4e2c-9dc3-6e580e203fcc</UniqueIdentifier>
       <Extensions>ico;cur;bmp;dds;dlg;fbx;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tga;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="InfoWindow">
+      <UniqueIdentifier>{c14b3f69-0a79-4e82-8178-d4d625c8b4bb}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
@@ -34,7 +37,18 @@
     <ClInclude Include="SphereCollider.h" />
     <ClInclude Include="BoxCollider.h" />
     <ClInclude Include="ObjectManager.h" />
-    <ClInclude Include="InfoWindow.h" />
+    <ClInclude Include="InfoWindow.h">
+      <Filter>InfoWindow</Filter>
+    </ClInclude>
+    <ClInclude Include="Moji.h">
+      <Filter>InfoWindow</Filter>
+    </ClInclude>
+    <ClInclude Include="Score.h">
+      <Filter>InfoWindow</Filter>
+    </ClInclude>
+    <ClInclude Include="Blink.h">
+      <Filter>InfoWindow</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -55,7 +69,18 @@
     <ClCompile Include="SphereCollider.cpp" />
     <ClCompile Include="BoxCollider.cpp" />
     <ClCompile Include="ObjectManager.cpp" />
-    <ClCompile Include="InfoWindow.cpp" />
+    <ClCompile Include="InfoWindow.cpp">
+      <Filter>InfoWindow</Filter>
+    </ClCompile>
+    <ClCompile Include="Moji.cpp">
+      <Filter>InfoWindow</Filter>
+    </ClCompile>
+    <ClCompile Include="Score.cpp">
+      <Filter>InfoWindow</Filter>
+    </ClCompile>
+    <ClCompile Include="Blink.cpp">
+      <Filter>InfoWindow</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resource.rc" />
