@@ -3,6 +3,7 @@
 #include "GameObject.h"
 
 class Score;
+class PartsInfo;
 
 class InfoWindow : public GameObject
 {
@@ -13,6 +14,7 @@ public:
 
 public:
 	InfoWindow();
+	~InfoWindow();
 
 	void Initialize();
 	virtual void Update(float elapsedTime);
@@ -22,6 +24,10 @@ public:
 	Score* GetHighScore() { return m_pHighScore; }
 	// スコアにアクセスする関数
 	Score* GetScore() { return m_pScore; }
+	// パワーアップパーツにアクセスする関数
+	PartsInfo* GetPowerParts() { return m_pPowerup; }
+	// ジャンプパーツにアクセスする関数
+	PartsInfo* GetJumpParts() { return m_pJump; }
 
 private:
 	// テクスチャハンドル（背景）
@@ -33,5 +39,9 @@ private:
 	Score* m_pHighScore;
 	// スコア
 	Score* m_pScore;
+	// パーツ情報（パワーアップ）
+	PartsInfo* m_pPowerup;
+	// パーツ情報（ジャンプ）
+	PartsInfo* m_pJump;
 };
 

@@ -98,6 +98,10 @@ void GameStateManager::PopState(int count)
 	m_popCount = Clamp<int>(m_popCount + count, 0, m_states.size()-1);
 }
 
+const std::string& GameStateManager::GetCurrentState() const
+{
+	return m_currentStateName;
+}
 
 
 void GameStateManager::ChangeState()
@@ -105,5 +109,6 @@ void GameStateManager::ChangeState()
 	m_states.push_back(m_stateFactories[m_nextStateName]());
 	m_states.back()->Initialize();
 	
+	m_currentStateName = m_nextStateName;
 	m_nextStateName.clear();
 }

@@ -49,6 +49,9 @@
     <ClInclude Include="Blink.h">
       <Filter>InfoWindow</Filter>
     </ClInclude>
+    <ClInclude Include="PartsInfo.h">
+      <Filter>InfoWindow</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -79,6 +82,9 @@
       <Filter>InfoWindow</Filter>
     </ClCompile>
     <ClCompile Include="Blink.cpp">
+      <Filter>InfoWindow</Filter>
+    </ClCompile>
+    <ClCompile Include="PartsInfo.cpp">
       <Filter>InfoWindow</Filter>
     </ClCompile>
   </ItemGroup>

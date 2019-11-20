@@ -5,9 +5,22 @@
 #include "GameObjectManager.h"
 #include "ObjectManager.h"
 #include "Score.h"
+#include "PartsInfo.h"
 
 InfoWindow::InfoWindow()
 {
+}
+
+InfoWindow::~InfoWindow()
+{
+	if (m_pHighScore)
+		m_pHighScore->Invalidate();
+	if (m_pScore)
+		m_pScore->Invalidate();
+	if (m_pPowerup)
+		m_pPowerup->Invalidate();
+	if (m_pJump)
+		m_pJump->Invalidate();
 }
 
 void InfoWindow::Initialize()
@@ -27,6 +40,16 @@ void InfoWindow::Initialize()
 	m_pScore = pScore.get();
 	m_pScore->Initialize(m_texture01.Get(), 24, 24 * 4, "1P", DirectX::Colors::Red, DirectX::Colors::White, 0.5f);
 	GameContext::Get<ObjectManager>()->GetInfoOM()->Add(std::move(pScore));
+	// パワーアップパーツ取得タスク登録
+	std::unique_ptr<PartsInfo> pPowerup = std::make_unique<PartsInfo>();
+	m_pPowerup = pPowerup.get();
+	m_pPowerup->Initialize(m_texture01.Get(), 24, 24 * 21, PartsInfo::POWER_PARTS);
+	GameContext::Get<ObjectManager>()->GetInfoOM()->Add(std::move(pPowerup));
+	// ジャンプパーツタスク登録
+	std::unique_ptr<PartsInfo> pJump = std::make_unique<PartsInfo>();
+	m_pJump = pJump.get();
+	m_pJump->Initialize(m_texture01.Get(), 24, 24 * 25, PartsInfo::JUMP_PARTS);
+	GameContext::Get<ObjectManager>()->GetInfoOM()->Add(std::move(pJump));
 
 	m_pScore->BlinkTitle(true);
 	m_pScore->SetScore(114514);

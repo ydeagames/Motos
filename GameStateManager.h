@@ -24,6 +24,7 @@ class GameStateManager final
 		GameStateFactoryList m_stateFactories;
 		GameStateStack       m_states;
 		int                  m_popCount;
+		std::string          m_currentStateName;
 		std::string          m_nextStateName;
 
 
@@ -52,6 +53,8 @@ class GameStateManager final
 		void RequestState(const std::string& stateName);
 		void PushState(const std::string& stateName);
 		void PopState(int count = 1);
+
+		const std::string& GetCurrentState() const;
 
 	private:
 		void ChangeState();

@@ -181,6 +181,7 @@
     <ClInclude Include="InfoWindow.h" />
     <ClInclude Include="Moji.h" />
     <ClInclude Include="ObjectManager.h" />
+    <ClInclude Include="PartsInfo.h" />
     <ClInclude Include="PauseState.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="PlayState.h" />
@@ -206,6 +207,7 @@
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Moji.cpp" />
     <ClCompile Include="ObjectManager.cpp" />
+    <ClCompile Include="PartsInfo.cpp" />
     <ClCompile Include="PauseState.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
