@@ -89,14 +89,6 @@ void Game::Initialize(HWND window, int width, int height)
 	GameContext::Register<CollisionManager>(m_collisionManager);
 
 
-	// 情報ウィンドウ生成
-	m_pInfoWindow = std::make_unique<InfoWindow>();
-	// 生ポインタを登録
-	GameContext::Register<InfoWindow>(m_pInfoWindow.get());
-	// 情報ウィンドウを登録
-	m_objectManager->GetInfoOM()->Add(std::move(m_pInfoWindow));
-	// 情報ウィンドウ初期化
-	GameContext::Get<InfoWindow>()->Initialize();
 	// ビューポートの矩形領域の設定（ゲーム画面）
 	m_viewportGame = CD3D11_VIEWPORT(0.0f, 0.0f, static_cast<float>(960), static_cast<float>(720));
 	// ビューポートの矩形領域の設定（情報画面）

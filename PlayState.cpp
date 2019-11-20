@@ -8,6 +8,9 @@
 #include "DeviceResources.h"
 #include "GameContext.h"
 #include "GameStateManager.h"
+#include "InfoWindow.h"
+#include "GameObjectManager.h"
+#include "ObjectManager.h"
 
 
 
@@ -30,6 +33,15 @@ void PlayState::Initialize()
 	DX::DeviceResources*   deviceResources = GameContext::Get<DX::DeviceResources>();
 	ID3D11Device*          device          = deviceResources->GetD3DDevice();
 	ID3D11DeviceContext*   deviceContext   = deviceResources->GetD3DDeviceContext();
+
+	// 情報ウィンドウ生成
+	m_pInfoWindow = std::make_unique<InfoWindow>();
+	// 生ポインタを登録
+	GameContext::Register<InfoWindow>(m_pInfoWindow.get());
+	// 情報ウィンドウを登録
+	GameContext::Get<ObjectManager>()->GetInfoOM()->Add(std::move(m_pInfoWindow));
+	// 情報ウィンドウ初期化
+	GameContext::Get<InfoWindow>()->Initialize();
 }
 
 
@@ -61,4 +73,9 @@ void PlayState::Render()
 
 void PlayState::Finalize()
 {
+	// 消えるフラグを設定
+	GameContext::Get<InfoWindow>()->Invalidate();
+
+	// GameContextからはずす
+	GameContext::Reset<InfoWindow>();
 }

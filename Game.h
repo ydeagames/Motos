@@ -10,7 +10,6 @@
 class ObjectManager;
 class GameStateManager;
 class CollisionManager;
-class InfoWindow;
 
 
 // A basic game implementation that creates a D3D11 device and
@@ -97,7 +96,4 @@ private:
 	std::unique_ptr<CollisionManager>       m_collisionManager;
 
 	std::unique_ptr<GameStateManager>       m_gameStateManager;
-
-	// 情報ウィンドウ
-	std::unique_ptr<InfoWindow>				m_pInfoWindow;
 };
