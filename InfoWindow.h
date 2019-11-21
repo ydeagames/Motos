@@ -4,6 +4,8 @@
 
 class Score;
 class PartsInfo;
+class Round;
+class Life;
 
 class InfoWindow : public GameObject
 {
@@ -43,5 +45,9 @@ private:
 	PartsInfo* m_pPowerup;
 	// パーツ情報（ジャンプ）
 	PartsInfo* m_pJump;
+	// ラウンド
+	Round* m_pRound;
+	// ライフ
+	Life* m_pLife;
 };
 

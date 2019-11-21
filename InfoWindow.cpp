@@ -6,6 +6,8 @@
 #include "ObjectManager.h"
 #include "Score.h"
 #include "PartsInfo.h"
+#include "Round.h"
+#include "Life.h"
 
 InfoWindow::InfoWindow()
 {
@@ -50,6 +52,17 @@ void InfoWindow::Initialize()
 	m_pJump = pJump.get();
 	m_pJump->Initialize(m_texture01.Get(), 24, 24 * 25, PartsInfo::JUMP_PARTS);
 	GameContext::Get<ObjectManager>()->GetInfoOM()->Add(std::move(pJump));
+	// ラウンドパーツ取得タスク登録
+	std::unique_ptr<Round> pRound = std::make_unique<Round>();
+	m_pRound = pRound.get();
+	m_pRound->Initialize(m_texture01.Get(), 24 * 6, 24 * 28);
+	GameContext::Get<ObjectManager>()->GetInfoOM()->Add(std::move(pRound));
+	// ライフタスク登録
+	std::unique_ptr<Life> pLife = std::make_unique<Life>();
+	m_pLife = pLife.get();
+	m_pLife->Initialize(m_texture01.Get(), 24, 24 * 28);
+	GameContext::Get<ObjectManager>()->GetInfoOM()->Add(std::move(pLife));
+	m_pLife->SetLife(3);
 
 	m_pScore->BlinkTitle(true);
 	m_pScore->SetScore(114514);

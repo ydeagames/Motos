@@ -52,6 +52,12 @@
     <ClInclude Include="PartsInfo.h">
       <Filter>InfoWindow</Filter>
     </ClInclude>
+    <ClInclude Include="Life.h">
+      <Filter>InfoWindow</Filter>
+    </ClInclude>
+    <ClInclude Include="Round.h">
+      <Filter>InfoWindow</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -85,6 +91,12 @@
       <Filter>InfoWindow</Filter>
     </ClCompile>
     <ClCompile Include="PartsInfo.cpp">
+      <Filter>InfoWindow</Filter>
+    </ClCompile>
+    <ClCompile Include="Life.cpp">
+      <Filter>InfoWindow</Filter>
+    </ClCompile>
+    <ClCompile Include="Round.cpp">
       <Filter>InfoWindow</Filter>
     </ClCompile>
   </ItemGroup>
