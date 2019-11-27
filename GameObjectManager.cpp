@@ -52,6 +52,12 @@ void GameObjectManager::Add(GameObjectPtr&& object)
 }
 
 
+GameObjectManager::GameObjectList& GameObjectManager::GetObjects()
+{
+	return m_objects;
+}
+
+
 
 void GameObjectManager::UpdateObjects(float elapsedTime)
 {

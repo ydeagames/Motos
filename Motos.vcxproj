@@ -168,6 +168,7 @@
   <ItemGroup>
     <ClInclude Include="Blink.h" />
     <ClInclude Include="BoxCollider.h" />
+    <ClInclude Include="Camera.h" />
     <ClInclude Include="Collider.h" />
     <ClInclude Include="CollisionManager.h" />
     <ClInclude Include="DebugFont.h" />
@@ -178,6 +179,7 @@
     <ClInclude Include="GameObjectManager.h" />
     <ClInclude Include="GameState.h" />
     <ClInclude Include="GameStateManager.h" />
+    <ClInclude Include="GameWindow.h" />
     <ClInclude Include="InfoWindow.h" />
     <ClInclude Include="Life.h" />
     <ClInclude Include="Moji.h" />
@@ -197,6 +199,7 @@
   <ItemGroup>
     <ClCompile Include="Blink.cpp" />
     <ClCompile Include="BoxCollider.cpp" />
+    <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Collider.cpp" />
     <ClCompile Include="CollisionManager.cpp" />
     <ClCompile Include="DebugFont.cpp" />
@@ -205,6 +208,7 @@
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="GameObjectManager.cpp" />
     <ClCompile Include="GameStateManager.cpp" />
+    <ClCompile Include="GameWindow.cpp" />
     <ClCompile Include="InfoWindow.cpp" />
     <ClCompile Include="Life.cpp" />
     <ClCompile Include="Main.cpp" />

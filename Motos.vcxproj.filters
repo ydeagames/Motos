@@ -11,6 +11,18 @@
     <Filter Include="InfoWindow">
       <UniqueIdentifier>{c14b3f69-0a79-4e82-8178-d4d625c8b4bb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="GameWindow">
+      <UniqueIdentifier>{6462da9c-c6d8-4113-8ec2-4cc4ef17814a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Collision">
+      <UniqueIdentifier>{6d9b9167-1667-458e-8caa-d9c8c584681d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object">
+      <UniqueIdentifier>{d7ec4604-1db2-4029-8ad6-2259407c962a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameState">
+      <UniqueIdentifier>{277a7929-febb-4708-b200-af4924526a59}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
@@ -21,22 +33,11 @@
     <ClInclude Include="DeviceResources.h">
       <Filter>Common</Filter>
     </ClInclude>
-    <ClInclude Include="GameObjectManager.h" />
     <ClInclude Include="GameContext.h" />
-    <ClInclude Include="GameObject.h" />
     <ClInclude Include="ServiceLocator.h" />
     <ClInclude Include="DebugFont.h" />
-    <ClInclude Include="GameState.h" />
-    <ClInclude Include="GameStateManager.h" />
-    <ClInclude Include="PauseState.h" />
-    <ClInclude Include="PlayState.h" />
-    <ClInclude Include="TitleState.h" />
     <ClInclude Include="Utilities.h" />
-    <ClInclude Include="Collider.h" />
-    <ClInclude Include="CollisionManager.h" />
     <ClInclude Include="SphereCollider.h" />
-    <ClInclude Include="BoxCollider.h" />
-    <ClInclude Include="ObjectManager.h" />
     <ClInclude Include="InfoWindow.h">
       <Filter>InfoWindow</Filter>
     </ClInclude>
@@ -58,6 +59,43 @@
     <ClInclude Include="Round.h">
       <Filter>InfoWindow</Filter>
     </ClInclude>
+    <ClInclude Include="GameWindow.h">
+      <Filter>GameWindow</Filter>
+    </ClInclude>
+    <ClInclude Include="Collider.h">
+      <Filter>Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="CollisionManager.h">
+      <Filter>Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="BoxCollider.h">
+      <Filter>Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObject.h">
+      <Filter>Object</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObjectManager.h">
+      <Filter>Object</Filter>
+    </ClInclude>
+    <ClInclude Include="ObjectManager.h">
+      <Filter>Object</Filter>
+    </ClInclude>
+    <ClInclude Include="GameState.h">
+      <Filter>GameState</Filter>
+    </ClInclude>
+    <ClInclude Include="GameStateManager.h">
+      <Filter>GameState</Filter>
+    </ClInclude>
+    <ClInclude Include="TitleState.h">
+      <Filter>GameState</Filter>
+    </ClInclude>
+    <ClInclude Include="PauseState.h">
+      <Filter>GameState</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayState.h">
+      <Filter>GameState</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -66,18 +104,8 @@
     <ClCompile Include="DeviceResources.cpp">
       <Filter>Common</Filter>
     </ClCompile>
-    <ClCompile Include="GameObjectManager.cpp" />
-    <ClCompile Include="GameObject.cpp" />
-    <ClCompile Include="GameStateManager.cpp" />
-    <ClCompile Include="PauseState.cpp" />
-    <ClCompile Include="PlayState.cpp" />
-    <ClCompile Include="TitleState.cpp" />
     <ClCompile Include="DebugFont.cpp" />
-    <ClCompile Include="Collider.cpp" />
-    <ClCompile Include="CollisionManager.cpp" />
     <ClCompile Include="SphereCollider.cpp" />
-    <ClCompile Include="BoxCollider.cpp" />
-    <ClCompile Include="ObjectManager.cpp" />
     <ClCompile Include="InfoWindow.cpp">
       <Filter>InfoWindow</Filter>
     </ClCompile>
@@ -99,6 +127,40 @@
     <ClCompile Include="Round.cpp">
       <Filter>InfoWindow</Filter>
     </ClCompile>
+    <ClCompile Include="GameWindow.cpp">
+      <Filter>GameWindow</Filter>
+    </ClCompile>
+    <ClCompile Include="Collider.cpp">
+      <Filter>Collision</Filter>
+    </ClCompile>
+    <ClCompile Include="CollisionManager.cpp">
+      <Filter>Collision</Filter>
+    </ClCompile>
+    <ClCompile Include="BoxCollider.cpp">
+      <Filter>Collision</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObject.cpp">
+      <Filter>Object</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObjectManager.cpp">
+      <Filter>Object</Filter>
+    </ClCompile>
+    <ClCompile Include="ObjectManager.cpp">
+      <Filter>Object</Filter>
+    </ClCompile>
+    <ClCompile Include="GameStateManager.cpp">
+      <Filter>GameState</Filter>
+    </ClCompile>
+    <ClCompile Include="TitleState.cpp">
+      <Filter>GameState</Filter>
+    </ClCompile>
+    <ClCompile Include="PauseState.cpp">
+      <Filter>GameState</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayState.cpp">
+      <Filter>GameState</Filter>
+    </ClCompile>
+    <ClCompile Include="Camera.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resource.rc" />

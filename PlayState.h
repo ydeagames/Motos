@@ -8,6 +8,7 @@
 class DebugCamera;
 class GridFloor;
 class InfoWindow;
+class GameWindow;
 
 
 class PlayState: public GameState
@@ -26,6 +27,8 @@ class PlayState: public GameState
 		void Finalize() override;
 
 	private:
+		// ゲームウィンドウ
+		std::unique_ptr<GameWindow> m_pGameWindow;
 		// 情報ウィンドウ
 		std::unique_ptr<InfoWindow> m_pInfoWindow;
 };

@@ -11,6 +11,7 @@
 #include "InfoWindow.h"
 #include "GameObjectManager.h"
 #include "ObjectManager.h"
+#include "GameWindow.h"
 
 
 
@@ -34,14 +35,26 @@ void PlayState::Initialize()
 	ID3D11Device*          device          = deviceResources->GetD3DDevice();
 	ID3D11DeviceContext*   deviceContext   = deviceResources->GetD3DDeviceContext();
 
-	// 情報ウィンドウ生成
-	m_pInfoWindow = std::make_unique<InfoWindow>();
-	// 生ポインタを登録
-	GameContext::Register<InfoWindow>(m_pInfoWindow.get());
-	// 情報ウィンドウを登録
-	GameContext::Get<ObjectManager>()->GetInfoOM()->Add(std::move(m_pInfoWindow));
-	// 情報ウィンドウ初期化
-	GameContext::Get<InfoWindow>()->Initialize();
+	{
+		// ゲームウィンドウ生成
+		m_pGameWindow = std::make_unique<GameWindow>();
+		// 生ポインタを登録
+		GameContext::Register<GameWindow>(m_pGameWindow.get());
+		// ゲームウィンドウを登録
+		GameContext::Get<ObjectManager>()->GetGameOM()->Add(std::move(m_pGameWindow));
+		// ゲームウィンドウ初期化
+		GameContext::Get<GameWindow>()->Initialize();
+	}
+	{
+		// 情報ウィンドウ生成
+		m_pInfoWindow = std::make_unique<InfoWindow>();
+		// 生ポインタを登録
+		GameContext::Register<InfoWindow>(m_pInfoWindow.get());
+		// 情報ウィンドウを登録
+		GameContext::Get<ObjectManager>()->GetInfoOM()->Add(std::move(m_pInfoWindow));
+		// 情報ウィンドウ初期化
+		GameContext::Get<InfoWindow>()->Initialize();
+	}
 }
 
 

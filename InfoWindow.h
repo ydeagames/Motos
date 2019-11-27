@@ -13,6 +13,10 @@ public:
 	// 画面サイズ
 	static const int SCREEN_W = 1280 - 960;
 	static const int SCREEN_H = 720;
+	static const int TILE_W = 24;
+	static const int TILE_H = 24;
+	constexpr static const wchar_t* TEXTURE_ATLAS = L"Resources/Textures/texture01.png";
+	constexpr static const wchar_t* TEXTURE_BACKGROUND = L"Resources/Textures/bg01.png";
 
 public:
 	InfoWindow();
@@ -30,6 +34,15 @@ public:
 	PartsInfo* GetPowerParts() { return m_pPowerup; }
 	// ジャンプパーツにアクセスする関数
 	PartsInfo* GetJumpParts() { return m_pJump; }
+
+	template<typename T>
+	T* AddObject()
+	{
+		std::unique_ptr<T> pObject = std::make_unique<T>();
+		auto raw = pObject.get();
+		GameContext::Get<ObjectManager>()->GetInfoOM()->Add(std::move(pObject));
+		return raw;
+	}
 
 private:
 	// テクスチャハンドル（背景）

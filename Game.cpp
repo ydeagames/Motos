@@ -12,6 +12,8 @@
 #include "GameStateManager.h"
 #include "DebugFont.h"
 #include "InfoWindow.h"
+#include "Camera.h"
+#include "GameWindow.h"
 
 #include "PlayState.h"
 #include "TitleState.h"
@@ -83,6 +85,11 @@ void Game::Initialize(HWND window, int width, int height)
 	m_collisionManager->AllowCollision("Box", "Box");
 
 
+	auto camera = std::make_unique<Camera>();
+	camera->Initialize();
+
+
+	GameContext::Register<Camera>(std::move(camera));
 	GameContext::Register<GameStateManager>(m_gameStateManager);
 	GameContext::Register<DX::DeviceResources>(m_deviceResources);
 	GameContext::Register<ObjectManager>(m_objectManager);
