@@ -23,6 +23,12 @@
     <Filter Include="GameState">
       <UniqueIdentifier>{277a7929-febb-4708-b200-af4924526a59}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Assets\FBX">
+      <UniqueIdentifier>{d5c9d5c0-d8ce-46df-80c2-7531cebb1d17}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="StageData">
+      <UniqueIdentifier>{a0cc27e3-5841-4722-b5b1-e5272b6fa64f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
@@ -96,6 +102,15 @@
       <Filter>GameState</Filter>
     </ClInclude>
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="Stage.h">
+      <Filter>GameWindow</Filter>
+    </ClInclude>
+    <ClInclude Include="Bg.h">
+      <Filter>GameWindow</Filter>
+    </ClInclude>
+    <ClInclude Include="Floor.h">
+      <Filter>GameWindow</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -161,6 +176,15 @@
       <Filter>GameState</Filter>
     </ClCompile>
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="Stage.cpp">
+      <Filter>GameWindow</Filter>
+    </ClCompile>
+    <ClCompile Include="Bg.cpp">
+      <Filter>GameWindow</Filter>
+    </ClCompile>
+    <ClCompile Include="Floor.cpp">
+      <Filter>GameWindow</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resource.rc" />
@@ -174,5 +198,21 @@
     <Manifest Include="settings.manifest">
       <Filter>Assets</Filter>
     </Manifest>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="FBX\floorPanel_00.FBX">
+      <Filter>Assets\FBX</Filter>
+    </None>
+    <None Include="FBX\bg.FBX">
+      <Filter>Assets\FBX</Filter>
+    </None>
+    <None Include="StageData\Stage01.csv">
+      <Filter>StageData</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <MeshContentTask Include="FBX\floorPanel_01.FBX">
+      <Filter>Assets\FBX</Filter>
+    </MeshContentTask>
   </ItemGroup>
 </Project>

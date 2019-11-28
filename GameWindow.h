@@ -9,6 +9,11 @@
 #include "GameObject.h"
 #include "GeometricPrimitive.h"
 
+class Camera;
+class Floor;
+class Stage;
+class Bg;
+
 class GameWindow : public GameObject
 {
 public:
@@ -19,6 +24,7 @@ public:
 public:
 	// コンストラクタ
 	GameWindow();
+	~GameWindow();
 
 	// 初期化関数
 	void Initialize();
@@ -28,7 +34,32 @@ public:
 	// 描画関数
 	virtual void Render(const DirectX::SimpleMath::Matrix& viewMatrix, const DirectX::SimpleMath::Matrix& projectionMatrix);
 
+	// カメラ
+	Camera* GetCamera();
+
+	// 追加
+	template<typename T>
+	T* AddObject()
+	{
+		std::unique_ptr<T> pObject = std::make_unique<T>();
+		auto raw = pObject.get();
+		GameContext::Get<ObjectManager>()->GetGameOM()->Add(std::move(pObject));
+		return raw;
+	}
+
 private:
 	// カメラテスト用モデル
-	std::unique_ptr <DirectX::GeometricPrimitive> m_pShape;
+	//std::unique_ptr <DirectX::GeometricPrimitive> m_pShape;
+	// モデルプール
+	//std::vector<std::unique_ptr <DirectX::Model>> m_pModels;
+
+	// カメラ
+	std::unique_ptr<Camera> m_camera;
+
+	// Bg
+	Bg* m_pBg;
+	// ステージ
+	std::unique_ptr<Stage> m_pStage;
+	// 床
+	Floor* m_pFloor;
 };

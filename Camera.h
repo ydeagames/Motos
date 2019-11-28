@@ -10,7 +10,7 @@ private:
 
 public:
 	void Initialize();
-	DirectX::SimpleMath::Matrix GetView() const;
-	DirectX::SimpleMath::Matrix GetProjection() const;
+	DirectX::SimpleMath::Matrix getViewMatrix() const;
+	DirectX::SimpleMath::Matrix getProjectionMatrix() const;
 };
 

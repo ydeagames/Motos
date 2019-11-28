@@ -17,12 +17,12 @@ void Camera::Initialize()
 		200.0f);
 }
 
-DirectX::SimpleMath::Matrix Camera::GetView() const
+DirectX::SimpleMath::Matrix Camera::getViewMatrix() const
 {
 	return m_view;
 }
 
-DirectX::SimpleMath::Matrix Camera::GetProjection() const
+DirectX::SimpleMath::Matrix Camera::getProjectionMatrix() const
 {
 	return m_projection;
 }

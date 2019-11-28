@@ -68,6 +68,9 @@
 #include <queue>
 #include <deque>
 
+#include <fstream>
+#include <sstream>
+
 // DirectXTK
 #include <Keyboard.h>
 #include <Mouse.h>

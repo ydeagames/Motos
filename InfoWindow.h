@@ -35,6 +35,7 @@ public:
 	// ジャンプパーツにアクセスする関数
 	PartsInfo* GetJumpParts() { return m_pJump; }
 
+	// 追加
 	template<typename T>
 	T* AddObject()
 	{
