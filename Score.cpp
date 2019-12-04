@@ -35,7 +35,7 @@ void Score::Update(float elapsedTime)
 }
 
 // •`‰æ
-void Score::Render(const DirectX::SimpleMath::Matrix& viewMatrix, const DirectX::SimpleMath::Matrix& projectionMatrix)
+void Score::Render()
 {
 	if (m_pBlink->GetState())
 	{

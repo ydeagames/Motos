@@ -44,10 +44,7 @@ public:
 	~Stage();
 
 	// 初期化関数
-	void Initialize(GameWindow* gameWindow);
-
-	// ゲームウインドウのポインタを取得する関数
-	GameWindow* GetGameWindow() { return m_gameWindow; }
+	void Initialize();
 
 	// 床タスク取得関数
 	Floor* GetFloor(int x, int y);
@@ -75,9 +72,6 @@ private:
 	void ConvertPosToMapChip(float x, float z, int* floor_x, int* floor_y);
 
 private:
-	// ゲームウインドウへのポインタ
-	GameWindow* m_gameWindow;
-
 	//----- ゲームオブジェクトへのポインタ -----//
 
 	// 床オブジェクトへのポインタ

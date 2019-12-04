@@ -32,7 +32,7 @@ public:
 	// 更新
 	virtual void Update(float elapsedTime);
 	// 描画関数
-	virtual void Render(const DirectX::SimpleMath::Matrix& viewMatrix, const DirectX::SimpleMath::Matrix& projectionMatrix);
+	virtual void Render();
 
 	// カメラ
 	Camera* GetCamera();

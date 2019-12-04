@@ -49,7 +49,7 @@ public:
 	// XV
 	virtual void Update(float elapsedTime);
 	// •`‰æŠÖ”
-	virtual void Render(const DirectX::SimpleMath::Matrix& viewMatrix, const DirectX::SimpleMath::Matrix& projectionMatrix);
+	virtual void Render();
 
 	// ƒ‚ƒfƒ‹İ’èŠÖ”
 	void SetModel(State state, DirectX::Model* model);

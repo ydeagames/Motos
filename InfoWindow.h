@@ -24,7 +24,7 @@ public:
 
 	void Initialize();
 	virtual void Update(float elapsedTime);
-	virtual void Render(const DirectX::SimpleMath::Matrix& viewMatrix, const DirectX::SimpleMath::Matrix& projectionMatrix);
+	virtual void Render();
 
 	// ハイスコアにアクセスする関数
 	Score* GetHighScore() { return m_pHighScore; }

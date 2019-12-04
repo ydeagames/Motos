@@ -25,7 +25,7 @@ class GameObject
 
 	public:
 		virtual void Update(float elapsedTime) = 0;
-		virtual void Render(const DirectX::SimpleMath::Matrix& viewMatrix, const DirectX::SimpleMath::Matrix& projectionMatrix) = 0;
+		virtual void Render() = 0;
 
 		virtual void OnCollision(GameObject* object);
 

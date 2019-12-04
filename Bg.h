@@ -27,10 +27,10 @@ public:
 	Bg();
 
 	// ‰Šú‰»ŠÖ”
-	void Initialize(GameWindow* gameWindow);
+	void Initialize();
 
 	// XV
 	virtual void Update(float elapsedTime);
 	// •`‰æŠÖ”
-	virtual void Render(const DirectX::SimpleMath::Matrix& viewMatrix, const DirectX::SimpleMath::Matrix& projectionMatrix);
+	virtual void Render();
 };

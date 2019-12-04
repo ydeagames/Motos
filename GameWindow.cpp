@@ -39,11 +39,11 @@ void GameWindow::Initialize()
 
 	// Bg登録
 	(m_pBg = AddObject<Bg>())
-		->Initialize(this);
+		->Initialize();
 
 	// ステージ
 	m_pStage = std::make_unique<Stage>();
-	m_pStage->Initialize(this);
+	m_pStage->Initialize();
 	m_pStage->LoadStageData(L"StageData/Stage01.csv");
 	m_pStage->SetStageData();
 
@@ -64,7 +64,7 @@ void GameWindow::Update(float elapsedTime)
 {
 }
 
-void GameWindow::Render(const DirectX::SimpleMath::Matrix& viewMatrix, const DirectX::SimpleMath::Matrix& projectionMatrix)
+void GameWindow::Render()
 {
 	// カメラ取得
 	//DirectX::SimpleMath::Matrix world;

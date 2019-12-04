@@ -36,11 +36,11 @@ void GameObjectManager::Update(float elapsedTime)
 
 
 
-void GameObjectManager::Render(const DirectX::SimpleMath::Matrix& viewMatrix, const DirectX::SimpleMath::Matrix& projectionMatrix)
+void GameObjectManager::Render()
 {
 	for (GameObjectPtr& object : m_objects)
 	{
-		object->Render(viewMatrix, projectionMatrix);
+		object->Render();
 	}
 }
 

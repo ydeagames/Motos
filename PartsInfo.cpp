@@ -48,8 +48,7 @@ void PartsInfo::Update(float elapsedTime)
 }
 
 // 描画
-void PartsInfo::Render(const DirectX::SimpleMath::Matrix& viewMatrix, const DirectX::SimpleMath::Matrix&
-	projectionMatrix)
+void PartsInfo::Render()
 {
 	if (!m_texture) return;
 	// 使用中のパーツ描画（パネルの下地）

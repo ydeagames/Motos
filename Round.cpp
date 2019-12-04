@@ -26,7 +26,7 @@ void Round::Update(float elapsedTime)
 {
 }
 // •`‰æ
-void Round::Render(const DirectX::SimpleMath::Matrix& viewMatrix, const DirectX::SimpleMath::Matrix& projectionMatrix)
+void Round::Render()
 {
 	m_moji.Draw();
 }

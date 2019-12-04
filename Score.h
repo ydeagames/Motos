@@ -27,7 +27,7 @@ public:
 	// 更新関数
 	virtual void Update(float elapsedTime);
 	// 描画
-	virtual void Render(const DirectX::SimpleMath::Matrix& viewMatrix, const DirectX::SimpleMath::Matrix& projectionMatrix);
+	virtual void Render();
 
 	// スコアの設定関数
 	void SetScore(int score);

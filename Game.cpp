@@ -151,9 +151,9 @@ void Game::Render()
 		context->RSSetViewports(1, &m_viewportGame);
 		m_sprites->Begin(SpriteSortMode_Deferred, m_state->NonPremultiplied());
 		// TODO: ビュー行列とプロジェクション行列を設定
-		SimpleMath::Matrix viewMat, projMat;
+		//SimpleMath::Matrix viewMat, projMat;
 		// ゲーム画面のオブジェクト描画
-		m_objectManager->GetGameOM()->Render(viewMat, projMat);
+		m_objectManager->GetGameOM()->Render();
 		m_sprites->End(); // <---スプライトの描画はここでまとめて行われている
 		//------------------------------//
 		// ゲーム画面の描画（ここまで） //
@@ -165,7 +165,7 @@ void Game::Render()
 		context->RSSetViewports(1, &m_viewportInfo);
 		m_sprites->Begin(SpriteSortMode_Deferred, m_state->NonPremultiplied());
 		// 情報画面のオブジェクト描画
-		m_objectManager->GetInfoOM()->Render(viewMat, projMat);
+		m_objectManager->GetInfoOM()->Render();
 		m_sprites->End(); // <---スプライトの描画はここでまとめて行われている
 		//------------------------------//
 		// 情報画面の描画（ここまで） //

@@ -19,9 +19,9 @@ Bg::Bg()
 {
 }
 
-void Bg::Initialize(GameWindow* gameWindow)
+void Bg::Initialize()
 {
-	m_gameWindow = gameWindow;
+	m_gameWindow = GameContext::Get<GameWindow>();
 
 	// モデルデータの読み込み
 	DirectX::EffectFactory fx(GameContext::Get<DX::DeviceResources>()->GetD3DDevice());
@@ -55,7 +55,7 @@ void Bg::Update(float elapsedTime)
 	m_angle += 0.0002f;
 }
 
-void Bg::Render(const DirectX::SimpleMath::Matrix& viewMatrix, const DirectX::SimpleMath::Matrix& projectionMatrix)
+void Bg::Render()
 {
 	DirectX::SimpleMath::Matrix world = DirectX::SimpleMath::Matrix::CreateRotationY(m_angle);
 	world *= DirectX::SimpleMath::Matrix::CreateTranslation(4.5f, -10.0f, 5.5f);

@@ -57,7 +57,7 @@ void InfoWindow::Update(float elapsedTime)
 	m_pScore->SetScore(score++);
 }
 
-void InfoWindow::Render(const DirectX::SimpleMath::Matrix& viewMatrix, const DirectX::SimpleMath::Matrix& projectionMatrix)
+void InfoWindow::Render()
 {
 	// 情報ウィンドウの背景の表示
 	GameContext::Get<DirectX::SpriteBatch>()->Draw(m_bg01Texture.Get(), DirectX::SimpleMath::Vector2(0, 0));

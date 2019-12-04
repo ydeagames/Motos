@@ -28,7 +28,7 @@ class GameObjectManager final
 
 	public:
 		void Update(float elapsedTime);
-		void Render(const DirectX::SimpleMath::Matrix& viewMatrix, const DirectX::SimpleMath::Matrix& projectionMatrix);
+		void Render();
 		void Add(GameObjectPtr&& object);
 		GameObjectList& GetObjects();
 

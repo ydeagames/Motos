@@ -27,7 +27,7 @@ void Life::Update(float elapsedTime)
 {
 }
 // •`‰æ
-void Life::Render(const DirectX::SimpleMath::Matrix& viewMatrix, const DirectX::SimpleMath::Matrix& projectionMatrix)
+void Life::Render()
 {
 	if (!m_texture) return;
 	RECT srcRect = { 0 * SIZE, 5 * SIZE, 1 * SIZE, 6 * SIZE };

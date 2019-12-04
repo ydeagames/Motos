@@ -28,7 +28,7 @@ void Floor::Update(float elapsedTime)
 {
 }
 
-void Floor::Render(const DirectX::SimpleMath::Matrix& viewMatrix, const DirectX::SimpleMath::Matrix& projectionMatrix)
+void Floor::Render()
 {
 	if (!m_stage || !m_models[m_state]) return;
 
@@ -38,12 +38,14 @@ void Floor::Render(const DirectX::SimpleMath::Matrix& viewMatrix, const DirectX:
 	// ダメージが入った瞬間からモデル切り替えする
 	State state = m_state;
 
+	auto gameWindow = GameContext::Get<GameWindow>();
+
 	// モデルの描画
 	m_models[state]->Draw(GameContext::Get<DX::DeviceResources>()->GetD3DDeviceContext()
 		, *GameContext::Get<DirectX::CommonStates>()
 		, world
-		, m_stage->GetGameWindow()->GetCamera()->getViewMatrix()
-		, m_stage->GetGameWindow()->GetCamera()->getProjectionMatrix(), false, [&]()
+		, gameWindow->GetCamera()->getViewMatrix()
+		, gameWindow->GetCamera()->getProjectionMatrix(), false, [&]()
 	{
 		// 床は半透明の加算合成（半透明で暗くなってしまうので）
 		GameContext::Get<DX::DeviceResources>()->GetD3DDeviceContext()->OMSetBlendState(GameContext::Get<DirectX::CommonStates>()->Additive(), nullptr, 0xffffffff);

@@ -15,7 +15,7 @@
 #include "ObjectManager.h"
 
 Stage::Stage()
-	: m_gameWindow(nullptr), m_floors{nullptr}, m_stageData{0}
+	: m_floors{nullptr}, m_stageData{0}
 {
 }
 
@@ -23,10 +23,8 @@ Stage::~Stage()
 {
 }
 
-void Stage::Initialize(GameWindow * gameWindow)
+void Stage::Initialize()
 {
-	m_gameWindow = gameWindow;
-
 	// モデルデータの読み込み
 	DirectX::EffectFactory fx(GameContext::Get<DX::DeviceResources>()->GetD3DDevice());
 	fx.SetDirectory(L"Resources\\Models");
