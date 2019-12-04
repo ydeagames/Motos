@@ -111,6 +111,9 @@
     <ClInclude Include="Floor.h">
       <Filter>GameWindow</Filter>
     </ClInclude>
+    <ClInclude Include="Object.h">
+      <Filter>Object</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -185,6 +188,9 @@
     <ClCompile Include="Floor.cpp">
       <Filter>GameWindow</Filter>
     </ClCompile>
+    <ClCompile Include="Object.cpp">
+      <Filter>Object</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resource.rc" />
@@ -200,12 +206,6 @@
     </Manifest>
   </ItemGroup>
   <ItemGroup>
-    <None Include="FBX\floorPanel_00.FBX">
-      <Filter>Assets\FBX</Filter>
-    </None>
-    <None Include="FBX\bg.FBX">
-      <Filter>Assets\FBX</Filter>
-    </None>
     <None Include="StageData\Stage01.csv">
       <Filter>StageData</Filter>
     </None>
@@ -213,6 +213,12 @@
   <ItemGroup>
     <MeshContentTask Include="FBX\floorPanel_01.FBX">
       <Filter>Assets\FBX</Filter>
+    </MeshContentTask>
+    <MeshContentTask Include="FBX\bg.FBX">
+      <Filter>Assets</Filter>
+    </MeshContentTask>
+    <MeshContentTask Include="FBX\floorPanel_00.FBX">
+      <Filter>Assets</Filter>
     </MeshContentTask>
   </ItemGroup>
 </Project>
