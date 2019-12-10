@@ -21,6 +21,18 @@ public:
 	static const int SCREEN_W = 960;
 	static const int SCREEN_H = 720;
 
+	enum DIR
+	{
+		UP,
+		LEFT,
+		DOWN,
+		RIGHT
+	};
+
+	static const float DIR_ANGLE[];
+
+	static const float GRAVITY;
+
 public:
 	// コンストラクタ
 	GameWindow();
@@ -62,4 +74,7 @@ private:
 	std::unique_ptr<Stage> m_pStage;
 	// 床
 	Floor* m_pFloor;
+
+	// キーボードトラッカー
+	DirectX::Keyboard::KeyboardStateTracker m_tracker;
 };

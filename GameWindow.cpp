@@ -17,6 +17,21 @@
 #include "Bg.h"
 
 
+const float GameWindow::DIR_ANGLE[] =
+{
+	DirectX::XMConvertToRadians(45.0f * 0),
+	DirectX::XMConvertToRadians(45.0f * 1),
+	DirectX::XMConvertToRadians(45.0f * 2),
+	DirectX::XMConvertToRadians(45.0f * 3),
+	DirectX::XMConvertToRadians(45.0f * 4),
+	DirectX::XMConvertToRadians(45.0f * 5),
+	DirectX::XMConvertToRadians(45.0f * 6),
+	DirectX::XMConvertToRadians(45.0f * 7),
+};
+
+const float GameWindow::GRAVITY = 9.8f;
+
+
 GameWindow::GameWindow()
 {
 }
@@ -62,6 +77,9 @@ void GameWindow::Initialize()
 
 void GameWindow::Update(float elapsedTime)
 {
+	auto kb = DirectX::Keyboard::Get().GetState();
+	m_tracker.Update(kb);
+	m_pStage->GetPlayer()->Move(elapsedTime, m_tracker);
 }
 
 void GameWindow::Render()

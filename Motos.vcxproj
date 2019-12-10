@@ -192,6 +192,7 @@
     <ClInclude Include="PartsInfo.h" />
     <ClInclude Include="PauseState.h" />
     <ClInclude Include="pch.h" />
+    <ClInclude Include="Player.h" />
     <ClInclude Include="PlayState.h" />
     <ClInclude Include="Round.h" />
     <ClInclude Include="Score.h" />
@@ -231,6 +232,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="Player.cpp" />
     <ClCompile Include="PlayState.cpp" />
     <ClCompile Include="Round.cpp" />
     <ClCompile Include="Score.cpp" />
@@ -257,6 +259,8 @@
     <MeshContentTask Include="FBX\floorPanel_01.FBX">
       <FileType>Document</FileType>
     </MeshContentTask>
+    <MeshContentTask Include="FBX\player_01.FBX" />
+    <MeshContentTask Include="FBX\player_02.FBX" />
   </ItemGroup>
   <ItemGroup>
     <None Include="StageData\Stage01.csv" />

@@ -29,6 +29,9 @@
     <Filter Include="StageData">
       <UniqueIdentifier>{a0cc27e3-5841-4722-b5b1-e5272b6fa64f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Player">
+      <UniqueIdentifier>{54c9f4e2-b0c8-4f1a-b9d0-3a51ffcc215a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
@@ -114,6 +117,9 @@
     <ClInclude Include="Object.h">
       <Filter>Object</Filter>
     </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>Player</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -191,6 +197,9 @@
     <ClCompile Include="Object.cpp">
       <Filter>Object</Filter>
     </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>Player</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resource.rc" />
@@ -219,6 +228,12 @@
     </MeshContentTask>
     <MeshContentTask Include="FBX\floorPanel_00.FBX">
       <Filter>Assets</Filter>
+    </MeshContentTask>
+    <MeshContentTask Include="FBX\player_02.FBX">
+      <Filter>Assets\FBX</Filter>
+    </MeshContentTask>
+    <MeshContentTask Include="FBX\player_01.FBX">
+      <Filter>Assets\FBX</Filter>
     </MeshContentTask>
   </ItemGroup>
 </Project>

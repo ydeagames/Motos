@@ -15,7 +15,7 @@
 #include "ObjectManager.h"
 
 Stage::Stage()
-	: m_floors{nullptr}, m_stageData{0}
+	: m_floors{ nullptr }, m_stageData{ 0 }
 {
 }
 
@@ -46,9 +46,27 @@ void Stage::Initialize()
 			m_floors[j][i]->SetModel(Floor::FALL, m_floorModels[Floor::DAMAGED].get());
 		}
 	}
+
+	m_playerModels[Player::NORMAL] = DirectX::Model::CreateFromCMO(GameContext::Get<DX::DeviceResources>()->GetD3DDevice(), L"Resources\\Models\\player_01.cmo", fx);
+	m_playerModels[Player::WING] = DirectX::Model::CreateFromCMO(GameContext::Get<DX::DeviceResources>()->GetD3DDevice(), L"Resources\\Models\\player_02.cmo", fx);
+
+	std::unique_ptr<Player> pPlayer = std::make_unique<Player>();
+	m_player = pPlayer.get();
+	m_player->Initialize(5, 5);
+	// 各状態のモデルを設定
+	m_player->SetModel(Player::NORMAL, m_playerModels[Player::NORMAL].get());
+	m_player->SetModel(Player::WING, m_playerModels[Player::WING].get());
+	//m_player->SetJumpParts(false);
+	GameContext::Get<ObjectManager>()->GetGameOM()->Add(std::move(pPlayer));
+
+	// 床との判定関数を登録
+	m_player->SetCheckFloorFunction([&](Object* object)
+		{
+			return CheckFloor(object->GetPosition(), object->GetWidth(), object->GetHeight());
+		});
 }
 
-Floor * Stage::GetFloor(int x, int y)
+Floor* Stage::GetFloor(int x, int y)
 {
 	if (x >= 0 && x < STAGE_W && y >= 0 && y < STAGE_H)
 	{
@@ -57,7 +75,7 @@ Floor * Stage::GetFloor(int x, int y)
 	return nullptr;
 }
 
-bool Stage::LoadStageData(wchar_t * fname)
+bool Stage::LoadStageData(wchar_t* fname)
 {
 	std::wstring str;
 	// ファイルのオープン
@@ -171,6 +189,11 @@ void Stage::ResetStageData()
 			m_floors[j][i]->Reset();
 		}
 	}
+}
+
+Player* Stage::GetPlayer()
+{
+	return m_player;
 }
 
 bool Stage::CheckFloor(DirectX::SimpleMath::Vector3 pos, float w, float h)

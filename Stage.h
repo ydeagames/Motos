@@ -9,6 +9,7 @@
 #include <vector>
 #include "Floor.h"
 #include <Model.h>
+#include "Player.h"
 
 class GameWindow;
 
@@ -58,6 +59,9 @@ public:
 	// ステージデータのリセット関数
 	void ResetStageData();
 
+	// プレイヤー取得関数
+	Player* GetPlayer();
+
 private:
 	// 落下チェック関数
 	bool CheckFloor(DirectX::SimpleMath::Vector3 pos, float w, float h);
@@ -84,4 +88,10 @@ private:
 
 	// ステージデータ
 	StageData m_stageData;
+
+	// プレイヤーのモデル
+	std::unique_ptr<DirectX::Model> m_playerModels[Player::MODEL_TYPE_NUM];
+
+	// プレイヤー
+	Player* m_player;
 };
