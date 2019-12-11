@@ -29,11 +29,17 @@ const float GameWindow::DIR_ANGLE[] =
 	DirectX::XMConvertToRadians(45.0f * 7),
 };
 
+// 重力（地球上は9.8m/s^2）
 const float GameWindow::GRAVITY = 9.8f;
 
-const float GameWindow::FALL_SPEED = 9.8f;
-const float GameWindow::FALL_ROTATE_SPEED = 9.8f;
-const float GameWindow::FALL_DISTANCE = 9.8f;
+// 落下速度（１秒間似移動するドット数）
+const float GameWindow::FALL_SPEED = 8.f;
+
+// 落下したオブジェクトが画面から消える距離
+const float GameWindow::FALL_ROTATE_SPEED = 10.f;
+
+// 落下中のオブジェクトの回転速度（１秒間に１８０度回転）
+const float GameWindow::FALL_DISTANCE = 180.f;
 
 
 GameWindow::GameWindow()
