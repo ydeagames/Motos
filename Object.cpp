@@ -26,6 +26,7 @@ Object::Object()
 	, m_x(0)
 	, m_y(0)
 {
+	SetDrawPrio(GameWindow::DRAW_OBJECT);
 }
 
 void Object::Update(float elapsedTime)

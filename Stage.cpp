@@ -64,6 +64,12 @@ void Stage::Initialize()
 		{
 			return CheckFloor(object->GetPosition(), object->GetWidth(), object->GetHeight());
 		});
+
+	// ジャンプ着地時の関数を登録
+	m_player->SetJumpEndFunction([&](Object* object)
+		{
+			DamageFloor(object->GetPosition(), object->GetWidth(), object->GetHeight());
+		});
 }
 
 Floor* Stage::GetFloor(int x, int y)
@@ -198,11 +204,57 @@ Player* Stage::GetPlayer()
 
 bool Stage::CheckFloor(DirectX::SimpleMath::Vector3 pos, float w, float h)
 {
+	int x, y;
+	const DirectX::SimpleMath::Vector2 corner[4] = {
+	DirectX::SimpleMath::Vector2(-1.0f, -1.0f),
+	DirectX::SimpleMath::Vector2(1.0f, -1.0f),
+	DirectX::SimpleMath::Vector2(1.0f, 1.0f),
+	DirectX::SimpleMath::Vector2(-1.0f, 1.0f)
+	};
+	// 中心からの距離にするため幅と高さを２で割る
+	w /= 2.0f;
+	h /= 2.0f;
+	// ４点を調べる
+	int i = 0;
+	for (; i < 4; i++)
+	{
+		// 3D 空間の座標をマップチップの位置に変換する
+		ConvertPosToMapChip(pos.x + w * corner[i].x, pos.z + h * corner[i].y, &x, &y);
+		Floor* floor = this->GetFloor(x, y);
+		if ((floor != nullptr) && (floor->GetState() == Floor::State::NORMAL || floor->GetState() == Floor::State::DAMAGED))
+		{
+			break;
+		}
+	}
+	if (i == 4) return false;
 	return true;
 }
 
 void Stage::DamageFloor(DirectX::SimpleMath::Vector3 pos, float w, float h)
 {
+	int x, y;
+	const DirectX::SimpleMath::Vector2 corner[4] = {
+	DirectX::SimpleMath::Vector2(-1.0f, -1.0f),
+	DirectX::SimpleMath::Vector2(1.0f, -1.0f),
+	DirectX::SimpleMath::Vector2(1.0f, 1.0f),
+	DirectX::SimpleMath::Vector2(-1.0f, 1.0f)
+	};
+	// 中心からの距離にするため幅と高さを２で割る
+	w /= 2.0f;
+	h /= 2.0f;
+	int i = 0;
+	for (; i < 4; i++)
+	{
+		// 3D 空間の座標をマップチップの位置に変換する
+		ConvertPosToMapChip(pos.x + w * corner[i].x, pos.z + h * corner[i].y, &x, &y);
+		Floor* floor = this->GetFloor(x, y);
+		if ((floor != nullptr)
+			&& ((floor->GetState() == Floor::State::NORMAL) || (floor->GetState() == Floor::State::DAMAGED))
+			)
+		{
+			floor->Damage();
+		}
+	}
 }
 
 void Stage::DeleteAllObject()

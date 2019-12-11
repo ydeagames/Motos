@@ -44,6 +44,13 @@ public:
 	// 床に対する摩擦係数
 	static const float FRICTION;
 
+	// ジャンプしているフレーム数
+	static const int JUMP_FRAME;
+
+	// ジャンプの高さ
+	static const float JUMP_HEIGHT;
+
+
 private:
 	// モデルデータへのポインタ
 	DirectX::Model* m_models[MODEL_TYPE_NUM];
@@ -56,6 +63,16 @@ private:
 
 	// ジャンプパーツを装着しているか？
 	bool m_jumpParts;
+
+	// ジャンプカウンター
+	int m_jumpCounter;
+
+	// 落下時の回転
+	float m_fallRotateAngle;
+
+	// ジャンプ終了時に呼ばれる関数
+	std::function<void(Object*)> m_jumpEndFunction;
+
 
 public:
 	// コンストラクタ
@@ -102,6 +119,10 @@ public:
 
 	// ジャンプパーツ装着の設定関数
 	void SetJumpParts(bool flag);
+
+	// ジャンプ終了時に呼ばれる関数を設定する関数
+	void SetJumpEndFunction(std::function<void(Object*)> func);
+
 
 private:
 	// キー入力から方向を求める関数

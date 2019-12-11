@@ -29,9 +29,24 @@ public:
 		RIGHT
 	};
 
+	// 描画順
+	enum DRAW_PRIORITY
+	{
+		DRAW_TOP, // 一番手前（２Ⅾ表示やエフェクトで使用）
+		DRAW_OBJECT, // 床の上のオブジェクト
+		DRAW_SHADOW, // オブジェクトの影
+		DRAW_STAGE, // ステージ
+		DRAW_FALL, // 落下オブジェクト
+		DRAW_BG, // 背景
+	};
+
 	static const float DIR_ANGLE[];
 
 	static const float GRAVITY;
+
+	static const float FALL_SPEED;
+	static const float FALL_ROTATE_SPEED;
+	static const float FALL_DISTANCE;
 
 public:
 	// コンストラクタ

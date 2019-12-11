@@ -17,6 +17,7 @@
 Bg::Bg()
 	: m_angle(0.0f)
 {
+	SetDrawPrio(GameWindow::DRAW_BG);
 }
 
 void Bg::Initialize()

@@ -38,7 +38,19 @@ void GameObjectManager::Update(float elapsedTime)
 
 void GameObjectManager::Render()
 {
-	for (GameObjectPtr& object : m_objects)
+	// •`‰æ‡”½‰fƒpƒ^[ƒ“
+	std::list<GameObject*> pObjects;
+	GameObjectList::iterator it = m_objects.begin();
+	GameObjectList::iterator end = m_objects.end();
+	while (it != end)
+	{
+		pObjects.push_back((*it).get());
+		++it;
+	}
+	pObjects.sort([](const GameObject* a, const GameObject* b) {
+		return a->GetDrawPrio() > b->GetDrawPrio();
+		});
+	for (GameObject* object : pObjects)
 	{
 		object->Render();
 	}

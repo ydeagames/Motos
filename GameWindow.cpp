@@ -31,9 +31,14 @@ const float GameWindow::DIR_ANGLE[] =
 
 const float GameWindow::GRAVITY = 9.8f;
 
+const float GameWindow::FALL_SPEED = 9.8f;
+const float GameWindow::FALL_ROTATE_SPEED = 9.8f;
+const float GameWindow::FALL_DISTANCE = 9.8f;
+
 
 GameWindow::GameWindow()
 {
+	SetDrawPrio(GameWindow::DRAW_TOP);
 }
 
 GameWindow::~GameWindow()

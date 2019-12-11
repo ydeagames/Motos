@@ -13,9 +13,13 @@
 #include "DeviceResources.h"
 #include "Camera.h"
 
+// ダメージの移行時間
+const float Floor::DAMEGE_DELAY_TIME = 0.2f;
+
 Floor::Floor()
 	: m_stage(nullptr), m_models{nullptr}, m_state(NONE)
 {
+	SetDrawPrio(GameWindow::DRAW_STAGE);
 }
 
 void Floor::Initialize(Stage * stage, int x, int y)
@@ -26,10 +30,47 @@ void Floor::Initialize(Stage * stage, int x, int y)
 
 void Floor::Update(float elapsedTime)
 {
+	// ダメージフラグを落とす
+	m_damageFlag = false;
+
+	// ダメージ移行
+	if (m_damageTimer > 0.0f)
+	{
+		m_damageTimer -= elapsedTime;
+		if (m_damageTimer <= 0.0f)
+		{
+			m_damageTimer = 0.0f;
+			switch (m_state)
+			{
+			case NORMAL:	// 通常
+				m_state = Floor::DAMAGED;	// 破損した床へ
+				break;
+			case DAMAGED:	// 破損した床
+				m_state = Floor::FALL;		// 落下へ
+				break;
+			default:
+				break;
+			}
+		}
+	}
+
+	// 落下状態の場合は床を下に落とす
+	if (m_state == Floor::FALL)
+	{
+		m_pos.y -= 0.1f;
+
+		// ある程度落下したら消す
+		if (m_pos.y < -3.0f)
+		{
+			m_state = Floor::DEAD;
+		}
+	}
 }
 
 void Floor::Render()
 {
+	GameWindow* gameWindow = GameContext::Get<GameWindow>();
+
 	if (!m_stage || !m_models[m_state]) return;
 
 	// ワールド行列の作成
@@ -38,7 +79,6 @@ void Floor::Render()
 	// ダメージが入った瞬間からモデル切り替えする
 	State state = m_state;
 
-	auto gameWindow = GameContext::Get<GameWindow>();
 
 	// モデルの描画
 	m_models[state]->Draw(GameContext::Get<DX::DeviceResources>()->GetD3DDeviceContext()
@@ -60,6 +100,11 @@ void Floor::SetModel(State state, DirectX::Model * model)
 
 void Floor::Damage()
 {
+	// １フレームにダメージは１度だけ
+	if (m_damageFlag) return;
+	m_damageFlag = true;
+	// ダメージ移行タイマーセット
+	m_damageTimer = DAMEGE_DELAY_TIME;
 }
 
 void Floor::Reset()
@@ -68,6 +113,8 @@ void Floor::Reset()
 	if (m_state != Floor::NONE)
 	{
 		m_state = Floor::NORMAL;
+		m_damageFlag = false;
+		m_damageTimer = 0.0f;
 	}
 }
 

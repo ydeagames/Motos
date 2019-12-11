@@ -26,11 +26,20 @@ const float Player::HEIGHT = 0.2f;
 // プレイヤーの最大移動速度
 const float Player::MAX_SPEED =	0.1f;
 
+// ジャンプしているフレーム数
+const int Player::JUMP_FRAME = 30;
+
+// ジャンプの高さ
+const float Player::JUMP_HEIGHT = 1.5f;
+
+
 Player::Player()
 	: m_models{ nullptr }
 	, m_powerupParts(0)
 	, m_jumpParts(false)
 	, m_state(STATE_NORMAL)
+	, m_jumpCounter(0)
+	, m_fallRotateAngle(0.0f)
 {
 }
 
@@ -102,6 +111,25 @@ void Player::Update(float elapsedTime)
 		m_vel = DirectX::SimpleMath::Vector3::Zero;
 		// 状態を落下中へ
 		m_state = STATE_FALL;
+		// 描画順をFALLへ
+		SetDrawPrio(GameWindow::DRAW_FALL);
+	}
+
+	// ジャンプの処理
+	if (m_jumpCounter != 0)
+	{
+		// ゲームっぽいジャンプにするため、サイン波でジャンプ時の高さを算出する
+		m_jumpCounter--;
+		int cnt = JUMP_FRAME - m_jumpCounter;
+		float angle = 180.0f / (float)JUMP_FRAME * cnt;
+		m_pos.y = sinf(DirectX::XMConvertToRadians(angle)) * JUMP_HEIGHT;
+		if (m_jumpCounter == 0)
+		{
+			// 床に着地した
+			m_pos.y = 0.0f;
+			// 床にダメージを与える
+			if (m_jumpEndFunction) m_jumpEndFunction(this);
+		}
 	}
 }
 
@@ -127,14 +155,44 @@ void Player::Render()
 
 void Player::State_Jump(float elapsedTime)
 {
+	if (m_jumpCounter == 0)
+	{
+		// 通常の状態へ
+		m_state = STATE_NORMAL;
+	}
 }
 
 void Player::State_Hit(float elapsedTime)
 {
+	// 摩擦により停止したら
+	if (m_vel == DirectX::SimpleMath::Vector3::Zero)
+	{
+		if (m_jumpCounter != 0)
+		{
+			m_state = STATE_JUMP;
+		}
+		else
+		{
+			m_state = STATE_NORMAL;
+		}
+	}
 }
 
 void Player::State_Fall(float elapsedTime)
 {
+	m_pos.y -= GameWindow::FALL_SPEED * elapsedTime;
+	// 回転しながら落下する
+	m_fallRotateAngle -= DirectX::XMConvertToRadians(GameWindow::FALL_ROTATE_SPEED) * elapsedTime;
+	// ある程度落下したら
+	if (m_pos.y < -GameWindow::FALL_DISTANCE)
+	{
+		// 死亡
+		m_state = STATE_DEAD;
+		// 表示（OFF）
+		SetDisplayFlag(false);
+		// 落下中の回転をリセット
+		m_fallRotateAngle = 0.0f;
+	}
 }
 
 void Player::OnCollision(GameObject* object)
@@ -173,6 +231,13 @@ void Player::Move(float elapsedTime, const DirectX::Keyboard::KeyboardStateTrack
 		force = 0.03f;
 	}
 
+	// スペースキーでジャンプ
+	if (m_state == STATE_NORMAL && m_jumpParts && tracker.pressed.Space)
+	{
+		m_state = STATE_JUMP;
+		m_jumpCounter = JUMP_FRAME;
+	}
+
 	// 力を加える
 	AddForce(GameWindow::DIR_ANGLE[m_dir], force);
 }
@@ -204,4 +269,8 @@ int Player::GetKeyToDir(int key)
 	return table[key];
 }
 
-
+void Player::SetJumpEndFunction(std::function<void(Object*)> func)
+{
+	// ジャンプの終了時に呼ばれる関数を登録する
+	m_jumpEndFunction = func;
+}

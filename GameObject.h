@@ -9,6 +9,8 @@ class GameObject
 	private:
 		bool m_isValid;
 
+		// ï`âÊèáèòä«óùóp(è¨Ç≥Ç¢ÇŸÇ«éËëOÇ…ï`âÊÇ≥ÇÍÇÈÅj
+		int m_drawPrio;
 
 	protected:
 		DirectX::SimpleMath::Vector3 m_position;
@@ -41,6 +43,9 @@ class GameObject
 		void SetPosition(DirectX::SimpleMath::Vector3& position);
 		void SetRotation(DirectX::SimpleMath::Vector3& rotation);
 		void SetScale(DirectX::SimpleMath::Vector3& scale);
+
+		const int GetDrawPrio() const;
+		void SetDrawPrio(int prio);
 
 
 	public:
@@ -101,6 +106,20 @@ inline void GameObject::SetRotation(DirectX::SimpleMath::Vector3 & rotation)
 inline void GameObject::SetScale(DirectX::SimpleMath::Vector3 & scale)
 {
 	m_scale = scale;
+}
+
+
+
+inline const int GameObject::GetDrawPrio() const
+{
+	return m_drawPrio;
+}
+
+
+
+inline void GameObject::SetDrawPrio(int prio)
+{
+	m_drawPrio = prio;
 }
 
 

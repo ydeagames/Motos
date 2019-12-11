@@ -26,6 +26,9 @@ public:
 		STATE_NUM
 	};
 
+	// ダメージの移行時間
+	static const float DAMEGE_DELAY_TIME;
+
 private:
 	// ステージへのポインタ
 	Stage* m_stage;
@@ -38,6 +41,12 @@ private:
 
 	// 位置
 	DirectX::SimpleMath::Vector3 m_pos;
+
+	// ダメージフラグ（１フレームに１回しかダメージが入らないようにするためのフラグ）
+	bool m_damageFlag;
+
+	// ダメージが入って次の状態に移行するまでのタイマー
+	float m_damageTimer;
 
 public:
 	// コンストラクタ
