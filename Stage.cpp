@@ -21,6 +21,15 @@ Stage::Stage()
 
 Stage::~Stage()
 {
+	// 床を消す
+	for (int j = 0; j < STAGE_H; j++)
+	{
+		for (int i = 0; i < STAGE_W; i++)
+		{
+			m_floors[j][i]->Invalidate();
+			m_floors[j][i] = nullptr;
+		}
+	}
 }
 
 void Stage::Initialize()
@@ -28,6 +37,8 @@ void Stage::Initialize()
 	// モデルデータの読み込み
 	DirectX::EffectFactory fx(GameContext::Get<DX::DeviceResources>()->GetD3DDevice());
 	fx.SetDirectory(L"Resources\\Models");
+
+	// 床のモデル
 	m_floorModels[Floor::NORMAL] = DirectX::Model::CreateFromCMO(GameContext::Get<DX::DeviceResources>()->GetD3DDevice(), L"Resources\\Models\\floorPanel_00.cmo", fx);
 	m_floorModels[Floor::DAMAGED] = DirectX::Model::CreateFromCMO(GameContext::Get<DX::DeviceResources>()->GetD3DDevice(), L"Resources\\Models\\floorPanel_01.cmo", fx);
 
@@ -47,29 +58,13 @@ void Stage::Initialize()
 		}
 	}
 
+	// プレイヤーのモデル
 	m_playerModels[Player::NORMAL] = DirectX::Model::CreateFromCMO(GameContext::Get<DX::DeviceResources>()->GetD3DDevice(), L"Resources\\Models\\player_01.cmo", fx);
 	m_playerModels[Player::WING] = DirectX::Model::CreateFromCMO(GameContext::Get<DX::DeviceResources>()->GetD3DDevice(), L"Resources\\Models\\player_02.cmo", fx);
 
-	std::unique_ptr<Player> pPlayer = std::make_unique<Player>();
-	m_player = pPlayer.get();
-	m_player->Initialize(5, 5);
-	// 各状態のモデルを設定
-	m_player->SetModel(Player::NORMAL, m_playerModels[Player::NORMAL].get());
-	m_player->SetModel(Player::WING, m_playerModels[Player::WING].get());
-	//m_player->SetJumpParts(false);
-	GameContext::Get<ObjectManager>()->GetGameOM()->Add(std::move(pPlayer));
-
-	// 床との判定関数を登録
-	m_player->SetCheckFloorFunction([&](Object* object)
-		{
-			return CheckFloor(object->GetPosition(), object->GetWidth(), object->GetHeight());
-		});
-
-	// ジャンプ着地時の関数を登録
-	m_player->SetJumpEndFunction([&](Object* object)
-		{
-			DamageFloor(object->GetPosition(), object->GetWidth(), object->GetHeight());
-		});
+	// パーツのモデル
+	m_partsModels[Parts::POWERUP] = DirectX::Model::CreateFromCMO(GameContext::Get<DX::DeviceResources>()->GetD3DDevice(), L"Resources\\Models\\powerupParts.cmo", fx);
+	m_partsModels[Parts::JUMP] = DirectX::Model::CreateFromCMO(GameContext::Get<DX::DeviceResources>()->GetD3DDevice(), L"Resources\\Models\\jumpParts.cmo", fx);
 }
 
 Floor* Stage::GetFloor(int x, int y)
@@ -166,14 +161,57 @@ void Stage::SetStageData()
 			// オブジェクトの種類によりタスク生成する
 			switch (m_stageData.object[j][i])
 			{
+
 			case OBJECT_ID::PLAYER:	// プレイヤー
-				break;
+			{
+				std::unique_ptr<Player> pPlayer = std::make_unique<Player>();
+				m_player = pPlayer.get();
+				m_player->Initialize(i, j);
+				// 各状態のモデルを設定
+				m_player->SetModel(Player::NORMAL, m_playerModels[Player::NORMAL].get());
+				m_player->SetModel(Player::WING, m_playerModels[Player::WING].get());
+				m_player->SetJumpParts(true);
+				GameContext::Get<ObjectManager>()->GetGameOM()->Add(std::move(pPlayer));
+
+				// 床との判定関数を登録
+				m_player->SetCheckFloorFunction([&](Object* object)
+					{
+						return CheckFloor(object->GetPosition(), object->GetWidth(), object->GetHeight());
+					});
+
+				// ジャンプ着地時の関数を登録
+				m_player->SetJumpEndFunction([&](Object* object)
+					{
+						DamageFloor(object->GetPosition(), object->GetWidth(), object->GetHeight());
+					});
+			}
+			break;
 
 			case OBJECT_ID::POWERUP_PARTS:	// パワーアップパーツ
-				break;
+			{
+				std::unique_ptr<Parts> pParts = std::make_unique<Parts>();
+				pParts->Initialize(Parts::POWERUP, i, j, m_partsModels[Parts::POWERUP].get());
+				pParts->SetCheckFloorFunction([&](Object* object)
+					{
+						return CheckFloor(object->GetPosition(), object->GetWidth(), object->GetHeight());
+					});
+				m_parts.push_back(pParts.get());
+				GameContext::Get<ObjectManager>()->GetGameOM()->Add(std::move(pParts));
+			}
+			break;
 
 			case OBJECT_ID::JUMP_PARTS:		// ジャンプパーツ
-				break;
+			{
+				std::unique_ptr<Parts> pParts = std::make_unique<Parts>();
+				pParts->Initialize(Parts::JUMP, i, j, m_partsModels[Parts::JUMP].get());
+				pParts->SetCheckFloorFunction([&](Object* object)
+					{
+						return CheckFloor(object->GetPosition(), object->GetWidth(), object->GetHeight());
+					});
+				m_parts.push_back(pParts.get());
+				GameContext::Get<ObjectManager>()->GetGameOM()->Add(std::move(pParts));
+			}
+			break;
 
 			case OBJECT_ID::ENEMY_1:	// 敵１
 				break;
@@ -259,6 +297,21 @@ void Stage::DamageFloor(DirectX::SimpleMath::Vector3 pos, float w, float h)
 
 void Stage::DeleteAllObject()
 {
+	if (m_player != nullptr)
+	{
+		m_player->Invalidate();
+		m_player = nullptr;
+	}
+
+	for (auto parts : m_parts)
+	{
+		if (parts != nullptr)
+		{
+			parts->Invalidate();
+			parts = nullptr;
+		}
+	}
+	m_parts.clear();
 }
 
 void Stage::ConvertPosToMapChip(float x, float z, int* floor_x, int* floor_y)

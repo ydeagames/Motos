@@ -8,8 +8,8 @@
 
 #include <vector>
 #include "Floor.h"
-#include <Model.h>
 #include "Player.h"
+#include "Parts.h"
 
 class GameWindow;
 
@@ -93,5 +93,11 @@ private:
 	std::unique_ptr<DirectX::Model> m_playerModels[Player::MODEL_TYPE_NUM];
 
 	// プレイヤー
-	Player* m_player;
+	Player* m_player = nullptr;
+
+	// パーツのモデル
+	std::unique_ptr<DirectX::Model> m_partsModels[Parts::KIND_NUM];
+
+	// パーツ
+	std::vector<Parts*> m_parts;
 };

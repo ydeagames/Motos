@@ -189,6 +189,7 @@
     <ClInclude Include="Moji.h" />
     <ClInclude Include="Object.h" />
     <ClInclude Include="ObjectManager.h" />
+    <ClInclude Include="Parts.h" />
     <ClInclude Include="PartsInfo.h" />
     <ClInclude Include="PauseState.h" />
     <ClInclude Include="pch.h" />
@@ -224,6 +225,7 @@
     <ClCompile Include="Moji.cpp" />
     <ClCompile Include="Object.cpp" />
     <ClCompile Include="ObjectManager.cpp" />
+    <ClCompile Include="Parts.cpp" />
     <ClCompile Include="PartsInfo.cpp" />
     <ClCompile Include="PauseState.cpp" />
     <ClCompile Include="pch.cpp">
@@ -259,8 +261,10 @@
     <MeshContentTask Include="FBX\floorPanel_01.FBX">
       <FileType>Document</FileType>
     </MeshContentTask>
+    <MeshContentTask Include="FBX\jumpParts.FBX" />
     <MeshContentTask Include="FBX\player_01.FBX" />
     <MeshContentTask Include="FBX\player_02.FBX" />
+    <MeshContentTask Include="FBX\powerupParts.FBX" />
   </ItemGroup>
   <ItemGroup>
     <None Include="StageData\Stage01.csv" />

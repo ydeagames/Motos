@@ -144,6 +144,9 @@ void Player::Render()
 	// 向いている角度を角度テーブルから取得
 	float angle = GameWindow::DIR_ANGLE[m_dir];
 
+	// 落下中の回転を加える
+	angle += m_fallRotateAngle;
+
 	// ワールド行列を作成
 	DirectX::SimpleMath::Matrix world = DirectX::SimpleMath::Matrix::CreateRotationY(angle) * DirectX::SimpleMath::Matrix::CreateTranslation(m_pos);
 

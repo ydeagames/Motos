@@ -50,9 +50,15 @@ GameWindow::GameWindow()
 GameWindow::~GameWindow()
 {
 	if (m_pStage)
+	{
 		m_pStage->ResetStageData();
+		m_pStage = nullptr;
+	}
 	if (m_pBg)
+	{
 		GameObject::Destroy(m_pBg);
+		m_pBg = nullptr;
+	}
 }
 
 void GameWindow::Initialize()

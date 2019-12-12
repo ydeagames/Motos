@@ -86,9 +86,16 @@ void PlayState::Render()
 
 void PlayState::Finalize()
 {
-	// 消えるフラグを設定
-	GameContext::Get<InfoWindow>()->Invalidate();
-
-	// GameContextからはずす
-	GameContext::Reset<InfoWindow>();
+	{
+		// 消えるフラグを設定
+		GameContext::Get<GameWindow>()->Invalidate();
+		// 消えるフラグを設定
+		GameContext::Get<InfoWindow>()->Invalidate();
+	}
+	{
+		// GameContextからはずす
+		GameContext::Reset<GameWindow>();
+		// GameContextからはずす
+		GameContext::Reset<InfoWindow>();
+	}
 }
