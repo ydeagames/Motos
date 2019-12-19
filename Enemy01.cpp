@@ -199,10 +199,6 @@ Enemy01::STATE Enemy01::GetState()
 	return m_state;
 }
 
-void Enemy01::Move(float elapsedTime, const DirectX::Keyboard::KeyboardStateTracker& tracker)
-{
-}
-
 void Enemy01::Reset()
 {
 	// ƒvƒŒƒCƒ„[‚ğŒ³‚Ìó‘Ô‚É–ß‚·

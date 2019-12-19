@@ -11,6 +11,7 @@
 #include "Player.h"
 #include "Parts.h"
 #include "Enemy01.h"
+#include "Enemy02.h"
 
 class GameWindow;
 
@@ -107,4 +108,7 @@ private:
 
 	// “G
 	std::vector<Enemy01*> m_enemy01;
+
+	// “G
+	std::vector<Enemy02*> m_enemy02;
 };

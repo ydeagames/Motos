@@ -48,7 +48,7 @@ public:
 	static const float THINK_INTERVAL;
 
 
-private:
+protected:
 	// モデルデータへのポインタ
 	DirectX::Model* m_models[MODEL_TYPE_NUM];
 
@@ -79,21 +79,18 @@ public:
 	void Render() override;
 
 	// 更新処理（通常）
-	void State_Normal(float elapsedTime);
+	virtual void State_Normal(float elapsedTime);
 	// 更新処理（衝突して制御不能中）
-	void State_Hit(float elapsedTime);
+	virtual void State_Hit(float elapsedTime);
 
 	// 更新処理（落下中）
-	void State_Fall(float elapsedTime);
+	virtual void State_Fall(float elapsedTime);
 
 	// 衝突したら呼ばれる関数
 	void OnCollision(GameObject* object);
 
 	// プレイヤーの状態を取得する関数
 	Enemy01::STATE GetState();
-
-	// プレイヤーの移動関数
-	void Move(float elapsedTime, const DirectX::Keyboard::KeyboardStateTracker& tracker);
 
 	// リセット関数
 	void Reset();

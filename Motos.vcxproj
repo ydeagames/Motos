@@ -177,6 +177,7 @@
     <ClInclude Include="DebugFont.h" />
     <ClInclude Include="DeviceResources.h" />
     <ClInclude Include="Enemy01.h" />
+    <ClInclude Include="Enemy02.h" />
     <ClInclude Include="Floor.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameContext.h" />
@@ -215,6 +216,7 @@
     <ClCompile Include="DebugFont.cpp" />
     <ClCompile Include="DeviceResources.cpp" />
     <ClCompile Include="Enemy01.cpp" />
+    <ClCompile Include="Enemy02.cpp" />
     <ClCompile Include="Floor.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameObject.cpp" />

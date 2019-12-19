@@ -235,9 +235,26 @@ void Stage::SetStageData()
 				m_enemy01.push_back(pEnemy01.get());
 				GameContext::Get<ObjectManager>()->GetGameOM()->Add(std::move(pEnemy01));
 			}
+			break;
 
 			case OBJECT_ID::ENEMY_2:	// “G‚Q
-				break;
+			{
+				std::unique_ptr<Enemy02> pEnemy02 = std::make_unique<Enemy02>();
+				pEnemy02->Initialize(i, j);
+				// Šeó‘Ô‚Ìƒ‚ƒfƒ‹‚ðÝ’è
+				pEnemy02->SetModel(Enemy02::NORMAL, m_enemy01Models[Enemy02::NORMAL].get());
+
+				// °‚Æ‚Ì”»’èŠÖ”‚ð“o˜^
+				pEnemy02->SetCheckFloorFunction([&](Object* object)
+					{
+						return CheckFloor(object->GetPosition(), object->GetWidth(), object->GetHeight());
+					});
+
+				m_enemy02.push_back(pEnemy02.get());
+				GameContext::Get<ObjectManager>()->GetGameOM()->Add(std::move(pEnemy02));
+			}
+			break;
+
 			}
 		}
 	}

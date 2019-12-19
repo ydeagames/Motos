@@ -123,6 +123,9 @@
     <ClInclude Include="Enemy01.h">
       <Filter>Object</Filter>
     </ClInclude>
+    <ClInclude Include="Enemy02.h">
+      <Filter>Object</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -207,6 +210,9 @@
       <Filter>Object</Filter>
     </ClCompile>
     <ClCompile Include="Enemy01.cpp">
+      <Filter>Object</Filter>
+    </ClCompile>
+    <ClCompile Include="Enemy02.cpp">
       <Filter>Object</Filter>
     </ClCompile>
   </ItemGroup>
