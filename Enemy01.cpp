@@ -12,6 +12,7 @@
 #include "GameWindow.h"
 #include "CollisionManager.h"
 #include "Camera.h"
+#include "Stage.h"
 
 // 重さ
 const float Enemy01::WEIGHT = 0.8f;
@@ -29,6 +30,7 @@ const float Enemy01::THINK_INTERVAL = 0.4f;
 Enemy01::Enemy01()
 	: m_models{ nullptr }
 	, m_state(STATE_NORMAL)
+	, m_thinkTimer(0)
 {
 }
 
@@ -38,12 +40,21 @@ void Enemy01::Initialize(int x, int y)
 	m_y = y;
 	m_pos = DirectX::SimpleMath::Vector3((float)x, 0.0f, (float)y);
 
+	// 質量
+	m_weight = WEIGHT;
+
 	// 摩擦係数
 	m_coefficientOfFriction = FRICTION;
+
+	// 半径
+	m_radius = RADIUS;
 
 	// 幅と高さ
 	m_weight = Enemy01::WIDTH;
 	m_height = Enemy01::HEIGHT;
+
+	// 位置と向きをリセット
+	Reset();
 }
 
 void Enemy01::SetModel(ModelType modelType, DirectX::Model* model)
@@ -59,16 +70,6 @@ void Enemy01::Update(float elapsedTime)
 	// アクティブフラグがfalseの場合は何もしない
 	if (!m_activeFlag) return;
 
-	// 摩擦により速度を落とす
-	Friction(elapsedTime);
-
-	// 最大速度以上にならないよう調整
-	if (m_vel.LengthSquared() > MAX_SPEED * MAX_SPEED)
-	{
-		m_vel.Normalize();
-		m_vel *= MAX_SPEED;
-	}
-
 	// 状態によって処理を分岐させる
 	switch (m_state)
 	{
@@ -83,6 +84,16 @@ void Enemy01::Update(float elapsedTime)
 		break;
 	default:
 		break;
+	}
+
+	// 摩擦により速度を落とす
+	Friction(elapsedTime);
+
+	// 最大速度以上にならないよう調整
+	if (m_vel.LengthSquared() > MAX_SPEED * MAX_SPEED)
+	{
+		m_vel.Normalize();
+		m_vel *= MAX_SPEED;
 	}
 
 	// 位置に速度を足す
@@ -122,7 +133,39 @@ void Enemy01::Render()
 
 void Enemy01::State_Normal(float elapsedTime)
 {
+	GameWindow* gameWindow = GameContext::Get<GameWindow>();
+	// プレイヤーを取得
+	Object* target = gameWindow->GetStage()->GetPlayer();
 
+	// 定期的にプレイヤーの向きを変える
+	m_thinkTimer += elapsedTime;
+	if (m_thinkTimer >= THINK_INTERVAL)
+	{
+		m_thinkTimer = 0.f;
+
+		// ランダムで移動方向を決定
+		m_dir = rand() % 8;
+
+		// ターゲット方向に向ける
+		if (target)
+		{
+			m_dir = GetDir(target);
+		}
+	}
+
+	// 力を加える
+	AddForce(GameWindow::DIR_ANGLE[m_dir], .03);
+
+	// 落ちそうなら向きと速度を反転する
+	DirectX::SimpleMath::Vector3 tmp = m_pos;
+	m_pos += m_vel;
+	if (CheckFloor() == false)
+	{
+		DirectX::SimpleMath::Matrix rotY = DirectX::SimpleMath::Matrix::CreateRotationY(DirectX::XMConvertToRadians(180.f));
+		m_vel = DirectX::SimpleMath::Vector3::Transform(m_vel, rotY);
+		m_dir = (m_dir + 4) % 8;
+	}
+	m_pos = tmp;
 }
 
 void Enemy01::State_Hit(float elapsedTime)

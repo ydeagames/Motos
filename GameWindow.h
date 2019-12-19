@@ -64,6 +64,9 @@ public:
 	// カメラ
 	Camera* GetCamera();
 
+	// ステージ
+	Stage* GetStage();
+
 	// 追加
 	template<typename T>
 	T* AddObject()

@@ -112,3 +112,7 @@ Camera* GameWindow::GetCamera()
 	return m_camera.get();
 }
 
+Stage* GameWindow::GetStage()
+{
+	return m_pStage.get();
+}

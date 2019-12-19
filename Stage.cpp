@@ -30,6 +30,9 @@ Stage::~Stage()
 			m_floors[j][i] = nullptr;
 		}
 	}
+
+	// すべてのオブジェクトを消す
+	DeleteAllObject();
 }
 
 void Stage::Initialize()
