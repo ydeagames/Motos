@@ -65,6 +65,9 @@ void Stage::Initialize()
 	// ÉpÅ[ÉcÇÃÉÇÉfÉã
 	m_partsModels[Parts::POWERUP] = DirectX::Model::CreateFromCMO(GameContext::Get<DX::DeviceResources>()->GetD3DDevice(), L"Resources\\Models\\powerupParts.cmo", fx);
 	m_partsModels[Parts::JUMP] = DirectX::Model::CreateFromCMO(GameContext::Get<DX::DeviceResources>()->GetD3DDevice(), L"Resources\\Models\\jumpParts.cmo", fx);
+
+	// ìGÇÃÉÇÉfÉã
+	m_enemy01Models[Enemy01::NORMAL] = DirectX::Model::CreateFromCMO(GameContext::Get<DX::DeviceResources>()->GetD3DDevice(), L"Resources\\Models\\enemy_01.cmo", fx);
 }
 
 Floor* Stage::GetFloor(int x, int y)
@@ -214,7 +217,21 @@ void Stage::SetStageData()
 			break;
 
 			case OBJECT_ID::ENEMY_1:	// ìGÇP
-				break;
+			{
+				std::unique_ptr<Enemy01> pEnemy01 = std::make_unique<Enemy01>();
+				pEnemy01->Initialize(i, j);
+				// äeèÛë‘ÇÃÉÇÉfÉãÇê›íË
+				pEnemy01->SetModel(Enemy01::NORMAL, m_enemy01Models[Enemy01::NORMAL].get());
+
+				// è∞Ç∆ÇÃîªíËä÷êîÇìoò^
+				pEnemy01->SetCheckFloorFunction([&](Object* object)
+					{
+						return CheckFloor(object->GetPosition(), object->GetWidth(), object->GetHeight());
+					});
+
+				m_enemy01.push_back(pEnemy01.get());
+				GameContext::Get<ObjectManager>()->GetGameOM()->Add(std::move(pEnemy01));
+			}
 
 			case OBJECT_ID::ENEMY_2:	// ìGÇQ
 				break;
@@ -312,6 +329,16 @@ void Stage::DeleteAllObject()
 		}
 	}
 	m_parts.clear();
+
+	for (auto enemy : m_enemy01)
+	{
+		if (enemy != nullptr)
+		{
+			enemy->Invalidate();
+			enemy = nullptr;
+		}
+	}
+	m_enemy01.clear();
 }
 
 void Stage::ConvertPosToMapChip(float x, float z, int* floor_x, int* floor_y)

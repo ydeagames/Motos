@@ -32,6 +32,11 @@ const int Player::JUMP_FRAME = 30;
 // ƒWƒƒƒ“ƒv‚Ì‚‚³
 const float Player::JUMP_HEIGHT = 1.5f;
 
+float SLerp(float start, float end, float t)
+{
+	float rate = (sinf(3.f * DirectX::XM_PI / 2.f + DirectX::XM_PI * t) + 1.f) / 2.f;
+	return start + (end - start) * rate;
+}
 
 Player::Player()
 	: m_models{ nullptr }

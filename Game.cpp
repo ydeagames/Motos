@@ -118,10 +118,10 @@ void Game::Update(DX::StepTimer const& timer)
 
 	// TODO: Add your game logic here.
 	elapsedTime;
+	m_gameStateManager->Update(elapsedTime);
 	m_objectManager->GetGameOM()->Update(elapsedTime);
 	m_objectManager->GetInfoOM()->Update(elapsedTime);
 	m_collisionManager->DetectCollision();
-	m_gameStateManager->Update(elapsedTime);
 }
 #pragma endregion
 

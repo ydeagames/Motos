@@ -10,7 +10,8 @@ class GameObject
 		bool m_isValid;
 
 		// •`‰æ‡˜ŠÇ——p(¬‚³‚¢‚Ù‚Çè‘O‚É•`‰æ‚³‚ê‚éj
-		int m_drawPrio;
+		int m_drawPrio;
+
 
 	protected:
 		DirectX::SimpleMath::Vector3 m_position;

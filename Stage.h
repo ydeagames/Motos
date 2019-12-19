@@ -10,6 +10,7 @@
 #include "Floor.h"
 #include "Player.h"
 #include "Parts.h"
+#include "Enemy01.h"
 
 class GameWindow;
 
@@ -100,4 +101,10 @@ private:
 
 	// パーツ
 	std::vector<Parts*> m_parts;
+
+	// 敵のモデル
+	std::unique_ptr<DirectX::Model> m_enemy01Models[Enemy01::MODEL_TYPE_NUM];
+
+	// 敵
+	std::vector<Enemy01*> m_enemy01;
 };

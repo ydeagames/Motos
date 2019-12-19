@@ -176,6 +176,7 @@
     <ClInclude Include="CollisionManager.h" />
     <ClInclude Include="DebugFont.h" />
     <ClInclude Include="DeviceResources.h" />
+    <ClInclude Include="Enemy01.h" />
     <ClInclude Include="Floor.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameContext.h" />
@@ -213,6 +214,7 @@
     <ClCompile Include="CollisionManager.cpp" />
     <ClCompile Include="DebugFont.cpp" />
     <ClCompile Include="DeviceResources.cpp" />
+    <ClCompile Include="Enemy01.cpp" />
     <ClCompile Include="Floor.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameObject.cpp" />
@@ -255,6 +257,7 @@
     <MeshContentTask Include="FBX\bg.FBX">
       <FileType>Document</FileType>
     </MeshContentTask>
+    <MeshContentTask Include="FBX\enemy_01.FBX" />
     <MeshContentTask Include="FBX\floorPanel_00.FBX">
       <FileType>Document</FileType>
     </MeshContentTask>

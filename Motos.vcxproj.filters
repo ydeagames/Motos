@@ -120,6 +120,9 @@
     <ClInclude Include="Player.h">
       <Filter>Object</Filter>
     </ClInclude>
+    <ClInclude Include="Enemy01.h">
+      <Filter>Object</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -203,6 +206,9 @@
     <ClCompile Include="Player.cpp">
       <Filter>Object</Filter>
     </ClCompile>
+    <ClCompile Include="Enemy01.cpp">
+      <Filter>Object</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resource.rc" />
@@ -242,6 +248,9 @@
       <Filter>Assets\FBX</Filter>
     </MeshContentTask>
     <MeshContentTask Include="FBX\floorPanel_00.FBX">
+      <Filter>Assets\FBX</Filter>
+    </MeshContentTask>
+    <MeshContentTask Include="FBX\enemy_01.FBX">
       <Filter>Assets\FBX</Filter>
     </MeshContentTask>
   </ItemGroup>
