@@ -13,6 +13,7 @@
 #include "CollisionManager.h"
 #include "Camera.h"
 #include "Stage.h"
+#include "SphereCollider.h"
 
 // 重さ
 const float Enemy01::WEIGHT = 0.8f;
@@ -50,11 +51,14 @@ void Enemy01::Initialize(int x, int y)
 	m_radius = RADIUS;
 
 	// 幅と高さ
-	m_weight = Enemy01::WIDTH;
+	m_width = Enemy01::WIDTH;
 	m_height = Enemy01::HEIGHT;
 
 	// 位置と向きをリセット
 	Reset();
+
+	// 当たり判定 WIP
+	m_collider = std::make_unique<SphereCollider>(this, m_radius);
 }
 
 void Enemy01::SetModel(ModelType modelType, DirectX::Model* model)
@@ -166,6 +170,10 @@ void Enemy01::State_Normal(float elapsedTime)
 		m_dir = (m_dir + 4) % 8;
 	}
 	m_pos = tmp;
+
+	// 当たり判定 WIP
+	GameContext::Get<CollisionManager>()->Add("Object", m_collider.get());
+	m_position = m_pos;
 }
 
 void Enemy01::State_Hit(float elapsedTime)
@@ -192,6 +200,12 @@ void Enemy01::State_Fall(float elapsedTime)
 
 void Enemy01::OnCollision(GameObject* object)
 {
+	if (Object * obj = dynamic_cast<Object*>(object))
+	{
+		auto diff = GetPosition() - obj->GetPosition();
+		auto angle = std::atan2(diff.z, diff.x);
+		AddForce(angle, obj->GetHitForce());
+	}
 }
 
 Enemy01::STATE Enemy01::GetState()

@@ -106,26 +106,32 @@ void CollisionManager::AllowCollision(const std::string& groupName1, const std::
 
 bool CollisionManager::IsCollided(const SphereCollider* collider1, const SphereCollider* collider2)
 {
-	return false;
+	auto bounding1 = DirectX::BoundingSphere(collider1->GetPosition() + collider1->GetOffset(), collider1->GetRadius());
+	auto bounding2 = DirectX::BoundingSphere(collider2->GetPosition() + collider2->GetOffset(), collider2->GetRadius());
+	return bounding1.Intersects(bounding2);
 }
 
 
 
 bool CollisionManager::IsCollided(const BoxCollider* collider1, const BoxCollider* collider2)
 {
-	return false;
+	auto bounding1 = DirectX::BoundingBox(collider1->GetPosition() + collider1->GetOffset(), collider1->GetSize());
+	auto bounding2 = DirectX::BoundingBox(collider2->GetPosition() + collider2->GetOffset(), collider2->GetSize());
+	return bounding1.Intersects(bounding2);
 }
 
 
 
 bool CollisionManager::IsCollided(const SphereCollider* collider1, const BoxCollider* collider2)
 {
-	return false;
+	auto bounding1 = DirectX::BoundingSphere(collider1->GetPosition() + collider1->GetOffset(), collider1->GetRadius());
+	auto bounding2 = DirectX::BoundingBox(collider2->GetPosition() + collider2->GetOffset(), collider2->GetSize());
+	return bounding1.Intersects(bounding2);
 }
 
 
 
 bool CollisionManager::IsCollided(const BoxCollider* collider1, const SphereCollider* collider2)
 {
-	return IsCollided(collider2, collider1);
+	return collider2->IsCollided(collider1);
 }

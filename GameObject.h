@@ -4,6 +4,9 @@
 #include <SimpleMath.h>
 
 
+class Collider;
+
+
 class GameObject
 {
 	private:
@@ -17,6 +20,9 @@ class GameObject
 		DirectX::SimpleMath::Vector3 m_position;
 		DirectX::SimpleMath::Vector3 m_rotation;
 		DirectX::SimpleMath::Vector3 m_scale;
+
+		// “–‚½‚è”»’è WIP
+		std::unique_ptr<Collider> m_collider;
 
 
 	public:

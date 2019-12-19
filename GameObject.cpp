@@ -1,6 +1,7 @@
 #include "pch.h"
 
 #include "GameObject.h"
+#include "Collider.h"
 
 
 

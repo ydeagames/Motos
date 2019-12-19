@@ -83,6 +83,7 @@ void Game::Initialize(HWND window, int width, int height)
 	m_collisionManager = std::make_unique<CollisionManager>();
 	m_collisionManager->AllowCollision("Ball", "Box");
 	m_collisionManager->AllowCollision("Box", "Box");
+	m_collisionManager->AllowCollision("Object", "Object");
 
 
 	GameContext::Register<GameStateManager>(m_gameStateManager);

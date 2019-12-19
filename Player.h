@@ -35,6 +35,8 @@ public:
 	static const float WIDTH;
 	static const float HEIGHT;
 
+	static const float RADIUS;
+
 	// プレイヤーの最大移動速度
 	static const float MAX_SPEED;
 
@@ -92,6 +94,9 @@ public:
 
 	// 描画関数
 	void Render() override;
+
+	// 更新処理（通常）
+	void State_Normal(float elapsedTime);
 
 	// 更新処理（ジャンプ中）
 	void State_Jump(float elapsedTime);

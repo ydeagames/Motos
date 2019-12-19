@@ -12,6 +12,7 @@
 #include "GameWindow.h"
 #include "CollisionManager.h"
 #include "Camera.h"
+#include "SphereCollider.h"
 
 // プレイヤーの重さ
 const float Player::WEIGHT = 1.0f;
@@ -31,6 +32,9 @@ const int Player::JUMP_FRAME = 30;
 
 // ジャンプの高さ
 const float Player::JUMP_HEIGHT = 1.5f;
+
+// オブジェクト同士の判定用の半径
+const float Player::RADIUS = 0.4f;
 
 float SLerp(float start, float end, float t)
 {
@@ -60,9 +64,15 @@ void Player::Initialize(int x, int y)
 	// 摩擦係数
 	m_coefficientOfFriction = FRICTION;
 
+	// 半径
+	m_radius = RADIUS;
+
 	// 幅と高さ
-	m_weight = Player::WIDTH;
+	m_width = Player::WIDTH;
 	m_height = Player::HEIGHT;
+
+	// 当たり判定 WIP
+	m_collider = std::make_unique<SphereCollider>(this, m_radius);
 }
 
 void Player::SetModel(ModelType modelType, DirectX::Model * model)
@@ -92,6 +102,7 @@ void Player::Update(float elapsedTime)
 	switch (m_state)
 	{
 	case STATE_NORMAL:	// 通常
+		State_Normal(elapsedTime);
 		break;
 	case STATE_JUMP:	// ジャンプ中
 		State_Jump(elapsedTime);
@@ -161,6 +172,13 @@ void Player::Render()
 		world, camera->getViewMatrix(), camera->getProjectionMatrix());
 }
 
+void Player::State_Normal(float elapsedTime)
+{
+	// 当たり判定 WIP
+	GameContext::Get<CollisionManager>()->Add("Object", m_collider.get());
+	m_position = m_pos;
+}
+
 void Player::State_Jump(float elapsedTime)
 {
 	if (m_jumpCounter == 0)
@@ -205,6 +223,12 @@ void Player::State_Fall(float elapsedTime)
 
 void Player::OnCollision(GameObject* object)
 {
+	if (Object * obj = dynamic_cast<Object*>(object))
+	{
+		auto diff = GetPosition() - obj->GetPosition();
+		auto angle = std::atan2(diff.z, diff.x);
+		AddForce(angle, obj->GetHitForce());
+	}
 }
 
 Player::STATE Player::GetState()
