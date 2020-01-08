@@ -12,13 +12,13 @@ void GameAI::Input::Configure(NeuralNetwork& neural) const
 {
 	neural.SetInput(0, double(myPosition.x / Stage::STAGE_W));
 	neural.SetInput(1, double(myPosition.y / Stage::STAGE_H));
-	neural.SetInput(2, double(playerPosition.x / Stage::STAGE_W));
-	neural.SetInput(3, double(playerPosition.y / Stage::STAGE_H));
-	neural.SetInput(4, double(myVelocity.x / Player::MAX_SPEED));
-	neural.SetInput(5, double(myVelocity.y / Player::MAX_SPEED));
-	neural.SetInput(6, double(playerVelocity.x / Player::MAX_SPEED));
-	neural.SetInput(7, double(playerVelocity.y / Player::MAX_SPEED));
-	neural.SetInput(8, floorCheck != false);
+	//neural.SetInput(2, double(playerPosition.x / Stage::STAGE_W));
+	//neural.SetInput(3, double(playerPosition.y / Stage::STAGE_H));
+	//neural.SetInput(4, double(myVelocity.x / Player::MAX_SPEED));
+	//neural.SetInput(5, double(myVelocity.y / Player::MAX_SPEED));
+	//neural.SetInput(6, double(playerVelocity.x / Player::MAX_SPEED));
+	//neural.SetInput(7, double(playerVelocity.y / Player::MAX_SPEED));
+	neural.SetInput(2, floorCheck != false);
 }
 
 void GameAI::Output::Configure(NeuralNetwork& neural) const
@@ -42,8 +42,8 @@ GameAI::Output GameAI::Output::Create(NeuralNetwork& neural)
 void GameAI::Initialize()
 {
 	// ニューラルネットワークを初期化する(入力層、隠れ層、出力層)
-	m_aiA.Initialize(9, 100, 4);
-	m_aiB.Initialize(9, 100, 4);
+	m_aiA.Initialize(3, 100, 4);
+	m_aiB.Initialize(3, 100, 4);
 
 	// 学習率を設定する
 	// Setup learning rate
@@ -104,9 +104,9 @@ void GameAI::AddLerningData(const Input& input, const Output& output)
 void GameAI::ForgetRecently()
 {
 	m_dataMutex.lock();
-	if (m_data.size() > 20)
+	if (m_data.size() > 5)
 	{
-		m_data.erase(m_data.end() - 40, m_data.end());
+		m_data.erase(m_data.end() - 5, m_data.end());
 	}
 	m_dataMutex.unlock();
 }
@@ -134,7 +134,7 @@ void GameAI::Calculate()
 			int		count = 0;
 
 			// 機械学習する
-			while (error > 0.1 && count < 10000)
+			while (error > 0.001 && count < 10000)
 			{
 				error = 0.0;
 				count++;
@@ -158,11 +158,13 @@ void GameAI::Calculate()
 				// 誤差を計算する
 				error = error / data.size();
 
+
 				if (m_thread_stop)
 					return;
 			}
 
 			SwapAI();
+			calcNum++;
 		}
 
 		std::this_thread::sleep_for(1s);

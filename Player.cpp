@@ -327,7 +327,7 @@ void Player::Move(float elapsedTime, const DirectX::Keyboard::KeyboardStateTrack
 	if (force > 0)
 	{
 		const auto myPosition = GetXZ(GetPosition());
-		if (DirectX::SimpleMath::Vector2::Distance(myPosition, m_lastPos) > .1f)
+		if (DirectX::SimpleMath::Vector2::Distance(myPosition, m_lastPos) > .8f)
 		{
 			auto stage = GameContext::Get<GameWindow>()->GetStage();
 			const auto enemyPosition = GetXZ(stage->GetEnemy01()->GetPosition());

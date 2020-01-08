@@ -40,7 +40,9 @@ public:
 		Output output;
 	};
 
-private:
+	int calcNum;
+
+public:
 	std::vector<Data> m_data;
 
 public:

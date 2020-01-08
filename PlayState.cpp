@@ -12,7 +12,7 @@
 #include "GameObjectManager.h"
 #include "ObjectManager.h"
 #include "GameWindow.h"
-
+#include "GameAI.h"
 
 
 PlayState::PlayState()
@@ -79,6 +79,11 @@ void PlayState::Render()
 	debugFont->print(10, 10, L"PlayState");
 	debugFont->draw();
 	debugFont->print(10, 40, L"[P] Pause");
+	debugFont->draw();
+
+	debugFont->print(10, 100, L"Calc: %d", GameContext::Get<GameAI>()->calcNum);
+	debugFont->draw();
+	debugFont->print(10, 130, L"Data: %d", GameContext::Get<GameAI>()->m_data.size());
 	debugFont->draw();
 }
 
