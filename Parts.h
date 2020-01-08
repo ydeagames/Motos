@@ -7,6 +7,7 @@
 #pragma once
 
 #include "Object.h"
+#include "SphereCollider.h"
 
 class GameWindow;
 
@@ -42,9 +43,12 @@ private:
 	// パーツの状態
 	STATE m_state;
 
+	// コライダー
+	std::unique_ptr<SphereCollider> m_collider;
+
 public:
 	// コンストラクタ
-	Parts();
+	Parts(const std::string& tag);
 
 	// 初期化関数
 	void Initialize(Kind kind, int x, int y, DirectX::Model* model);

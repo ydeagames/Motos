@@ -8,6 +8,7 @@
 
 #include "Object.h"
 #include "Keyboard.h"
+#include "SphereCollider.h"
 
 class Player : public Object
 {
@@ -75,10 +76,13 @@ private:
 	// ジャンプ終了時に呼ばれる関数
 	std::function<void(Object*)> m_jumpEndFunction;
 
+	// コライダー
+	std::unique_ptr<SphereCollider> m_collider;
+
 
 public:
 	// コンストラクタ
-	Player();
+	Player(const std::string& tag);
 
 	// 初期化関数
 	void Initialize(int x, int y);
@@ -109,6 +113,7 @@ public:
 
 	// 衝突したら呼ばれる関数
 	void OnCollision(GameObject* object);
+	void OnCollision_Enemy01(GameObject* object);
 
 	// プレイヤーの状態を取得する関数
 	Player::STATE GetState();

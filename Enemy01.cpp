@@ -27,9 +27,11 @@ const float Enemy01::MAX_SPEED = 0.06f;
 // 床に対する摩擦係数
 const float Enemy01::FRICTION = 0.1f;
 // 思考間隔（単位：秒）
-const float Enemy01::THINK_INTERVAL = 0.4f;
-Enemy01::Enemy01()
-	: m_models{ nullptr }
+const float Enemy01::THINK_INTERVAL = 0.4f;
+
+Enemy01::Enemy01(const std::string& tag)
+	: Object(tag)
+	, m_models{ nullptr }
 	, m_state(STATE_NORMAL)
 	, m_thinkTimer(0)
 {
@@ -39,7 +41,7 @@ void Enemy01::Initialize(int x, int y)
 {
 	m_x = x;
 	m_y = y;
-	m_pos = DirectX::SimpleMath::Vector3((float)x, 0.0f, (float)y);
+	m_position = DirectX::SimpleMath::Vector3((float)x, 0.0f, (float)y);
 
 	// 質量
 	m_weight = WEIGHT;
@@ -57,7 +59,7 @@ void Enemy01::Initialize(int x, int y)
 	// 位置と向きをリセット
 	Reset();
 
-	// 当たり判定 WIP
+	// 当たり判定
 	m_collider = std::make_unique<SphereCollider>(this, m_radius);
 }
 
@@ -101,7 +103,7 @@ void Enemy01::Update(float elapsedTime)
 	}
 
 	// 位置に速度を足す
-	m_pos += m_vel;
+	m_position += m_vel;
 
 	// プレイヤーと床のチェック
 	if (m_state == Enemy01::STATE_NORMAL && CheckFloor() == false)
@@ -113,6 +115,9 @@ void Enemy01::Update(float elapsedTime)
 		// 描画順をFALLへ
 		SetDrawPrio(GameWindow::DRAW_FALL);
 	}
+
+	// 衝突判定マネージャーに登録
+	GameContext::Get<CollisionManager>()->Add(GetTag(), m_collider.get());
 }
 
 void Enemy01::Render()
@@ -127,7 +132,7 @@ void Enemy01::Render()
 	float angle = GameWindow::DIR_ANGLE[m_dir];
 
 	// ワールド行列を作成
-	DirectX::SimpleMath::Matrix world = DirectX::SimpleMath::Matrix::CreateRotationY(angle) * DirectX::SimpleMath::Matrix::CreateTranslation(m_pos);
+	DirectX::SimpleMath::Matrix world = DirectX::SimpleMath::Matrix::CreateRotationY(angle) * DirectX::SimpleMath::Matrix::CreateTranslation(m_position);
 
 	// モデルの描画（ジャンプパーツを付けているかどうかでモデルが違う）
 	m_models[NORMAL]->Draw(deviceResources->GetD3DDeviceContext(),
@@ -161,19 +166,15 @@ void Enemy01::State_Normal(float elapsedTime)
 	AddForce(GameWindow::DIR_ANGLE[m_dir], .03);
 
 	// 落ちそうなら向きと速度を反転する
-	DirectX::SimpleMath::Vector3 tmp = m_pos;
-	m_pos += m_vel;
+	DirectX::SimpleMath::Vector3 tmp = m_position;
+	m_position += m_vel;
 	if (CheckFloor() == false)
 	{
 		DirectX::SimpleMath::Matrix rotY = DirectX::SimpleMath::Matrix::CreateRotationY(DirectX::XMConvertToRadians(180.f));
 		m_vel = DirectX::SimpleMath::Vector3::Transform(m_vel, rotY);
 		m_dir = (m_dir + 4) % 8;
 	}
-	m_pos = tmp;
-
-	// 当たり判定 WIP
-	GameContext::Get<CollisionManager>()->Add("Object", m_collider.get());
-	m_position = m_pos;
+	m_position = tmp;
 }
 
 void Enemy01::State_Hit(float elapsedTime)
@@ -187,9 +188,9 @@ void Enemy01::State_Hit(float elapsedTime)
 
 void Enemy01::State_Fall(float elapsedTime)
 {
-	m_pos.y -= GameWindow::FALL_SPEED * elapsedTime;
+	m_position.y -= GameWindow::FALL_SPEED * elapsedTime;
 	// ある程度落下したら
-	if (m_pos.y < -GameWindow::FALL_DISTANCE)
+	if (m_position.y < -GameWindow::FALL_DISTANCE)
 	{
 		// 死亡
 		m_state = STATE_DEAD;
@@ -200,12 +201,24 @@ void Enemy01::State_Fall(float elapsedTime)
 
 void Enemy01::OnCollision(GameObject* object)
 {
-	if (Object * obj = dynamic_cast<Object*>(object))
-	{
-		auto diff = GetPosition() - obj->GetPosition();
-		auto angle = std::atan2(diff.z, diff.x);
-		AddForce(angle, obj->GetHitForce());
-	}
+	//if (Object * obj = dynamic_cast<Object*>(object))
+	//{
+	//	auto diff = GetPosition() - obj->GetPosition();
+	//	auto angle = std::atan2(diff.z, diff.x);
+	//	AddForce(angle, obj->GetHitForce());
+	//}
+	
+	// 思考タイマーを初期化
+	m_thinkTimer = THINK_INTERVAL;
+	// 衝突したのでいったん停止させる
+	m_vel = DirectX::SimpleMath::Vector3::Zero;
+	// 衝突した相手へのベクトルを求めて移動方向を算出
+	DirectX::SimpleMath::Vector3 v = object->GetPosition() - this->GetPosition();
+	float angle = atan2f(v.x, v.z);
+	// 相手から受ける力を加える
+	AddForce(angle, static_cast<Object*>(object)->GetHitForce());
+	// 衝突状態へ
+	m_state = STATE_HIT;
 }
 
 Enemy01::STATE Enemy01::GetState()
@@ -217,7 +230,7 @@ void Enemy01::Reset()
 {
 	// プレイヤーを元の状態に戻す
 	m_dir = 0;
-	m_pos = DirectX::SimpleMath::Vector3((float)m_x, 0.0f, (float)m_y);
+	m_position = DirectX::SimpleMath::Vector3((float)m_x, 0.0f, (float)m_y);
 	m_state = STATE_NORMAL;
 	SetDisplayFlag(true);
 }

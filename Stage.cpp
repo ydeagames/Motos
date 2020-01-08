@@ -170,7 +170,7 @@ void Stage::SetStageData()
 
 			case OBJECT_ID::PLAYER:	// プレイヤー
 			{
-				std::unique_ptr<Player> pPlayer = std::make_unique<Player>();
+				std::unique_ptr<Player> pPlayer = std::make_unique<Player>("Player");
 				m_player = pPlayer.get();
 				m_player->Initialize(i, j);
 				// 各状態のモデルを設定
@@ -195,7 +195,7 @@ void Stage::SetStageData()
 
 			case OBJECT_ID::POWERUP_PARTS:	// パワーアップパーツ
 			{
-				std::unique_ptr<Parts> pParts = std::make_unique<Parts>();
+				std::unique_ptr<Parts> pParts = std::make_unique<Parts>("PowerupParts");
 				pParts->Initialize(Parts::POWERUP, i, j, m_partsModels[Parts::POWERUP].get());
 				pParts->SetCheckFloorFunction([&](Object* object)
 					{
@@ -208,7 +208,7 @@ void Stage::SetStageData()
 
 			case OBJECT_ID::JUMP_PARTS:		// ジャンプパーツ
 			{
-				std::unique_ptr<Parts> pParts = std::make_unique<Parts>();
+				std::unique_ptr<Parts> pParts = std::make_unique<Parts>("JumpParts");
 				pParts->Initialize(Parts::JUMP, i, j, m_partsModels[Parts::JUMP].get());
 				pParts->SetCheckFloorFunction([&](Object* object)
 					{
@@ -221,7 +221,7 @@ void Stage::SetStageData()
 
 			case OBJECT_ID::ENEMY_1:	// 敵１
 			{
-				std::unique_ptr<Enemy01> pEnemy01 = std::make_unique<Enemy01>();
+				std::unique_ptr<Enemy01> pEnemy01 = std::make_unique<Enemy01>("Enemy01");
 				pEnemy01->Initialize(i, j);
 				// 各状態のモデルを設定
 				pEnemy01->SetModel(Enemy01::NORMAL, m_enemy01Models[Enemy01::NORMAL].get());
@@ -232,14 +232,20 @@ void Stage::SetStageData()
 						return CheckFloor(object->GetPosition(), object->GetWidth(), object->GetHeight());
 					});
 
-				m_enemy01.push_back(pEnemy01.get());
+				// 得点を設定する関数を登録
+				pEnemy01->SetAddScoreFunction([&](int score)
+					{
+						GameContext::Get<GameWindow>()->SetScore(GameContext::Get<GameWindow>()->GetScore() + score);
+					});
+
+				m_enemies.push_back(pEnemy01.get());
 				GameContext::Get<ObjectManager>()->GetGameOM()->Add(std::move(pEnemy01));
 			}
 			break;
 
 			case OBJECT_ID::ENEMY_2:	// 敵２
 			{
-				std::unique_ptr<Enemy02> pEnemy02 = std::make_unique<Enemy02>();
+				std::unique_ptr<Enemy02> pEnemy02 = std::make_unique<Enemy02>("Enemy02");
 				pEnemy02->Initialize(i, j);
 				// 各状態のモデルを設定
 				pEnemy02->SetModel(Enemy02::NORMAL, m_enemy01Models[Enemy02::NORMAL].get());
@@ -250,7 +256,13 @@ void Stage::SetStageData()
 						return CheckFloor(object->GetPosition(), object->GetWidth(), object->GetHeight());
 					});
 
-				m_enemy02.push_back(pEnemy02.get());
+				// 得点を設定する関数を登録
+				pEnemy02->SetAddScoreFunction([&](int score)
+					{
+						GameContext::Get<GameWindow>()->SetScore(GameContext::Get<GameWindow>()->GetScore() + score);
+					});
+
+				m_enemies.push_back(pEnemy02.get());
 				GameContext::Get<ObjectManager>()->GetGameOM()->Add(std::move(pEnemy02));
 			}
 			break;
@@ -275,6 +287,11 @@ void Stage::ResetStageData()
 Player* Stage::GetPlayer()
 {
 	return m_player;
+}
+
+const std::vector<Object*>& Stage::GetEnemyList()
+{
+	return m_enemies;
 }
 
 bool Stage::CheckFloor(DirectX::SimpleMath::Vector3 pos, float w, float h)
@@ -350,7 +367,7 @@ void Stage::DeleteAllObject()
 	}
 	m_parts.clear();
 
-	for (auto enemy : m_enemy01)
+	for (auto enemy : m_enemies)
 	{
 		if (enemy != nullptr)
 		{
@@ -358,7 +375,7 @@ void Stage::DeleteAllObject()
 			enemy = nullptr;
 		}
 	}
-	m_enemy01.clear();
+	m_enemies.clear();
 }
 
 void Stage::ConvertPosToMapChip(float x, float z, int* floor_x, int* floor_y)

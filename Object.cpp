@@ -12,8 +12,9 @@
 #include "GameContext.h"
 #include "Camera.h"
 
-Object::Object()
-	: m_model(nullptr)
+Object::Object(const std::string& tag)
+	: GameObject(tag)
+	, m_model(nullptr)
 	, m_dir(0)
 	, m_weight(0.0f)
 	, m_coefficientOfFriction(0.0f)
@@ -34,7 +35,7 @@ void Object::Update(float elapsedTime)
 	if (!m_activeFlag) return;
 
 	// 位置に速度を足す
-	m_pos += m_vel;
+	m_position += m_vel;
 }
 
 void Object::Render()
@@ -46,7 +47,7 @@ void Object::Render()
 	if (!gameWindow || !m_model || !m_displayFlag) return;
 	
 	// ワールド行列を作成
-	DirectX::SimpleMath::Matrix world = DirectX::SimpleMath::Matrix::CreateTranslation(m_pos);
+	DirectX::SimpleMath::Matrix world = DirectX::SimpleMath::Matrix::CreateTranslation(m_position);
 
 	// モデルの描画
 	m_model->Draw(deviceResources->GetD3DDeviceContext(), *GameContext::Get<DirectX::CommonStates>()
@@ -104,7 +105,7 @@ void Object::Friction(float elapsedTime)
 int Object::GetDir(Object * object)
 {
 	// ターゲットへのベクトルを求める
-	DirectX::SimpleMath::Vector3 v = object->GetPosition() - m_pos;
+	DirectX::SimpleMath::Vector3 v = object->GetPosition() - m_position;
 
 	// 内積を使い一番近い角度を求める
 	DirectX::SimpleMath::Matrix rotY = DirectX::SimpleMath::Matrix::CreateRotationY(DirectX::XMConvertToRadians(45.0f));

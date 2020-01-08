@@ -14,6 +14,11 @@
 #include "Camera.h"
 #include "Stage.h"
 
+Enemy02::Enemy02(const std::string& tag)
+	: Enemy01(tag)
+{
+}
+
 void Enemy02::Initialize(int x, int y)
 {
 	Enemy01::Initialize(x, y);

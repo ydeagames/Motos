@@ -13,6 +13,8 @@
 class Enemy02 : public Enemy01
 {
 public:
+	Enemy02(const std::string& tag);
+	
 	// ‰Šú‰»ŠÖ”
 	void Initialize(int x, int y);
 

@@ -7,13 +7,16 @@
 #include "pch.h"
 #include "Parts.h"
 #include "GameWindow.h"
+#include "GameContext.h"
+#include "CollisionManager.h"
 
 // 床との判定用の幅と高さ
 const float Parts::WIDTH = 0.2f;
 const float Parts::HEIGHT = 0.2f;
 
-Parts::Parts()
-	: m_kind(Kind::NONE), m_state(STATE_NORMAL)
+Parts::Parts(const std::string& tag)
+	: Object(tag)
+	, m_kind(Kind::NONE), m_state(STATE_NORMAL)
 {
 }
 
@@ -22,7 +25,7 @@ void Parts::Initialize(Kind kind, int x, int y, DirectX::Model * model)
 	m_model = model;
 	m_x = x;
 	m_y = y;
-	m_pos = DirectX::SimpleMath::Vector3((float)x, 0.0f, (float)y);
+	m_position = DirectX::SimpleMath::Vector3((float)x, 0.0f, (float)y);
 	m_kind = kind;
 
 	// 質量
@@ -37,6 +40,8 @@ void Parts::Initialize(Kind kind, int x, int y, DirectX::Model * model)
 	// 幅と高さ
 	m_width = Parts::WIDTH;
 	m_height = Parts::HEIGHT;
+
+	m_collider = std::make_unique<SphereCollider>(this, m_radius);
 }
 
 void Parts::Update(float elapsedTime)
@@ -62,7 +67,7 @@ void Parts::Update(float elapsedTime)
 	}
 
 	// 位置に速度を足す
-	m_pos += m_vel;
+	m_position += m_vel;
 
 	// 通常状態で床の上でなければ落下する
 	if (m_state == STATE_NORMAL && CheckFloor() == false)
@@ -76,6 +81,9 @@ void Parts::Update(float elapsedTime)
 	}
 
 	// ↑↑↑↑↑↑↑↑↑ 記述してみよう ↑↑↑↑↑↑↑↑↑
+
+	// 衝突判定マネージャーに登録
+	GameContext::Get<CollisionManager>()->Add(GetTag(), m_collider.get());
 }
 
 Object::OBJECT_ID Parts::GetID()
@@ -87,6 +95,22 @@ Object::OBJECT_ID Parts::GetID()
 
 void Parts::OnCollision(GameObject* object)
 {
+	if (object->GetTag() == "Player")
+	{
+		// アクティブフラグを落とす
+		SetActive(false);
+		// 表示（OFF）
+		SetDisplayFlag(false);
+	}
+	else
+	{
+		// 衝突したのでいったん停止させる
+		m_vel = DirectX::SimpleMath::Vector3::Zero;
+		// 衝突した相手へのベクトルを求めて移動方向を算出
+		DirectX::SimpleMath::Vector3 v = object->GetPosition() - this->GetPosition();
+		float angle = atan2f(v.x, v.z);
+		AddForce(angle, 0.1f);
+	}
 }
 
 void Parts::Reset()
@@ -96,7 +120,7 @@ void Parts::Reset()
 	SetDisplayFlag(true);
 	m_state = STATE_NORMAL;
 	m_dir = 0;
-	m_pos = DirectX::SimpleMath::Vector3((float)m_x, 0.0f, (float)m_y);
+	m_position = DirectX::SimpleMath::Vector3((float)m_x, 0.0f, (float)m_y);
 	SetDrawPrio(GameWindow::DRAW_OBJECT);
 }
 
@@ -105,10 +129,10 @@ void Parts::State_Fall(float elapsedTime)
 	// ↓↓↓↓↓↓↓↓↓ 記述してみよう ↓↓↓↓↓↓↓↓↓
 
 	// 下に落ちる
-	m_pos.y -= GameWindow::FALL_SPEED * elapsedTime;
+	m_position.y -= GameWindow::FALL_SPEED * elapsedTime;
 
 	// ある程度落下したら
-	if (m_pos.y < -GameWindow::FALL_DISTANCE)
+	if (m_position.y < -GameWindow::FALL_DISTANCE)
 	{
 		// ステート変更
 		m_state = STATE_DEAD;

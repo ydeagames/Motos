@@ -64,6 +64,9 @@ public:
 	// プレイヤー取得関数
 	Player* GetPlayer();
 
+	// 敵
+	const std::vector<Object*>& GetEnemyList();
+
 private:
 	// 落下チェック関数
 	bool CheckFloor(DirectX::SimpleMath::Vector3 pos, float w, float h);
@@ -107,8 +110,5 @@ private:
 	std::unique_ptr<DirectX::Model> m_enemy01Models[Enemy01::MODEL_TYPE_NUM];
 
 	// 敵
-	std::vector<Enemy01*> m_enemy01;
-
-	// 敵
-	std::vector<Enemy02*> m_enemy02;
+	std::vector<Object*> m_enemies;
 };

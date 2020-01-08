@@ -8,6 +8,7 @@
 
 #include "Object.h"
 #include "Keyboard.h"
+#include "SphereCollider.h"
 
 class Enemy01 : public Object
 {
@@ -58,10 +59,13 @@ protected:
 	// 思考タイマー
 	float m_thinkTimer;
 
+	// コライダー
+	std::unique_ptr<SphereCollider> m_collider;
+
 
 public:
 	// コンストラクタ
-	Enemy01();
+	Enemy01(const std::string& tag);
 
 	// 初期化関数
 	void Initialize(int x, int y);
@@ -79,7 +83,8 @@ public:
 	void Render() override;
 
 	// 更新処理（通常）
-	virtual void State_Normal(float elapsedTime);
+	virtual void State_Normal(float elapsedTime);
+
 	// 更新処理（衝突して制御不能中）
 	virtual void State_Hit(float elapsedTime);
 

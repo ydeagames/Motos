@@ -2,9 +2,7 @@
 
 
 #include <SimpleMath.h>
-
-
-class Collider;
+#include <string>
 
 
 class GameObject
@@ -14,6 +12,7 @@ class GameObject
 
 		// ï`âÊèáèòä«óùóp(è¨Ç≥Ç¢ÇŸÇ«éËëOÇ…ï`âÊÇ≥ÇÍÇÈÅj
 		int m_drawPrio;
+		std::string m_tag;
 
 
 	protected:
@@ -21,12 +20,9 @@ class GameObject
 		DirectX::SimpleMath::Vector3 m_rotation;
 		DirectX::SimpleMath::Vector3 m_scale;
 
-		// ìñÇΩÇËîªíË WIP
-		std::unique_ptr<Collider> m_collider;
-
 
 	public:
-		GameObject();
+		GameObject(const std::string& tag = "GameObject");
 
 	public:
 		virtual ~GameObject();
@@ -43,15 +39,16 @@ class GameObject
 		bool IsValid() const;
 		bool IsInvalid() const;
 
+		const std::string& GetTag() const;
 		const DirectX::SimpleMath::Vector3& GetPosition() const;
 		const DirectX::SimpleMath::Vector3& GetRotation() const;
 		const DirectX::SimpleMath::Vector3& GetScale() const;
+		const int GetDrawPrio() const;
 
+		void SetTag(const std::string& tag);
 		void SetPosition(DirectX::SimpleMath::Vector3& position);
 		void SetRotation(DirectX::SimpleMath::Vector3& rotation);
 		void SetScale(DirectX::SimpleMath::Vector3& scale);
-
-		const int GetDrawPrio() const;
 		void SetDrawPrio(int prio);
 
 
@@ -75,6 +72,12 @@ inline bool GameObject::IsInvalid() const
 
 
 
+inline const std::string& GameObject::GetTag() const
+{
+	return m_tag;
+}
+
+
 inline const DirectX::SimpleMath::Vector3& GameObject::GetPosition() const
 {
 	return m_position;
@@ -94,7 +97,17 @@ inline const DirectX::SimpleMath::Vector3 & GameObject::GetScale() const
 	return m_scale;
 }
 
+inline const int GameObject::GetDrawPrio() const
+{
+	return m_drawPrio;
+}
 
+
+
+inline void GameObject::SetTag(const std::string& tag)
+{
+	m_tag = tag;
+}
 
 inline void GameObject::SetPosition(DirectX::SimpleMath::Vector3 & position)
 {
@@ -114,14 +127,6 @@ inline void GameObject::SetScale(DirectX::SimpleMath::Vector3 & scale)
 {
 	m_scale = scale;
 }
-
-
-
-inline const int GameObject::GetDrawPrio() const
-{
-	return m_drawPrio;
-}
-
 
 
 inline void GameObject::SetDrawPrio(int prio)

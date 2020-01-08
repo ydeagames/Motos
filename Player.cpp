@@ -42,8 +42,9 @@ float SLerp(float start, float end, float t)
 	return start + (end - start) * rate;
 }
 
-Player::Player()
-	: m_models{ nullptr }
+Player::Player(const std::string& tag)
+	: Object(tag)
+	, m_models{ nullptr }
 	, m_powerupParts(0)
 	, m_jumpParts(false)
 	, m_state(STATE_NORMAL)
@@ -56,7 +57,7 @@ void Player::Initialize(int x, int y)
 {
 	m_x = x;
 	m_y = y;
-	m_pos = DirectX::SimpleMath::Vector3((float)x, 0.0f, (float)y);
+	m_position = DirectX::SimpleMath::Vector3((float)x, 0.0f, (float)y);
 
 	// 質量を設定
 	SetPowerupParts(0);
@@ -118,7 +119,7 @@ void Player::Update(float elapsedTime)
 	}
 
 	// 位置に速度を足す
-	m_pos += m_vel;
+	m_position += m_vel;
 
 	// プレイヤーと床のチェック
 	if (m_state == Player::STATE_NORMAL && CheckFloor() == false)
@@ -138,11 +139,11 @@ void Player::Update(float elapsedTime)
 		m_jumpCounter--;
 		int cnt = JUMP_FRAME - m_jumpCounter;
 		float angle = 180.0f / (float)JUMP_FRAME * cnt;
-		m_pos.y = sinf(DirectX::XMConvertToRadians(angle)) * JUMP_HEIGHT;
+		m_position.y = sinf(DirectX::XMConvertToRadians(angle)) * JUMP_HEIGHT;
 		if (m_jumpCounter == 0)
 		{
 			// 床に着地した
-			m_pos.y = 0.0f;
+			m_position.y = 0.0f;
 			// 床にダメージを与える
 			if (m_jumpEndFunction) m_jumpEndFunction(this);
 		}
@@ -164,19 +165,20 @@ void Player::Render()
 	angle += m_fallRotateAngle;
 
 	// ワールド行列を作成
-	DirectX::SimpleMath::Matrix world = DirectX::SimpleMath::Matrix::CreateRotationY(angle) * DirectX::SimpleMath::Matrix::CreateTranslation(m_pos);
+	DirectX::SimpleMath::Matrix world = DirectX::SimpleMath::Matrix::CreateRotationY(angle) * DirectX::SimpleMath::Matrix::CreateTranslation(m_position);
 
 	// モデルの描画（ジャンプパーツを付けているかどうかでモデルが違う）
 	m_models[m_jumpParts ? WING : NORMAL]->Draw(deviceResources->GetD3DDeviceContext(),
 		*GameContext::Get<DirectX::CommonStates>(),
 		world, camera->getViewMatrix(), camera->getProjectionMatrix());
+
+	// 衝突判定マネージャーに登録
+	GameContext::Get<CollisionManager>()->Add(GetTag(), m_collider.get());
 }
 
 void Player::State_Normal(float elapsedTime)
 {
-	// 当たり判定 WIP
-	GameContext::Get<CollisionManager>()->Add("Object", m_collider.get());
-	m_position = m_pos;
+	m_position = m_position;
 }
 
 void Player::State_Jump(float elapsedTime)
@@ -206,11 +208,11 @@ void Player::State_Hit(float elapsedTime)
 
 void Player::State_Fall(float elapsedTime)
 {
-	m_pos.y -= GameWindow::FALL_SPEED * elapsedTime;
+	m_position.y -= GameWindow::FALL_SPEED * elapsedTime;
 	// 回転しながら落下する
 	m_fallRotateAngle -= DirectX::XMConvertToRadians(GameWindow::FALL_ROTATE_SPEED) * elapsedTime;
 	// ある程度落下したら
-	if (m_pos.y < -GameWindow::FALL_DISTANCE)
+	if (m_position.y < -GameWindow::FALL_DISTANCE)
 	{
 		// 死亡
 		m_state = STATE_DEAD;
@@ -223,12 +225,60 @@ void Player::State_Fall(float elapsedTime)
 
 void Player::OnCollision(GameObject* object)
 {
-	if (Object * obj = dynamic_cast<Object*>(object))
+	//if (Object * obj = dynamic_cast<Object*>(object))
+	//{
+	//	auto diff = GetPosition() - obj->GetPosition();
+	//	auto angle = std::atan2(diff.z, diff.x);
+	//	AddForce(angle, obj->GetHitForce());
+	//}
+	GameWindow* gameWindow = GameContext::Get<GameWindow>();
+	// 衝突した相手によって処理を変える
+	if (object->GetTag() == "Enemy01")
 	{
-		auto diff = GetPosition() - obj->GetPosition();
-		auto angle = std::atan2(diff.z, diff.x);
-		AddForce(angle, obj->GetHitForce());
+		OnCollision_Enemy01(object);
 	}
+	else if (object->GetTag() == "PowerupParts")
+	{
+		gameWindow->GetPowerupParts();
+	}
+	else if (object->GetTag() == "JumpParts")
+	{
+		gameWindow->GetJumpParts();
+	}
+}
+
+void Player::OnCollision_Enemy01(GameObject* object)
+{
+	DirectX::SimpleMath::Vector3 playerDir = DirectX::SimpleMath::Vector3(0.0f, 0.0f, -1.0f);
+	DirectX::SimpleMath::Vector3 v;
+	DirectX::SimpleMath::Matrix rotY;
+	float playerAngle;
+	Object* obj = static_cast<Object*>(object);
+	// 停止させる
+	m_vel = DirectX::SimpleMath::Vector3::Zero;
+	// プレイヤーから敵方向へのベクトルを求める
+	v = object->GetPosition() - this->GetPosition();
+	// プレイヤーの向きベクトルを作成
+	playerAngle = GameWindow::DIR_ANGLE[m_dir];
+	rotY = DirectX::SimpleMath::Matrix::CreateRotationY(playerAngle);
+	playerDir = DirectX::SimpleMath::Vector3::Transform(playerDir, rotY);
+	// ジャンプ時の衝突などで敵の前に落下することがあるので吹っ飛ばす方向が前か後ろかを判断する
+	if (v.Dot(playerDir) > 0)
+	{
+		// 進行方向の逆方向に力を加える
+		playerAngle += DirectX::XMConvertToRadians(180.0f);
+	}
+	// 通常時とジャンプ時で跳ね返りの力を変える
+	if (m_state == STATE_NORMAL)
+	{
+		AddForce(playerAngle, obj->GetHitForce()); // 通常
+	}
+	else
+	{
+		AddForce(playerAngle, obj->GetHitForce() / 2.0f); // ジャンプ中
+	}
+	// 衝突状態へ
+	m_state = STATE_HIT;
 }
 
 Player::STATE Player::GetState()
@@ -278,7 +328,7 @@ void Player::Reset()
 {
 	// プレイヤーを元の状態に戻す
 	m_dir = 0;
-	m_pos = DirectX::SimpleMath::Vector3((float)m_x, 0.0f, (float)m_y);
+	m_position = DirectX::SimpleMath::Vector3((float)m_x, 0.0f, (float)m_y);
 	m_state = STATE_NORMAL;
 	SetDisplayFlag(true);
 }

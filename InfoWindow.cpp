@@ -53,8 +53,8 @@ void InfoWindow::Initialize()
 
 void InfoWindow::Update(float elapsedTime)
 {
-	static int score = 0;
-	m_pScore->SetScore(score++);
+	//static int score = 0;
+	//m_pScore->SetScore(score++);
 }
 
 void InfoWindow::Render()

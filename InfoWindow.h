@@ -34,6 +34,10 @@ public:
 	PartsInfo* GetPowerParts() { return m_pPowerup; }
 	// ジャンプパーツにアクセスする関数
 	PartsInfo* GetJumpParts() { return m_pJump; }
+	// ラウンドにアクセスする関数
+	Round* GetRound() { return m_pRound; }
+	// ライフにアクセスする関数
+	Life* GetLife() { return m_pLife; }
 
 	// 追加
 	template<typename T>

@@ -29,7 +29,7 @@ public:
 
 public:
 	// コンストラクタ
-	Object();
+	Object(const std::string& tag);
 
 	// 更新
 	void Update(float elapsedTime) override;
@@ -39,9 +39,6 @@ public:
 
 	// オブジェクトＩＤを取得する関数
 	virtual Object::OBJECT_ID GetID() = 0;
-
-	// 位置を取得する関数
-	const DirectX::SimpleMath::Vector3& GetPosition() { return m_pos; }
 
 	// 半径を取得する関数
 	float GetRadius() { return m_radius; }
@@ -117,9 +114,6 @@ protected:
 
 	// 速度
 	DirectX::SimpleMath::Vector3 m_vel;
-
-	// 位置
-	DirectX::SimpleMath::Vector3 m_pos;
 
 	// 半径
 	float m_radius;
