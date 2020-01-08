@@ -237,6 +237,10 @@ void Player::OnCollision(GameObject* object)
 	{
 		OnCollision_Enemy01(object);
 	}
+	else if (object->GetTag() == "Enemy02")
+	{
+		OnCollision_Enemy01(object);
+	}
 	else if (object->GetTag() == "PowerupParts")
 	{
 		gameWindow->GetPowerupParts();

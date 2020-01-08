@@ -25,7 +25,7 @@ const float Enemy01::RADIUS = 0.4f;
 // 最大移動速度
 const float Enemy01::MAX_SPEED = 0.06f;
 // 床に対する摩擦係数
-const float Enemy01::FRICTION = 0.1f;
+const float Enemy01::FRICTION = 0.05f;
 // 思考間隔（単位：秒）
 const float Enemy01::THINK_INTERVAL = 0.4f;
 
