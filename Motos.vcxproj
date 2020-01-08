@@ -189,6 +189,7 @@
     <ClInclude Include="InfoWindow.h" />
     <ClInclude Include="Life.h" />
     <ClInclude Include="Moji.h" />
+    <ClInclude Include="MyNeuralNetwork.h" />
     <ClInclude Include="Object.h" />
     <ClInclude Include="ObjectManager.h" />
     <ClInclude Include="Parts.h" />
@@ -227,6 +228,7 @@
     <ClCompile Include="Life.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Moji.cpp" />
+    <ClCompile Include="MyNeuralNetwork.cpp" />
     <ClCompile Include="Object.cpp" />
     <ClCompile Include="ObjectManager.cpp" />
     <ClCompile Include="Parts.cpp" />

@@ -18,6 +18,7 @@
 #include "PlayState.h"
 #include "TitleState.h"
 #include "PauseState.h"
+#include "MyNeuralNetwork.h"
 
 extern void ExitGame();
 
@@ -93,6 +94,7 @@ void Game::Initialize(HWND window, int width, int height)
 	GameContext::Register<DX::DeviceResources>(m_deviceResources);
 	GameContext::Register<ObjectManager>(m_objectManager);
 	GameContext::Register<CollisionManager>(m_collisionManager);
+	GameContext::Register<NeuralNetwork>(std::make_unique<NeuralNetwork>());
 
 
 	// ビューポートの矩形領域の設定（ゲーム画面）

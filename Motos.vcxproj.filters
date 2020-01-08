@@ -126,6 +126,7 @@
     <ClInclude Include="Enemy02.h">
       <Filter>Object</Filter>
     </ClInclude>
+    <ClInclude Include="MyNeuralNetwork.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -215,6 +216,7 @@
     <ClCompile Include="Enemy02.cpp">
       <Filter>Object</Filter>
     </ClCompile>
+    <ClCompile Include="MyNeuralNetwork.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resource.rc" />
