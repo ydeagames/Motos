@@ -79,6 +79,9 @@ private:
 	// コライダー
 	std::unique_ptr<SphereCollider> m_collider;
 
+	//
+	DirectX::SimpleMath::Vector2 m_lastPos;
+
 
 public:
 	// コンストラクタ

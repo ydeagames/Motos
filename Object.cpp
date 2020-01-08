@@ -54,9 +54,19 @@ void Object::Render()
 		, world, camera->getViewMatrix(), camera->getProjectionMatrix());
 }
 
+const DirectX::SimpleMath::Vector3& Object::GetVelocity() const
+{
+	return m_vel;
+}
+
+const DirectX::SimpleMath::Vector3& Object::GetAcceleration() const
+{
+	return m_acc;
+}
+
 float Object::GetHitForce()
 {
-	float force = 0.1f;
+	float force = 0.4f;
 
 	// ˜A‘±ƒqƒbƒgŽž‚Ì‘¬“x‚Ì‰e‹¿‚ª‘å‚«‚·‚¬‚½‚Ì‚Å‘¬“x‚ð—}‚¦‚é
 	float v = m_vel.Length();

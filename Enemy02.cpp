@@ -36,11 +36,11 @@ int Enemy02::GetKeyToDir(int key)
 void Enemy02::State_Normal(float elapsedTime)
 {
 	auto stage = GameContext::Get<GameWindow>()->GetStage();
-	auto& enemy = GetPosition();
-	auto& player = stage->GetPlayer()->GetPosition();
-	const auto myPosition = DirectX::SimpleMath::Vector2(player.x, player.z);
-	const auto playerPosition = DirectX::SimpleMath::Vector2(enemy.x, enemy.z);
-	auto output = GameContext::Get<GameAI>()->GetPlayingData(GameAI::Input{ myPosition , playerPosition });
+	const auto myPosition = GetXZ(GetPosition());
+	const auto enemyPosition = GetXZ(stage->GetPlayer()->GetPosition());
+	const auto myVelocity = GetXZ(GetVelocity());
+	const auto enemyVelocity = GetXZ(stage->GetPlayer()->GetVelocity());
+	auto output = GameContext::Get<GameAI>()->GetPlayingData(GameAI::Input{ myPosition , enemyPosition, myVelocity, enemyVelocity, CheckFloor() });
 
 	// ‰Á‚¦‚é—Í
 	float force = 0.0f;

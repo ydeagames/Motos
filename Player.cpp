@@ -60,6 +60,7 @@ void Player::Initialize(int x, int y)
 	m_x = x;
 	m_y = y;
 	m_position = DirectX::SimpleMath::Vector3((float)x, 0.0f, (float)y);
+	m_lastPos = DirectX::SimpleMath::Vector2(m_position.x, m_position.z);
 
 	// 質量を設定
 	SetPowerupParts(0);
@@ -132,6 +133,9 @@ void Player::Update(float elapsedTime)
 		m_state = STATE_FALL;
 		// 描画順をFALLへ
 		SetDrawPrio(GameWindow::DRAW_FALL);
+
+		// 落ちた記憶は抹消
+		GameContext::Get<GameAI>()->ForgetRecently();
 	}
 
 	// ジャンプの処理
@@ -320,15 +324,24 @@ void Player::Move(float elapsedTime, const DirectX::Keyboard::KeyboardStateTrack
 		force = 0.03f;
 	}
 
-	auto stage = GameContext::Get<GameWindow>()->GetStage();
-	auto& player = GetPosition();
-	auto& enemy = stage->GetEnemy01()->GetPosition();
-	const auto playerPosition = DirectX::SimpleMath::Vector2(player.x, player.z);
-	const auto enemyPosition = DirectX::SimpleMath::Vector2(enemy.x, enemy.z);
-	GameContext::Get<GameAI>()->AddLerningData(
-		GameAI::Input{ playerPosition , enemyPosition },
-		GameAI::Output{ (key & GameWindow::UP) != 0, (key & GameWindow::DOWN) != 0, (key & GameWindow::LEFT) != 0, (key & GameWindow::RIGHT) != 0 }
-	);
+	if (force > 0)
+	{
+		const auto myPosition = GetXZ(GetPosition());
+		if (DirectX::SimpleMath::Vector2::Distance(myPosition, m_lastPos) > .1f)
+		{
+			auto stage = GameContext::Get<GameWindow>()->GetStage();
+			const auto enemyPosition = GetXZ(stage->GetEnemy01()->GetPosition());
+			const auto myVelocity = GetXZ(GetVelocity());
+			const auto enemyVelocity = GetXZ(stage->GetEnemy01()->GetVelocity());
+
+			GameContext::Get<GameAI>()->AddLerningData(
+				GameAI::Input{ myPosition , enemyPosition, myVelocity, enemyVelocity, CheckFloor() },
+				GameAI::Output{ (key & GameWindow::UP) != 0, (key & GameWindow::DOWN) != 0, (key & GameWindow::LEFT) != 0, (key & GameWindow::RIGHT) != 0 }
+			);
+
+			m_lastPos = myPosition;
+		}
+	}
 
 	// スペースキーでジャンプ
 	if (m_state == STATE_NORMAL && m_jumpParts && tracker.pressed.Space)

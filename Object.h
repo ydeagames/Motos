@@ -73,6 +73,10 @@ public:
 	// 更新関数を実行するかどうか設定する関数
 	void SetActive(bool flag) { m_activeFlag = flag; }
 
+	const DirectX::SimpleMath::Vector3& GetVelocity() const;
+	
+	const DirectX::SimpleMath::Vector3& GetAcceleration() const;
+
 	// 衝突した時に相手に与える力を取得する関数
 	virtual float GetHitForce();
 
@@ -138,4 +142,10 @@ protected:
 
 	// ステージ上の位置
 	int m_x, m_y;
+
+public:
+	static DirectX::SimpleMath::Vector2 GetXZ(const DirectX::SimpleMath::Vector3& vec)
+	{
+		return DirectX::SimpleMath::Vector2(vec.x, vec.z);
+	}
 };

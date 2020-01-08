@@ -16,6 +16,9 @@ public:
 	{
 		DirectX::SimpleMath::Vector2 myPosition;
 		DirectX::SimpleMath::Vector2 playerPosition;
+		DirectX::SimpleMath::Vector2 myVelocity;
+		DirectX::SimpleMath::Vector2 playerVelocity;
+		bool floorCheck;
 
 		void Configure(NeuralNetwork& neural) const;
 	};
@@ -48,6 +51,7 @@ public:
 	void SwapAI();
 	Output GetPlayingData(const Input& input);
 	void AddLerningData(const Input& input, const Output& output);
+	void ForgetRecently();
 
 private:
 	void Calculate();
