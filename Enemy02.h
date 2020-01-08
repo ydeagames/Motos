@@ -18,6 +18,7 @@ public:
 	// 初期化関数
 	void Initialize(int x, int y);
 
+	int GetKeyToDir(int key);
 	// 更新処理（通常）
 	void State_Normal(float elapsedTime) override;
 };

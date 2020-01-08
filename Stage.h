@@ -66,6 +66,8 @@ public:
 
 	// 敵
 	const std::vector<Object*>& GetEnemyList();
+	Enemy01* GetEnemy01();
+	Enemy02* GetEnemy02();
 
 private:
 	// 落下チェック関数
@@ -111,4 +113,6 @@ private:
 
 	// 敵
 	std::vector<Object*> m_enemies;
+	Enemy01* m_enemy01 = nullptr;
+	Enemy02* m_enemy02 = nullptr;
 };

@@ -238,6 +238,7 @@ void Stage::SetStageData()
 						GameContext::Get<GameWindow>()->SetScore(GameContext::Get<GameWindow>()->GetScore() + score);
 					});
 
+				m_enemy01 = pEnemy01.get();
 				m_enemies.push_back(pEnemy01.get());
 				GameContext::Get<ObjectManager>()->GetGameOM()->Add(std::move(pEnemy01));
 			}
@@ -262,6 +263,7 @@ void Stage::SetStageData()
 						GameContext::Get<GameWindow>()->SetScore(GameContext::Get<GameWindow>()->GetScore() + score);
 					});
 
+				m_enemy02 = pEnemy02.get();
 				m_enemies.push_back(pEnemy02.get());
 				GameContext::Get<ObjectManager>()->GetGameOM()->Add(std::move(pEnemy02));
 			}
@@ -292,6 +294,16 @@ Player* Stage::GetPlayer()
 const std::vector<Object*>& Stage::GetEnemyList()
 {
 	return m_enemies;
+}
+
+Enemy01* Stage::GetEnemy01()
+{
+	return m_enemy01;
+}
+
+Enemy02* Stage::GetEnemy02()
+{
+	return m_enemy02;
 }
 
 bool Stage::CheckFloor(DirectX::SimpleMath::Vector3 pos, float w, float h)

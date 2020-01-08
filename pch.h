@@ -71,6 +71,10 @@
 #include <fstream>
 #include <sstream>
 
+#include <thread>
+#include <chrono>
+#include <mutex>
+
 // DirectXTK
 #include <Keyboard.h>
 #include <Mouse.h>

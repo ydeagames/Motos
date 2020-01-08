@@ -29,6 +29,9 @@
     <Filter Include="StageData">
       <UniqueIdentifier>{a0cc27e3-5841-4722-b5b1-e5272b6fa64f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="AI">
+      <UniqueIdentifier>{5cc74d44-36b2-4221-bab7-21cef8341def}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
@@ -126,7 +129,12 @@
     <ClInclude Include="Enemy02.h">
       <Filter>Object</Filter>
     </ClInclude>
-    <ClInclude Include="MyNeuralNetwork.h" />
+    <ClInclude Include="GameAI.h">
+      <Filter>AI</Filter>
+    </ClInclude>
+    <ClInclude Include="MyNeuralNetwork.h">
+      <Filter>AI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -216,7 +224,12 @@
     <ClCompile Include="Enemy02.cpp">
       <Filter>Object</Filter>
     </ClCompile>
-    <ClCompile Include="MyNeuralNetwork.cpp" />
+    <ClCompile Include="GameAI.cpp">
+      <Filter>AI</Filter>
+    </ClCompile>
+    <ClCompile Include="MyNeuralNetwork.cpp">
+      <Filter>AI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resource.rc" />

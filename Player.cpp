@@ -13,6 +13,8 @@
 #include "CollisionManager.h"
 #include "Camera.h"
 #include "SphereCollider.h"
+#include "GameAI.h"
+#include "Stage.h"
 
 // プレイヤーの重さ
 const float Player::WEIGHT = 1.0f;
@@ -301,11 +303,12 @@ void Player::Move(float elapsedTime, const DirectX::Keyboard::KeyboardStateTrack
 	// 加える力
 	float force = 0.0f;
 
+	int key = 0;
+
 	// 方向キーが押されたら
 	if (kb.Up || kb.Down || kb.Left || kb.Right)
 	{
 		// 押された方向キーのビットを立てる
-		int key = 0;
 		if (kb.Up) key |= 1 << GameWindow::UP;
 		if (kb.Down) key |= 1 << GameWindow::DOWN;
 		if (kb.Left) key |= 1 << GameWindow::LEFT;
@@ -316,6 +319,16 @@ void Player::Move(float elapsedTime, const DirectX::Keyboard::KeyboardStateTrack
 		// 力を加えて自機を加速させる
 		force = 0.03f;
 	}
+
+	auto stage = GameContext::Get<GameWindow>()->GetStage();
+	auto& player = GetPosition();
+	auto& enemy = stage->GetEnemy01()->GetPosition();
+	const auto playerPosition = DirectX::SimpleMath::Vector2(player.x, player.z);
+	const auto enemyPosition = DirectX::SimpleMath::Vector2(enemy.x, enemy.z);
+	GameContext::Get<GameAI>()->AddLerningData(
+		GameAI::Input{ playerPosition , enemyPosition },
+		GameAI::Output{ (key & GameWindow::UP) != 0, (key & GameWindow::DOWN) != 0, (key & GameWindow::LEFT) != 0, (key & GameWindow::RIGHT) != 0 }
+	);
 
 	// スペースキーでジャンプ
 	if (m_state == STATE_NORMAL && m_jumpParts && tracker.pressed.Space)

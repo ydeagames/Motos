@@ -13,11 +13,10 @@
 #include "CollisionManager.h"
 #include "Camera.h"
 #include "Stage.h"
+#include "MyNeuralNetwork.h"
+#include "GameAI.h"
 
-#define	MAX_DATA		3
-#define MAX_PARAMS		SCREEN_WIDTH
-
-Enemy02::Enemy02(const std::string& tag)
+Enemy02::Enemy02(const std::string & tag)
 	: Enemy01(tag)
 {
 }
@@ -25,79 +24,44 @@ Enemy02::Enemy02(const std::string& tag)
 void Enemy02::Initialize(int x, int y)
 {
 	Enemy01::Initialize(x, y);
+}
 
-	// ニューラルネットワークを初期化する(入力層、隠れ層、出力層)
-	m_neuralNetwork.Initialize(8, 40, 8);
-
-	// 学習率を設定する
-	// Setup learning rate
-	m_neuralNetwork.SetLearningRate(0.2);
-
-	// モメンタムを設定する
-	// Setup momentum
-	m_neuralNetwork.SetMomentum(true, 0.8);
+int Enemy02::GetKeyToDir(int key)
+{
+	// ビットフィールドのキー情報を８方向(0～7）に変換するテーブル
+	int table[16] = { -1, 0, 2, 1, 4, -1, 3, -1, 6, 7, -1, -1, 5, -1, -1, -1 };
+	return table[key];
 }
 
 void Enemy02::State_Normal(float elapsedTime)
 {
-	GameWindow* gameWindow = GameContext::Get<GameWindow>();
-	// プレイヤーを取得
-	Object* target = gameWindow->GetStage()->GetPlayer();
+	auto stage = GameContext::Get<GameWindow>()->GetStage();
+	auto& enemy = GetPosition();
+	auto& player = stage->GetPlayer()->GetPosition();
+	const auto myPosition = DirectX::SimpleMath::Vector2(player.x, player.z);
+	const auto playerPosition = DirectX::SimpleMath::Vector2(enemy.x, enemy.z);
+	auto output = GameContext::Get<GameAI>()->GetPlayingData(GameAI::Input{ myPosition , playerPosition });
 
-	// 定期的にプレイヤーの向きを変える
-	m_thinkTimer += elapsedTime;
-	if (m_thinkTimer >= THINK_INTERVAL)
+	// 加える力
+	float force = 0.0f;
+	
+	// 方向キーが押されたら
+	if (output.upArrow || output.downArrow || output.leftArrow || output.rightArrow)
 	{
-		m_thinkTimer = 0.f;
+		int key = 0;
 
-		// ランダムで移動方向を決定
-		m_dir = rand() % 8;
+		// 押された方向キーのビットを立てる
+		if (output.upArrow) key |= 1 << GameWindow::UP;
+		if (output.downArrow) key |= 1 << GameWindow::DOWN;
+		if (output.leftArrow) key |= 1 << GameWindow::LEFT;
+		if (output.rightArrow) key |= 1 << GameWindow::RIGHT;
+		int dir = GetKeyToDir(key);
+		if (dir != -1) m_dir = dir;
 
-		// ターゲット方向に向ける
-		if (target)
-		{
-			m_dir = GetDir(target);
-		}
+		// 力を加えて自機を加速させる
+		force = 0.03f;
 	}
 
 	// 力を加える
-	AddForce(GameWindow::DIR_ANGLE[m_dir], .03);
-
-	// 落ちそうなら向きと速度を反転する
-	DirectX::SimpleMath::Vector3 tmp = m_position;
-	m_position += m_vel;
-	if (CheckFloor() == false)
-	{
-		DirectX::SimpleMath::Matrix rotY = DirectX::SimpleMath::Matrix::CreateRotationY(DirectX::XMConvertToRadians(180.f));
-		m_vel = DirectX::SimpleMath::Vector3::Transform(m_vel, rotY);
-		m_dir = (m_dir + 4) % 8;
-	}
-	m_position = tmp;
-
-	double error = 1.0;
-	int		count = 0;
-
-	//// 機械学習する
-	//while (error > 0.001 && count < 10000)
-	//{
-	//	error = 0.0;
-	//	count++;
-	//	for (int i = 0; i < MAX_PARAMS; i++)
-	//	{
-	//		// 入力データをニューラルネットワークにセットする
-	//		// 角度
-	//		m_neuralNetwork.SetInput(0, double(i) / double(SCREEN_WIDTH));
-	//		// sinデータ
-	//		m_neuralNetwork.SetDesiredOutput(0, double(graph[i]) / double(SCREEN_HEIGHT));
-
-	//		// 前方伝播する
-	//		m_neuralNetwork.FeedForward();
-	//		// 誤差を計算する
-	//		error += m_neuralNetwork.CalculateError();
-	//		// 誤差逆伝播する
-	//		m_neuralNetwork.BackPropagate();
-	//	}
-	//	// 誤差を計算する
-	//	error = error / MAX_PARAMS;
-	//}
+	AddForce(GameWindow::DIR_ANGLE[m_dir], force);
 }
