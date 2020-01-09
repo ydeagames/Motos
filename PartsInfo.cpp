@@ -70,7 +70,7 @@ void PartsInfo::Render()
 			}
 		}
 	}
-	// NORMAL アイコンの描画
+	// ENEMY1 アイコンの描画
 	srcRect.left += 48;
 	srcRect.right += 48;
 	GameContext::Get<DirectX::SpriteBatch>() -> Draw(m_texture, DirectX::SimpleMath::Vector2((float)m_x, (float)m_y), &srcRect);

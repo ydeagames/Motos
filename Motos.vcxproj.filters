@@ -23,9 +23,6 @@
     <Filter Include="GameState">
       <UniqueIdentifier>{277a7929-febb-4708-b200-af4924526a59}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Assets\FBX">
-      <UniqueIdentifier>{d5c9d5c0-d8ce-46df-80c2-7531cebb1d17}</UniqueIdentifier>
-    </Filter>
     <Filter Include="StageData">
       <UniqueIdentifier>{a0cc27e3-5841-4722-b5b1-e5272b6fa64f}</UniqueIdentifier>
     </Filter>
@@ -135,6 +132,9 @@
     <ClInclude Include="MyNeuralNetwork.h">
       <Filter>AI</Filter>
     </ClInclude>
+    <ClInclude Include="Enemy03.h">
+      <Filter>Object</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -230,6 +230,9 @@
     <ClCompile Include="MyNeuralNetwork.cpp">
       <Filter>AI</Filter>
     </ClCompile>
+    <ClCompile Include="Enemy03.cpp">
+      <Filter>Object</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resource.rc" />
@@ -248,31 +251,5 @@
     <None Include="StageData\Stage01.csv">
       <Filter>StageData</Filter>
     </None>
-  </ItemGroup>
-  <ItemGroup>
-    <MeshContentTask Include="FBX\floorPanel_01.FBX">
-      <Filter>Assets\FBX</Filter>
-    </MeshContentTask>
-    <MeshContentTask Include="FBX\player_02.FBX">
-      <Filter>Assets\FBX</Filter>
-    </MeshContentTask>
-    <MeshContentTask Include="FBX\player_01.FBX">
-      <Filter>Assets\FBX</Filter>
-    </MeshContentTask>
-    <MeshContentTask Include="FBX\powerupParts.FBX">
-      <Filter>Assets\FBX</Filter>
-    </MeshContentTask>
-    <MeshContentTask Include="FBX\jumpParts.FBX">
-      <Filter>Assets\FBX</Filter>
-    </MeshContentTask>
-    <MeshContentTask Include="FBX\bg.FBX">
-      <Filter>Assets\FBX</Filter>
-    </MeshContentTask>
-    <MeshContentTask Include="FBX\floorPanel_00.FBX">
-      <Filter>Assets\FBX</Filter>
-    </MeshContentTask>
-    <MeshContentTask Include="FBX\enemy_01.FBX">
-      <Filter>Assets\FBX</Filter>
-    </MeshContentTask>
   </ItemGroup>
 </Project>

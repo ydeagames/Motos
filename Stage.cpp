@@ -13,6 +13,7 @@
 #include "DeviceResources.h"
 #include "GameObjectManager.h"
 #include "ObjectManager.h"
+#include "Enemy03.h"
 
 Stage::Stage()
 	: m_floors{ nullptr }, m_stageData{ 0 }
@@ -70,7 +71,9 @@ void Stage::Initialize()
 	m_partsModels[Parts::JUMP] = DirectX::Model::CreateFromCMO(GameContext::Get<DX::DeviceResources>()->GetD3DDevice(), L"Resources\\Models\\jumpParts.cmo", fx);
 
 	// “G‚Ìƒ‚ƒfƒ‹
-	m_enemy01Models[Enemy01::NORMAL] = DirectX::Model::CreateFromCMO(GameContext::Get<DX::DeviceResources>()->GetD3DDevice(), L"Resources\\Models\\enemy_01.cmo", fx);
+	m_enemyModels[Enemy01::ENEMY1] = DirectX::Model::CreateFromCMO(GameContext::Get<DX::DeviceResources>()->GetD3DDevice(), L"Resources\\Models\\enemy_01.cmo", fx);
+	m_enemyModels[Enemy01::ENEMY2] = DirectX::Model::CreateFromCMO(GameContext::Get<DX::DeviceResources>()->GetD3DDevice(), L"Resources\\Models\\igaguriEnemy.cmo", fx);
+	m_enemyModels[Enemy01::ENEMY3] = DirectX::Model::CreateFromCMO(GameContext::Get<DX::DeviceResources>()->GetD3DDevice(), L"Resources\\Models\\targetEnemy.cmo", fx);
 }
 
 Floor* Stage::GetFloor(int x, int y)
@@ -224,7 +227,7 @@ void Stage::SetStageData()
 				std::unique_ptr<Enemy01> pEnemy01 = std::make_unique<Enemy01>("Enemy01");
 				pEnemy01->Initialize(i, j);
 				// Šeó‘Ô‚Ìƒ‚ƒfƒ‹‚ðÝ’è
-				pEnemy01->SetModel(Enemy01::NORMAL, m_enemy01Models[Enemy01::NORMAL].get());
+				pEnemy01->SetModel(Enemy01::ENEMY1, m_enemyModels[Enemy01::ENEMY1].get());
 
 				// °‚Æ‚Ì”»’èŠÖ”‚ð“o˜^
 				pEnemy01->SetCheckFloorFunction([&](Object* object)
@@ -249,7 +252,7 @@ void Stage::SetStageData()
 				std::unique_ptr<Enemy02> pEnemy02 = std::make_unique<Enemy02>("Enemy02");
 				pEnemy02->Initialize(i, j);
 				// Šeó‘Ô‚Ìƒ‚ƒfƒ‹‚ðÝ’è
-				pEnemy02->SetModel(Enemy02::NORMAL, m_enemy01Models[Enemy02::NORMAL].get());
+				pEnemy02->SetModel(Enemy02::ENEMY1, m_enemyModels[Enemy02::ENEMY2].get());
 
 				// °‚Æ‚Ì”»’èŠÖ”‚ð“o˜^
 				pEnemy02->SetCheckFloorFunction([&](Object* object)
@@ -266,6 +269,31 @@ void Stage::SetStageData()
 				m_enemy02 = pEnemy02.get();
 				m_enemies.push_back(pEnemy02.get());
 				GameContext::Get<ObjectManager>()->GetGameOM()->Add(std::move(pEnemy02));
+			}
+			break;
+
+			case OBJECT_ID::ENEMY_3:	// “G‚Q
+			{
+				std::unique_ptr<Enemy03> pEnemy03 = std::make_unique<Enemy03>("Enemy02");
+				pEnemy03->Initialize(i, j);
+				// Šeó‘Ô‚Ìƒ‚ƒfƒ‹‚ðÝ’è
+				pEnemy03->SetModel(Enemy02::ENEMY1, m_enemyModels[Enemy02::ENEMY3].get());
+
+				// °‚Æ‚Ì”»’èŠÖ”‚ð“o˜^
+				pEnemy03->SetCheckFloorFunction([&](Object* object)
+					{
+						return CheckFloor(object->GetPosition(), object->GetWidth(), object->GetHeight());
+					});
+
+				// “¾“_‚ðÝ’è‚·‚éŠÖ”‚ð“o˜^
+				pEnemy03->SetAddScoreFunction([&](int score)
+					{
+						GameContext::Get<GameWindow>()->SetScore(GameContext::Get<GameWindow>()->GetScore() + score);
+					});
+
+				m_enemy03 = pEnemy03.get();
+				m_enemies.push_back(pEnemy03.get());
+				GameContext::Get<ObjectManager>()->GetGameOM()->Add(std::move(pEnemy03));
 			}
 			break;
 
@@ -304,6 +332,11 @@ Enemy01* Stage::GetEnemy01()
 Enemy02* Stage::GetEnemy02()
 {
 	return m_enemy02;
+}
+
+Enemy03* Stage::GetEnemy03()
+{
+	return m_enemy03;
 }
 
 bool Stage::CheckFloor(DirectX::SimpleMath::Vector3 pos, float w, float h)

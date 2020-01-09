@@ -178,6 +178,7 @@
     <ClInclude Include="DeviceResources.h" />
     <ClInclude Include="Enemy01.h" />
     <ClInclude Include="Enemy02.h" />
+    <ClInclude Include="Enemy03.h" />
     <ClInclude Include="Floor.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameAI.h" />
@@ -219,6 +220,7 @@
     <ClCompile Include="DeviceResources.cpp" />
     <ClCompile Include="Enemy01.cpp" />
     <ClCompile Include="Enemy02.cpp" />
+    <ClCompile Include="Enemy03.cpp" />
     <ClCompile Include="Floor.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameAI.cpp" />
@@ -258,22 +260,6 @@
   </ItemGroup>
   <ItemGroup>
     <Manifest Include="settings.manifest" />
-  </ItemGroup>
-  <ItemGroup>
-    <MeshContentTask Include="FBX\bg.FBX">
-      <FileType>Document</FileType>
-    </MeshContentTask>
-    <MeshContentTask Include="FBX\enemy_01.FBX" />
-    <MeshContentTask Include="FBX\floorPanel_00.FBX">
-      <FileType>Document</FileType>
-    </MeshContentTask>
-    <MeshContentTask Include="FBX\floorPanel_01.FBX">
-      <FileType>Document</FileType>
-    </MeshContentTask>
-    <MeshContentTask Include="FBX\jumpParts.FBX" />
-    <MeshContentTask Include="FBX\player_01.FBX" />
-    <MeshContentTask Include="FBX\player_02.FBX" />
-    <MeshContentTask Include="FBX\powerupParts.FBX" />
   </ItemGroup>
   <ItemGroup>
     <None Include="StageData\Stage01.csv" />

@@ -54,6 +54,7 @@ public:
 	Output GetPlayingData(const Input& input);
 	void AddLerningData(const Input& input, const Output& output);
 	void ForgetRecently();
+	void ForgetPast();
 
 private:
 	void Calculate();

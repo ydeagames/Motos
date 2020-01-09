@@ -16,7 +16,9 @@ public:
 	// プレイヤーのタイプ別モデル
 	enum ModelType
 	{
-		NORMAL,	// 通常
+		ENEMY1,
+		ENEMY2,
+		ENEMY3,
 
 		MODEL_TYPE_NUM
 	};

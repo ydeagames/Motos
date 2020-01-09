@@ -12,6 +12,7 @@
 #include "Parts.h"
 #include "Enemy01.h"
 #include "Enemy02.h"
+#include "Enemy03.h"
 
 class GameWindow;
 
@@ -27,6 +28,7 @@ public:
 		JUMP_PARTS,		// ジャンプパーツ
 		ENEMY_1,		// 敵１
 		ENEMY_2,		// 敵２
+		ENEMY_3,		// 敵３
 	};
 	
 	// ステージの大きさ
@@ -68,6 +70,7 @@ public:
 	const std::vector<Object*>& GetEnemyList();
 	Enemy01* GetEnemy01();
 	Enemy02* GetEnemy02();
+	Enemy03* GetEnemy03();
 
 private:
 	// 落下チェック関数
@@ -109,10 +112,11 @@ private:
 	std::vector<Parts*> m_parts;
 
 	// 敵のモデル
-	std::unique_ptr<DirectX::Model> m_enemy01Models[Enemy01::MODEL_TYPE_NUM];
+	std::unique_ptr<DirectX::Model> m_enemyModels[Enemy01::MODEL_TYPE_NUM];
 
 	// 敵
 	std::vector<Object*> m_enemies;
 	Enemy01* m_enemy01 = nullptr;
 	Enemy02* m_enemy02 = nullptr;
+	Enemy03* m_enemy03 = nullptr;
 };

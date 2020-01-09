@@ -126,7 +126,7 @@ void Enemy01::Render()
 	DX::DeviceResources* deviceResources = GameContext::Get<DX::DeviceResources>();
 	Camera* camera = gameWindow->GetCamera();
 
-	if (!gameWindow || !m_models[NORMAL] || !m_displayFlag) return;
+	if (!gameWindow || !m_models[ENEMY1] || !m_displayFlag) return;
 
 	// 向いている角度を角度テーブルから取得
 	float angle = GameWindow::DIR_ANGLE[m_dir];
@@ -135,7 +135,7 @@ void Enemy01::Render()
 	DirectX::SimpleMath::Matrix world = DirectX::SimpleMath::Matrix::CreateRotationY(angle) * DirectX::SimpleMath::Matrix::CreateTranslation(m_position);
 
 	// モデルの描画（ジャンプパーツを付けているかどうかでモデルが違う）
-	m_models[NORMAL]->Draw(deviceResources->GetD3DDeviceContext(),
+	m_models[ENEMY1]->Draw(deviceResources->GetD3DDeviceContext(),
 		*GameContext::Get<DirectX::CommonStates>(),
 		world, camera->getViewMatrix(), camera->getProjectionMatrix());
 }

@@ -111,6 +111,16 @@ void GameAI::ForgetRecently()
 	m_dataMutex.unlock();
 }
 
+void GameAI::ForgetPast()
+{
+	m_dataMutex.lock();
+	if (m_data.size() > 100)
+	{
+		m_data.erase(m_data.begin(), m_data.end() - 20);
+	}
+	m_dataMutex.unlock();
+}
+
 void GameAI::Calculate()
 {
 	auto data = m_data;
@@ -163,6 +173,7 @@ void GameAI::Calculate()
 					return;
 			}
 
+			ForgetPast();
 			SwapAI();
 			calcNum++;
 		}

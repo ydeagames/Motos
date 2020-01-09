@@ -109,7 +109,7 @@ void GameWindow::Initialize()
 	//	m_pModels.emplace_back(DirectX::Model::CreateFromCMO(GameContext::Get<DX::DeviceResources>()->GetD3DDevice(), L"Resources\\Models\\floorPanel_00.cmo", fx));
 	//	m_pFloor->SetModel(Floor::NONE, (m_pModels.end() - 1)->get());
 	//	m_pModels.emplace_back(DirectX::Model::CreateFromCMO(GameContext::Get<DX::DeviceResources>()->GetD3DDevice(), L"Resources\\Models\\floorPanel_01.cmo", fx));
-	//	m_pFloor->SetModel(Floor::NORMAL, (m_pModels.end() - 1)->get());
+	//	m_pFloor->SetModel(Floor::ENEMY1, (m_pModels.end() - 1)->get());
 	//	m_pFloor->SetModel(Floor::DAMAGED, (m_pModels.end() - 1)->get());
 	//	m_pFloor->SetModel(Floor::DEAD, (m_pModels.end() - 1)->get());
 	//	m_pFloor->SetModel(Floor::FALL, (m_pModels.end() - 1)->get());
