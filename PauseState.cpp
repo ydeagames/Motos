@@ -29,7 +29,7 @@ void PauseState::Initialize()
 
 
 
-void PauseState::Update()
+void PauseState::Update(float elapsedTime)
 {
 	DirectX::Keyboard::State keyState = DirectX::Keyboard::Get().GetState();
 	if (keyState.IsKeyDown(DirectX::Keyboard::Z))

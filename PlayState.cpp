@@ -59,7 +59,7 @@ void PlayState::Initialize()
 
 
 
-void PlayState::Update()
+void PlayState::Update(float elapsedTime)
 {
 	DirectX::Keyboard::State keyState = DirectX::Keyboard::Get().GetState();
 	if (keyState.IsKeyDown(DirectX::Keyboard::P))

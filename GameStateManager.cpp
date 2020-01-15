@@ -51,7 +51,7 @@ void GameStateManager::Update(float elapsedTime)
 
 
 	assert(m_states.size() > 0 && "There is no active state.");
-	m_states.back()->Update();
+	m_states.back()->Update(elapsedTime);
 }
 
 

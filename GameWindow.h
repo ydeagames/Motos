@@ -129,7 +129,8 @@ public:
 	wchar_t* GetStageFilename(int round);
 	bool CheckEnemyAllDead();
 	void UpdateParts(bool stageClearFlag);
-
+	DirectX::Keyboard::KeyboardStateTracker& GetTracker() { return m_tracker; }
+	
 
 private:
 	// カメラテスト用モデル
