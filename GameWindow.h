@@ -130,7 +130,26 @@ public:
 	bool CheckEnemyAllDead();
 	void UpdateParts(bool stageClearFlag);
 	DirectX::Keyboard::KeyboardStateTracker& GetTracker() { return m_tracker; }
-	
+
+	// エフェクト用ベーシックエフェクトを取得する関数
+	DirectX::BasicEffect* GetBatchEffect() { return m_batchEffect.get(); }
+	// エフェクト用プリミティブバッチを取得する関数
+	DirectX::PrimitiveBatch<DirectX::VertexPositionColorTexture>* GetPrimitiveBatch() {
+		return m_primitiveBatch.get();
+	}
+	// エフェクト用入力レイアウトを取得する関数
+	ID3D11InputLayout* GetInputLayout() { return m_inputLayout.Get(); }
+	// ヒットエフェクト用テクスチャの取得関数
+	ID3D11ShaderResourceView* GetHitEffectTexture() { return m_hitEffectTexture.Get(); }
+	// ジャンプエフェクト用テクスチャの取得関数
+	ID3D11ShaderResourceView* GetJumpEffectTexture() {
+		return m_jumpEffectTexture.Get();
+	}
+	// 煙エフェクト用テクスチャの取得関数
+	ID3D11ShaderResourceView* GetSmokeEffectTexture() {
+		return m_smokeEffectTexture.Get()
+			;
+	}
 
 private:
 	// カメラテスト用モデル
@@ -184,5 +203,19 @@ private:
 	bool m_highScoreUpdate;
 	// ハイスコアの点滅時間
 	float m_highScoreBlinkTime;
+
+	// ヒットエフェクト用テクスチャ
+	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_hitEffectTexture;
+	// ジャンプエフェクト用テクスチャ
+	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_jumpEffectTexture;
+	// 煙エフェクト用テクスチャ
+	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_smokeEffectTexture;
+	//----- エフェクト用 -----//
+	// エフェクト
+	std::unique_ptr<DirectX::BasicEffect> m_batchEffect;
+	// プリミティブバッチ
+	std::unique_ptr<DirectX::PrimitiveBatch<DirectX::VertexPositionColorTexture>> m_primitiveBatch;
+	// 入力レイアウト
+	Microsoft::WRL::ComPtr<ID3D11InputLayout> m_inputLayout;
 
 };

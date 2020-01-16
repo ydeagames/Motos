@@ -87,6 +87,8 @@ GameWindow::~GameWindow()
 
 void GameWindow::Initialize()
 {
+	const auto deviceResources = GameContext::Get<DX::DeviceResources>();
+	
 	m_camera = std::make_unique<Camera>();
 	m_camera->Initialize();
 
@@ -114,6 +116,32 @@ void GameWindow::Initialize()
 	//	m_pFloor->SetModel(Floor::DEAD, (m_pModels.end() - 1)->get());
 	//	m_pFloor->SetModel(Floor::FALL, (m_pModels.end() - 1)->get());
 	//}
+
+	// エフェクトの作成
+	m_batchEffect = std::make_unique<DirectX::BasicEffect>(deviceResources->GetD3DDevice());
+	m_batchEffect->SetTextureEnabled(true);
+	m_batchEffect->SetVertexColorEnabled(true);
+	// 入力レイアウト生成
+	void const* shaderByteCode;
+	size_t byteCodeLength;
+	m_batchEffect->GetVertexShaderBytecode(&shaderByteCode, &byteCodeLength);
+	deviceResources->GetD3DDevice()->CreateInputLayout(
+		DirectX::VertexPositionColorTexture::InputElements,
+		DirectX::VertexPositionColorTexture::InputElementCount,
+		shaderByteCode, byteCodeLength,
+		m_inputLayout.GetAddressOf());
+	// プリミティブバッチの作成
+	m_primitiveBatch = std::make_unique<DirectX::PrimitiveBatch<DirectX::VertexPositionColorTexture>>(deviceResources->GetD3DDeviceContext());
+	// ヒットエフェクト用テクスチャの読み込み
+	DirectX::CreateWICTextureFromFile(deviceResources->GetD3DDevice(),
+		L"Resources\\Textures\\hit_effect.png",
+		nullptr, m_hitEffectTexture.GetAddressOf());
+	// ジャンプエフェクト用テクスチャの読み込み
+	DirectX::CreateWICTextureFromFile(deviceResources->GetD3DDevice(), L"Resources\\Textures\\jump_effect.png",
+		nullptr, m_jumpEffectTexture.GetAddressOf());
+	// 煙エフェクト用テクスチャの読み込み
+	DirectX::CreateWICTextureFromFile(deviceResources->GetD3DDevice(), L"Resources\\Textures\\smoke_effect.png",
+		nullptr, m_smokeEffectTexture.GetAddressOf());
 }
 
 void GameWindow::Update(float elapsedTime)

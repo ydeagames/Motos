@@ -188,7 +188,9 @@
     <ClInclude Include="GameState.h" />
     <ClInclude Include="GameStateManager.h" />
     <ClInclude Include="GameWindow.h" />
+    <ClInclude Include="HitEffect.h" />
     <ClInclude Include="InfoWindow.h" />
+    <ClInclude Include="JumpEffect.h" />
     <ClInclude Include="Life.h" />
     <ClInclude Include="Moji.h" />
     <ClInclude Include="MyNeuralNetwork.h" />
@@ -203,6 +205,8 @@
     <ClInclude Include="Round.h" />
     <ClInclude Include="Score.h" />
     <ClInclude Include="ServiceLocator.h" />
+    <ClInclude Include="Shadow.h" />
+    <ClInclude Include="SmokeEffect.h" />
     <ClInclude Include="SphereCollider.h" />
     <ClInclude Include="Stage.h" />
     <ClInclude Include="StepTimer.h" />
@@ -228,7 +232,9 @@
     <ClCompile Include="GameObjectManager.cpp" />
     <ClCompile Include="GameStateManager.cpp" />
     <ClCompile Include="GameWindow.cpp" />
+    <ClCompile Include="HitEffect.cpp" />
     <ClCompile Include="InfoWindow.cpp" />
+    <ClCompile Include="JumpEffect.cpp" />
     <ClCompile Include="Life.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Moji.cpp" />
@@ -248,6 +254,8 @@
     <ClCompile Include="PlayState.cpp" />
     <ClCompile Include="Round.cpp" />
     <ClCompile Include="Score.cpp" />
+    <ClCompile Include="Shadow.cpp" />
+    <ClCompile Include="SmokeEffect.cpp" />
     <ClCompile Include="SphereCollider.cpp" />
     <ClCompile Include="Stage.cpp" />
     <ClCompile Include="TitleState.cpp" />

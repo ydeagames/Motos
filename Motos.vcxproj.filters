@@ -29,6 +29,9 @@
     <Filter Include="AI">
       <UniqueIdentifier>{5cc74d44-36b2-4221-bab7-21cef8341def}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Effects">
+      <UniqueIdentifier>{d8b92010-c86a-49bf-b032-6eb98b74e427}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
@@ -135,6 +138,18 @@
     <ClInclude Include="Enemy03.h">
       <Filter>Object</Filter>
     </ClInclude>
+    <ClInclude Include="SmokeEffect.h">
+      <Filter>Effects</Filter>
+    </ClInclude>
+    <ClInclude Include="HitEffect.h">
+      <Filter>Effects</Filter>
+    </ClInclude>
+    <ClInclude Include="JumpEffect.h">
+      <Filter>Effects</Filter>
+    </ClInclude>
+    <ClInclude Include="Shadow.h">
+      <Filter>Effects</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -232,6 +247,18 @@
     </ClCompile>
     <ClCompile Include="Enemy03.cpp">
       <Filter>Object</Filter>
+    </ClCompile>
+    <ClCompile Include="SmokeEffect.cpp">
+      <Filter>Effects</Filter>
+    </ClCompile>
+    <ClCompile Include="HitEffect.cpp">
+      <Filter>Effects</Filter>
+    </ClCompile>
+    <ClCompile Include="JumpEffect.cpp">
+      <Filter>Effects</Filter>
+    </ClCompile>
+    <ClCompile Include="Shadow.cpp">
+      <Filter>Effects</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
