@@ -15,6 +15,10 @@
 #include "SphereCollider.h"
 #include "GameAI.h"
 #include "Stage.h"
+#include "ObjectManager.h"
+#include "JumpEffect.h"
+#include "GameObjectManager.h"
+#include "HitEffect.h"
 
 // プレイヤーの重さ
 const float Player::WEIGHT = 1.0f;
@@ -290,6 +294,18 @@ void Player::OnCollision_Enemy01(GameObject* object)
 	{
 		AddForce(playerAngle, obj->GetHitForce() / 2.0f); // ジャンプ中
 	}
+
+	{
+		// ヒット時のエフェクトを出す（表示位置は衝突した相手との中間地点）
+		v = object->GetPosition() - this->GetPosition();
+		v.x /= 2.0f;
+		v.z /= 2.0f;
+		DirectX::SimpleMath::Vector3 pos = m_position + v;
+		std::unique_ptr<HitEffect> hitEffect = std::make_unique<HitEffect>();
+		hitEffect->Initialize(m_position);
+		GameContext::Get<ObjectManager>()->GetGameOM()->Add(std::move(hitEffect));
+	}
+	
 	// 衝突状態へ
 	m_state = STATE_HIT;
 }
@@ -351,6 +367,13 @@ void Player::Move(float elapsedTime, const DirectX::Keyboard::KeyboardStateTrack
 	{
 		m_state = STATE_JUMP;
 		m_jumpCounter = JUMP_FRAME;
+
+		{
+			// ジャンプエフェクト生成・登録
+			std::unique_ptr<JumpEffect> jumpEffect = std::make_unique<JumpEffect>();
+			jumpEffect->Initialize(m_position);
+			GameContext::Get<ObjectManager>()->GetGameOM()->Add(std::move(jumpEffect));
+		}
 	}
 
 	// 力を加える

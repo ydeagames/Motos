@@ -52,7 +52,7 @@ void GameObjectManager::Render()
 		});
 	for (GameObject* object : pObjects)
 	{
-		object->Render();
+		if (!object->IsInvalid()) object->Render();
 	}
 }
 
