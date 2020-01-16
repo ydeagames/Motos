@@ -113,6 +113,9 @@ private:
 
 	// “G‚Ìƒ‚ƒfƒ‹
 	std::unique_ptr<DirectX::Model> m_enemyModels[Enemy01::MODEL_TYPE_NUM];
+	
+	// ‰e‚Ìƒ‚ƒfƒ‹
+	std::unique_ptr<DirectX::Model> m_shadowModel;
 
 	// “G
 	std::vector<Object*> m_enemies;

@@ -16,8 +16,8 @@
 #include "MyNeuralNetwork.h"
 #include "GameAI.h"
 
-Enemy03::Enemy03(const std::string& tag)
-	: Enemy01(tag)
+Enemy03::Enemy03(const std::string& tag, DirectX::Model* shadowModel)
+	: Enemy01(tag, shadowModel)
 {
 }
 

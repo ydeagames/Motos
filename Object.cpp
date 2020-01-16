@@ -11,8 +11,11 @@
 #include "GameWindow.h"
 #include "GameContext.h"
 #include "Camera.h"
+#include "ObjectManager.h"
+#include "GameObjectManager.h"
+#include "Shadow.h"
 
-Object::Object(const std::string& tag)
+Object::Object(const std::string& tag, DirectX::Model* shadowModel)
 	: GameObject(tag)
 	, m_model(nullptr)
 	, m_dir(0)
@@ -28,6 +31,15 @@ Object::Object(const std::string& tag)
 	, m_y(0)
 {
 	SetDrawPrio(GameWindow::DRAW_OBJECT);
+
+	// ‰eƒ‚ƒfƒ‹‚ª“n‚³‚ê‚Ä‚¢‚é‚È‚ç‰e‚Ì¶¬E“o˜^
+	if (shadowModel != nullptr)
+	{
+		std::unique_ptr<Shadow> pShadow = std::make_unique<Shadow>();
+		m_shadow = pShadow.get();
+		m_shadow->Initialize(this, shadowModel);
+		GameContext::Get<ObjectManager>()->GetGameOM()->Add(std::move(pShadow));
+	}
 }
 
 void Object::Update(float elapsedTime)
@@ -74,6 +86,14 @@ float Object::GetHitForce()
 	force += m_weight * v;
 
 	return force;
+}
+
+void Object::ShadowActive(bool flag)
+{
+	if (m_shadow != nullptr)
+	{
+		m_shadow->Active(flag);
+	}
 }
 
 void Object::AddForce(float angle, float force)

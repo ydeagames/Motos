@@ -29,8 +29,8 @@ const float Enemy01::FRICTION = 0.025f;
 // 思考間隔（単位：秒）
 const float Enemy01::THINK_INTERVAL = 0.8f;
 
-Enemy01::Enemy01(const std::string& tag)
-	: Object(tag)
+Enemy01::Enemy01(const std::string& tag, DirectX::Model* shadowModel)
+	: Object(tag, shadowModel)
 	, m_models{ nullptr }
 	, m_state(STATE_NORMAL)
 	, m_thinkTimer(0)
@@ -91,6 +91,9 @@ void Enemy01::Update(float elapsedTime)
 	default:
 		break;
 	}
+
+	// 影
+	ShadowActive(m_state != STATE_FALL);
 
 	// 摩擦により速度を落とす
 	Friction(elapsedTime);

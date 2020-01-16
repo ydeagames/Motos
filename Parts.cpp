@@ -14,8 +14,8 @@
 const float Parts::WIDTH = 0.2f;
 const float Parts::HEIGHT = 0.2f;
 
-Parts::Parts(const std::string& tag)
-	: Object(tag)
+Parts::Parts(const std::string& tag, DirectX::Model* shadowModel)
+	: Object(tag, shadowModel)
 	, m_kind(Kind::NONE), m_state(STATE_NORMAL)
 {
 }
@@ -65,6 +65,9 @@ void Parts::Update(float elapsedTime)
 	default:
 		break;
 	}
+
+	// ‰e
+	ShadowActive(m_state != STATE_FALL && m_activeFlag);
 
 	// ˆÊ’u‚É‘¬“x‚ð‘«‚·
 	m_position += m_vel;

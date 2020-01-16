@@ -67,7 +67,7 @@ protected:
 
 public:
 	// コンストラクタ
-	Enemy01(const std::string& tag);
+	Enemy01(const std::string& tag, DirectX::Model* shadowModel);
 
 	// 初期化関数
 	void Initialize(int x, int y);

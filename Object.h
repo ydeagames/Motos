@@ -10,6 +10,7 @@
 #include <Model.h>
 
 class GameWindow;
+class Shadow;
 
 // オブジェクトクラス
 class Object : public GameObject
@@ -29,7 +30,7 @@ public:
 
 public:
 	// コンストラクタ
-	Object(const std::string& tag);
+	Object(const std::string& tag, DirectX::Model* shadowModel = nullptr);
 
 	// 更新
 	void Update(float elapsedTime) override;
@@ -82,6 +83,9 @@ public:
 
 	// リセット関数
 	virtual void Reset() {}
+
+	// 影の表示の ON/OFF する関数
+	void ShadowActive(bool flag);
 
 protected:
 	// 力を加える関数
@@ -142,6 +146,9 @@ protected:
 
 	// ステージ上の位置
 	int m_x, m_y;
+
+	// 影
+	Shadow* m_shadow;
 
 public:
 	static DirectX::SimpleMath::Vector2 GetXZ(const DirectX::SimpleMath::Vector3& vec)

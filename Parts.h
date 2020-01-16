@@ -48,7 +48,7 @@ private:
 
 public:
 	// コンストラクタ
-	Parts(const std::string& tag);
+	Parts(const std::string& tag, DirectX::Model* shadowModel);
 
 	// 初期化関数
 	void Initialize(Kind kind, int x, int y, DirectX::Model* model);

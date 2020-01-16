@@ -85,7 +85,7 @@ private:
 
 public:
 	// コンストラクタ
-	Player(const std::string& tag);
+	Player(const std::string& tag, DirectX::Model* shadowModel);
 
 	// 初期化関数
 	void Initialize(int x, int y);

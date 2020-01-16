@@ -44,8 +44,8 @@ float SLerp(float start, float end, float t)
 	return start + (end - start) * rate;
 }
 
-Player::Player(const std::string& tag)
-	: Object(tag)
+Player::Player(const std::string& tag, DirectX::Model* shadowModel)
+	: Object(tag, shadowModel)
 	, m_models{ nullptr }
 	, m_powerupParts(0)
 	, m_jumpParts(false)
@@ -120,6 +120,9 @@ void Player::Update(float elapsedTime)
 	default:
 		break;
 	}
+
+	// ‰e
+	ShadowActive(m_state != STATE_FALL);
 
 	// ˆÊ’u‚É‘¬“x‚ð‘«‚·
 	m_position += m_vel;

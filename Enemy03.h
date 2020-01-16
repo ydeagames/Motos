@@ -16,7 +16,7 @@ private:
 	bool m_avoid;
 	
 public:
-	Enemy03(const std::string& tag);
+	Enemy03(const std::string& tag, DirectX::Model* shadowModel);
 	
 	// ‰Šú‰»ŠÖ”
 	void Initialize(int x, int y);

@@ -74,6 +74,9 @@ void Stage::Initialize()
 	m_enemyModels[Enemy01::ENEMY1] = DirectX::Model::CreateFromCMO(GameContext::Get<DX::DeviceResources>()->GetD3DDevice(), L"Resources\\Models\\enemy_01.cmo", fx);
 	m_enemyModels[Enemy01::ENEMY2] = DirectX::Model::CreateFromCMO(GameContext::Get<DX::DeviceResources>()->GetD3DDevice(), L"Resources\\Models\\igaguriEnemy.cmo", fx);
 	m_enemyModels[Enemy01::ENEMY3] = DirectX::Model::CreateFromCMO(GameContext::Get<DX::DeviceResources>()->GetD3DDevice(), L"Resources\\Models\\targetEnemy.cmo", fx);
+
+	// 影のモデル
+	m_shadowModel = DirectX::Model::CreateFromCMO(GameContext::Get<DX::DeviceResources>()->GetD3DDevice(), L"Resources\\Models\\shadow.cmo", fx);
 }
 
 Floor* Stage::GetFloor(int x, int y)
@@ -173,7 +176,7 @@ void Stage::SetStageData()
 
 			case OBJECT_ID::PLAYER:	// プレイヤー
 			{
-				std::unique_ptr<Player> pPlayer = std::make_unique<Player>("Player");
+				std::unique_ptr<Player> pPlayer = std::make_unique<Player>("Player", m_shadowModel.get());
 				m_player = pPlayer.get();
 				m_player->Initialize(i, j);
 				// 各状態のモデルを設定
@@ -198,7 +201,7 @@ void Stage::SetStageData()
 
 			case OBJECT_ID::POWERUP_PARTS:	// パワーアップパーツ
 			{
-				std::unique_ptr<Parts> pParts = std::make_unique<Parts>("PowerupParts");
+				std::unique_ptr<Parts> pParts = std::make_unique<Parts>("PowerupParts", m_shadowModel.get());
 				pParts->Initialize(Parts::POWERUP, i, j, m_partsModels[Parts::POWERUP].get());
 				pParts->SetCheckFloorFunction([&](Object* object)
 					{
@@ -211,7 +214,7 @@ void Stage::SetStageData()
 
 			case OBJECT_ID::JUMP_PARTS:		// ジャンプパーツ
 			{
-				std::unique_ptr<Parts> pParts = std::make_unique<Parts>("JumpParts");
+				std::unique_ptr<Parts> pParts = std::make_unique<Parts>("JumpParts", m_shadowModel.get());
 				pParts->Initialize(Parts::JUMP, i, j, m_partsModels[Parts::JUMP].get());
 				pParts->SetCheckFloorFunction([&](Object* object)
 					{
@@ -224,7 +227,7 @@ void Stage::SetStageData()
 
 			case OBJECT_ID::ENEMY_1:	// 敵１
 			{
-				std::unique_ptr<Enemy01> pEnemy01 = std::make_unique<Enemy01>("Enemy01");
+				std::unique_ptr<Enemy01> pEnemy01 = std::make_unique<Enemy01>("Enemy01", m_shadowModel.get());
 				pEnemy01->Initialize(i, j);
 				// 各状態のモデルを設定
 				pEnemy01->SetModel(Enemy01::ENEMY1, m_enemyModels[Enemy01::ENEMY1].get());
@@ -249,7 +252,7 @@ void Stage::SetStageData()
 
 			case OBJECT_ID::ENEMY_2:	// 敵２
 			{
-				std::unique_ptr<Enemy02> pEnemy02 = std::make_unique<Enemy02>("Enemy02");
+				std::unique_ptr<Enemy02> pEnemy02 = std::make_unique<Enemy02>("Enemy02", m_shadowModel.get());
 				pEnemy02->Initialize(i, j);
 				// 各状態のモデルを設定
 				pEnemy02->SetModel(Enemy02::ENEMY1, m_enemyModels[Enemy02::ENEMY2].get());
@@ -274,7 +277,7 @@ void Stage::SetStageData()
 
 			case OBJECT_ID::ENEMY_3:	// 敵２
 			{
-				std::unique_ptr<Enemy03> pEnemy03 = std::make_unique<Enemy03>("Enemy02");
+				std::unique_ptr<Enemy03> pEnemy03 = std::make_unique<Enemy03>("Enemy02", m_shadowModel.get());
 				pEnemy03->Initialize(i, j);
 				// 各状態のモデルを設定
 				pEnemy03->SetModel(Enemy02::ENEMY1, m_enemyModels[Enemy02::ENEMY3].get());
