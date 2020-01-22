@@ -20,6 +20,8 @@
 #include "Life.h"
 #include "Round.h"
 #include "Score.h"
+#include "EffectMask.h"
+#include "GameStateManager.h"
 
 
 const float GameWindow::DIR_ANGLE[] =
@@ -102,9 +104,12 @@ void GameWindow::Initialize()
 	// ステージ
 	m_pStage = std::make_unique<Stage>();
 	m_pStage->Initialize();
-	m_pStage->LoadStageData(L"StageData/Stage01.csv");
-	m_pStage->SetStageData();
-
+	
+	// ゲームの初期化
+	InitializeGame();
+	// 画面を開く
+	GameContext::Get<EffectMask>()->Open();
+	
 	//{
 	//	DirectX::EffectFactory fx(GameContext::Get<DX::DeviceResources>()->GetD3DDevice());
 	//	fx.SetDirectory(L"Resources\\Models");
@@ -149,6 +154,82 @@ void GameWindow::Update(float elapsedTime)
 	auto kb = DirectX::Keyboard::Get().GetState();
 	m_tracker.Update(kb);
 	m_pStage->GetPlayer()->Move(elapsedTime, m_tracker);
+
+	auto effectMask = GameContext::Get<EffectMask>();
+	switch (m_gameState)
+	{
+	case STATE_PARTS_SELECT: // パーツ選択画面
+	// 画面が開くまで待つ
+		if (effectMask->IsOpen())
+		{
+			// 操作説明文を表示
+			m_selectPartsDisplayFlag = true;
+			m_gameState = SelectParts(elapsedTime);
+			// 操作説明文を消去
+			if (m_gameState != STATE_PARTS_SELECT) m_selectPartsDisplayFlag = false;
+		}
+		break;
+	case STATE_START: // 開始
+	// ゲームスタート
+		m_gameState = StartGame(elapsedTime);
+		break;
+	case STATE_GAME: // ゲーム中
+		m_gameState = PlayGame(elapsedTime);
+		if (m_gameState != STATE_GAME)
+		{
+			// マスクの色を設定
+			if (m_gameState == STATE_GAMEOVER)
+			{
+				effectMask->SetColor(DirectX::Colors::White);
+			}
+			else
+			{
+				effectMask->SetColor(DirectX::Colors::Black);
+			}
+			// 画面を閉じる
+			effectMask->Close();
+		}
+		break;
+	case STATE_AGAIN: // プレイヤーが死んだので再スタート
+	// 画面が真っ黒になるまで待つ
+		if (effectMask->IsClose())
+		{
+			// ステージをリセットする
+			m_pStage->ResetStageData();
+			// パーツを更新
+			UpdateParts(false);
+			// 続けてプレイ
+			m_gameState = STATE_PARTS_SELECT;
+			// 画面を開く
+			effectMask->Open();
+		}
+		break;
+	case STATE_NEXT: // 次のステージへ
+	// 画面が真っ黒になるまで待つ
+		if (effectMask->IsClose())
+		{
+			// パーツを更新
+			UpdateParts(true);
+			// 次のステージへ
+			m_gameState = NextGame(elapsedTime);
+			// 画面を開く
+			effectMask->Open();
+		}
+		break;
+	case STATE_GAMEOVER: // ゲームオーバー
+	// 画面が真っ黒になるまで待つ
+		if (effectMask->IsClose())
+		{
+			// ステージをリセットする
+			m_pStage->ResetStageData();
+			// パーツを更新
+			UpdateParts(false);
+			// タイトルへ
+			GameStateManager* gameStateManager = GameContext::Get<GameStateManager>();
+			gameStateManager->RequestState("Title");
+		}
+		break;
+	}
 }
 
 void GameWindow::Render()
@@ -193,7 +274,7 @@ void GameWindow::ResetJumpParts()
 	m_jumpParts = m_getJumpParts = 0;
 	infoWindow->GetJumpParts()->Reset();
 }
-GameWindow::GAME_STATE GameWindow::InitializeGame(float elapsedTime)
+GameWindow::GAME_STATE GameWindow::InitializeGame()
 {
 	InfoWindow* infoWindow = GameContext::Get<InfoWindow>();
 	// 得点を初期化

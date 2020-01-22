@@ -113,7 +113,7 @@ public:
 	// ジャンプパーツのリセット関数
 	void ResetJumpParts();
 	// ゲームの初期化関数
-	GAME_STATE InitializeGame(float elapsedTime);
+	GAME_STATE InitializeGame();
 	// パーツ選択画面
 	GAME_STATE SelectParts(float elapsedTime);
 	// ゲームをスタートさせる関数

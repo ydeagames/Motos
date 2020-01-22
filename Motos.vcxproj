@@ -176,9 +176,11 @@
     <ClInclude Include="CollisionManager.h" />
     <ClInclude Include="DebugFont.h" />
     <ClInclude Include="DeviceResources.h" />
+    <ClInclude Include="EffectMask.h" />
     <ClInclude Include="Enemy01.h" />
     <ClInclude Include="Enemy02.h" />
     <ClInclude Include="Enemy03.h" />
+    <ClInclude Include="File.h" />
     <ClInclude Include="Floor.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameAI.h" />
@@ -222,9 +224,11 @@
     <ClCompile Include="CollisionManager.cpp" />
     <ClCompile Include="DebugFont.cpp" />
     <ClCompile Include="DeviceResources.cpp" />
+    <ClCompile Include="EffectMask.cpp" />
     <ClCompile Include="Enemy01.cpp" />
     <ClCompile Include="Enemy02.cpp" />
     <ClCompile Include="Enemy03.cpp" />
+    <ClCompile Include="File.cpp" />
     <ClCompile Include="Floor.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameAI.cpp" />

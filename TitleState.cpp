@@ -9,6 +9,7 @@
 #include "GameWindow.h"
 #include "Camera.h"
 #include "StepTimer.h"
+#include "EffectMask.h"
 
 
 using namespace DirectX;
@@ -61,6 +62,9 @@ void TitleState::Initialize()
 	DX::ThrowIfFailed(CreateWICTextureFromFile(
 		device, context,
 		L"Resources/Textures/push_space.png", nullptr, m_spaceTexture.ReleaseAndGetAddressOf()));
+
+	// エフェクトマスクを開く
+	GameContext::Get<EffectMask>()->Open();
 }
 
 
@@ -69,10 +73,17 @@ void TitleState::Update(float elapsedTime)
 {
 	m_time += elapsedTime;
 
-	static auto tracker = Keyboard::KeyboardStateTracker();
-	tracker.Update(Keyboard::Get().GetState());
-	if (tracker.IsKeyPressed(Keyboard::Keys::Space))
+	const auto keyState = Keyboard::Get().GetState();
+	// スペースが押されたら
+	if (GameContext::Get<EffectMask>()->IsOpen() && keyState.Space)
 	{
+		// エフェクトマスクを閉じる
+		GameContext::Get<EffectMask>()->Close();
+	}
+	// エフェクトマスクが閉じきったら
+	if (GameContext::Get<EffectMask>()->IsClose())
+	{
+		// プレイへ
 		GameStateManager* gameStateManager = GameContext::Get<GameStateManager>();
 		gameStateManager->RequestState("Play");
 	}
@@ -102,8 +113,8 @@ void TitleState::Render()
 	context->IASetInputLayout(m_pInputLayout.Get());
 
 	{
-		float u = m_time;
-		auto uv = Vector2(-u, u);
+		float u = m_time / 2;
+		auto uv = Vector2(u, -u);
 		float w = 20.f;
 		float h = w / (1280.f / 720.f);
 		std::vector<VertexPositionTexture> vertices = {
@@ -120,9 +131,9 @@ void TitleState::Render()
 		m_plane->End();
 	}
 
-	RECT rect = { 0, 0, 1280, 720 };
+	RECT rect = dr->GetOutputSize();
 	m_spriteBatch->Begin(SpriteSortMode_Deferred, states->NonPremultiplied());
-	m_spriteBatch->Draw(m_texture.Get(), Vector2(1280 / 2, 720 / 2), nullptr, Colors::White, 0, Vector2(1024 / 2, 576 / 2));
+	m_spriteBatch->Draw(m_texture.Get(), rect);
 	if (std::sin(m_time * 4) > 0)
 		m_spriteBatch->Draw(m_spaceTexture.Get(), Vector2(1280 / 2, 720 / 4 * 3), nullptr, Colors::White, 0, Vector2(481 / 2, 74 / 2));
 	m_spriteBatch->End();

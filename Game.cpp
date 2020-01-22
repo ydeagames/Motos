@@ -19,6 +19,7 @@
 #include "TitleState.h"
 #include "PauseState.h"
 #include "GameAI.h"
+#include "EffectMask.h"
 
 extern void ExitGame();
 
@@ -67,8 +68,6 @@ void Game::Initialize(HWND window, int width, int height)
 	m_timer.SetTargetElapsedSeconds(1.0 / 60);
 	*/
 
-	m_objectManager = std::make_unique<ObjectManager>();
-
 
 	DebugFont* debugFont = DebugFont::GetInstance();
 	debugFont->create(m_deviceResources->GetD3DDevice(), m_deviceResources->GetD3DDeviceContext());
@@ -93,19 +92,16 @@ void Game::Initialize(HWND window, int width, int height)
 
 	m_gameAI = std::make_unique<GameAI>();
 	m_gameAI->Initialize();
-	
+
 
 	GameContext::Register<GameStateManager>(m_gameStateManager);
 	GameContext::Register<DX::DeviceResources>(m_deviceResources);
-	GameContext::Register<ObjectManager>(m_objectManager);
 	GameContext::Register<CollisionManager>(m_collisionManager);
 	GameContext::Register<GameAI>(m_gameAI);
-
-
-	// ビューポートの矩形領域の設定（ゲーム画面）
-	m_viewportGame = CD3D11_VIEWPORT(0.0f, 0.0f, static_cast<float>(960), static_cast<float>(720));
-	// ビューポートの矩形領域の設定（情報画面）
-	m_viewportInfo = CD3D11_VIEWPORT(static_cast<float>(960), 0.0f, static_cast<float>(InfoWindow::SCREEN_W), static_cast<float>(InfoWindow::SCREEN_H));
+	
+	m_effectMask = std::make_unique<EffectMask>();
+	m_effectMask->Initialize(1.f);
+	GameContext::Register<EffectMask>(m_effectMask);
 
 	//GameContext::Get<GameObjectManager>()->Add(std::make_unique<Ball>());
 }
@@ -130,9 +126,8 @@ void Game::Update(DX::StepTimer const& timer)
 	// TODO: Add your game logic here.
 	elapsedTime;
 	m_gameStateManager->Update(elapsedTime);
-	m_objectManager->GetGameOM()->Update(elapsedTime);
-	m_objectManager->GetInfoOM()->Update(elapsedTime);
 	m_collisionManager->DetectCollision();
+	m_effectMask->Update(elapsedTime);
 }
 #pragma endregion
 
@@ -155,37 +150,10 @@ void Game::Render()
 	context;
 	
 	{
-		//----------------------//
-		// ゲーム画面の描画 //
-		//----------------------//
-		// ビューポートを変更する（左側へ描画エリアを変更する）
-		context->RSSetViewports(1, &m_viewportGame);
-		m_sprites->Begin(SpriteSortMode_Deferred, m_state->NonPremultiplied());
-		// TODO: ビュー行列とプロジェクション行列を設定
-		//SimpleMath::Matrix viewMat, projMat;
-		// ゲーム画面のオブジェクト描画
-		m_objectManager->GetGameOM()->Render();
-		m_sprites->End(); // <---スプライトの描画はここでまとめて行われている
-		//------------------------------//
-		// ゲーム画面の描画（ここまで） //
-		//------------------------------//
-		//------------------//
-		// 情報画面の描画 //
-		//------------------//
-		// ビューポートを変更する（右側へ描画エリアを変更する）
-		context->RSSetViewports(1, &m_viewportInfo);
-		m_sprites->Begin(SpriteSortMode_Deferred, m_state->NonPremultiplied());
-		// 情報画面のオブジェクト描画
-		m_objectManager->GetInfoOM()->Render();
-		m_sprites->End(); // <---スプライトの描画はここでまとめて行われている
-		//------------------------------//
-		// 情報画面の描画（ここまで） //
-		//------------------------------//
-		// ビューポートを変更する（画面全体）
-		auto viewport = m_deviceResources->GetScreenViewport();
-		context->RSSetViewports(1, &viewport);
 		// ゲームステートの描画
 		m_gameStateManager->Render();
+		// マスク
+		m_effectMask->Draw();
 	}
 
 	m_deviceResources->PIXEndEvent();

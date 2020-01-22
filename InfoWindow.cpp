@@ -15,8 +15,18 @@ InfoWindow::InfoWindow()
 
 InfoWindow::~InfoWindow()
 {
-	for (auto& object : GameContext::Get<ObjectManager>()->GetInfoOM()->GetObjects())
-		object->Invalidate();
+	if (m_pHighScore)
+		m_pHighScore->Invalidate();
+	if (m_pScore)
+		m_pScore->Invalidate();
+	if (m_pPowerup)
+		m_pPowerup->Invalidate();
+	if (m_pJump)
+		m_pJump->Invalidate();
+	if (m_pRound)
+		m_pRound->Invalidate();
+	if (m_pLife)
+		m_pLife->Invalidate();
 }
 
 void InfoWindow::Initialize()

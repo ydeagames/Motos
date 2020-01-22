@@ -32,6 +32,9 @@
     <Filter Include="Effects">
       <UniqueIdentifier>{d8b92010-c86a-49bf-b032-6eb98b74e427}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Transition">
+      <UniqueIdentifier>{84d3aefd-8473-429f-b14e-72b27baa68d7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
@@ -46,7 +49,6 @@
     <ClInclude Include="ServiceLocator.h" />
     <ClInclude Include="DebugFont.h" />
     <ClInclude Include="Utilities.h" />
-    <ClInclude Include="SphereCollider.h" />
     <ClInclude Include="InfoWindow.h">
       <Filter>InfoWindow</Filter>
     </ClInclude>
@@ -150,6 +152,15 @@
     <ClInclude Include="Shadow.h">
       <Filter>Effects</Filter>
     </ClInclude>
+    <ClInclude Include="SphereCollider.h">
+      <Filter>Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="File.h">
+      <Filter>Transition</Filter>
+    </ClInclude>
+    <ClInclude Include="EffectMask.h">
+      <Filter>Transition</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -159,7 +170,6 @@
       <Filter>Common</Filter>
     </ClCompile>
     <ClCompile Include="DebugFont.cpp" />
-    <ClCompile Include="SphereCollider.cpp" />
     <ClCompile Include="InfoWindow.cpp">
       <Filter>InfoWindow</Filter>
     </ClCompile>
@@ -259,6 +269,15 @@
     </ClCompile>
     <ClCompile Include="Shadow.cpp">
       <Filter>Effects</Filter>
+    </ClCompile>
+    <ClCompile Include="SphereCollider.cpp">
+      <Filter>Collision</Filter>
+    </ClCompile>
+    <ClCompile Include="File.cpp">
+      <Filter>Transition</Filter>
+    </ClCompile>
+    <ClCompile Include="EffectMask.cpp">
+      <Filter>Transition</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

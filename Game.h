@@ -11,6 +11,7 @@ class ObjectManager;
 class GameStateManager;
 class CollisionManager;
 class GameAI;
+class EffectMask;
 
 
 // A basic game implementation that creates a D3D11 device and
@@ -85,14 +86,9 @@ private:
 	std::unique_ptr<DirectX::SpriteBatch>	m_sprites;
 	// スプライトフォント
 	std::unique_ptr<DirectX::SpriteFont>	m_font;
-
-	// ゲーム画面のビューポート
-	D3D11_VIEWPORT							m_viewportGame;
-	// 情報画面のビューポート
-	D3D11_VIEWPORT							m_viewportInfo;
-
-	// ゲームオブジェクトマネージャー
-	std::unique_ptr<ObjectManager>			m_objectManager;
+	
+	// マスク
+	std::unique_ptr<EffectMask>				m_effectMask;
 
 	std::unique_ptr<CollisionManager>       m_collisionManager;
 

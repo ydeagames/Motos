@@ -315,6 +315,19 @@ void Stage::ResetStageData()
 			m_floors[j][i]->Reset();
 		}
 	}
+
+	// パーツをリセット
+	for (Parts* p : m_parts)
+	{
+		p->Reset();
+	}
+	// プレイヤーをリセット
+	if (m_player) m_player->Reset();
+	// 敵をリセット
+	for (Object* p : m_enemies)
+	{
+		p->Reset();
+	}
 }
 
 Player* Stage::GetPlayer()
