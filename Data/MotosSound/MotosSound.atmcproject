@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Orca XML File Format -->
+<OrcaTrees ObjectTypeExpression="Full" BinaryEncodingType="Base64" FileVersion="3" FileRevision="0">
+  <OrcaTree OrcaName="(no name)">
+    <Orca OrcaName="MotosSound" EncryptionKeyType="CueSheet" FormatVersion="Ver.1.02.00" OoUniqId="0bba6da5-7e6c-431f-941b-ec862abf166e" VersionInfoV3="Ver.3.40.17" OrcaType="CriMw.CriAtomCraft.AcCore.AcOoProjectV2">
+      <Orca OrcaName="WaveMarkerTagSetting" OrcaType="CriMw.CriAtomCraft.AcCore.AcOoWaveMarkerTagSetting"/>
+    </Orca>
+  </OrcaTree>
+</OrcaTrees>
+<!-- Copyright (c) CRI Middleware Co.,LTD. -->
+<!-- end of document -->

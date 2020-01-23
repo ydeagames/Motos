@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Orca XML File Format -->
+<OrcaTrees ObjectTypeExpression="Full" BinaryEncodingType="Base64" FileVersion="3" FileRevision="0">
+  <OrcaTree OrcaName="(no name)">
+    <Orca OrcaName="WorkUnit_0_MaterialInfo" FormatVersion="Ver.1.02.00" MaterialRootPath="Materials" VersionInfoV3="Ver.3.40.17" OrcaType="CriMw.CriAtomCraft.AcCore.AcOoMaterialInfoFile">
+      <Orca OrcaName="MaterialRootFolder" OrcaType="CriMw.CriAtomCraft.AcCore.AcOoWaveformFolder">
+        <Orca OrcaName="jump00.wav" Channels="1" EncodeFileSize="4529" ReloopEnd="12237" ResamplingRate="44100" SampleFrames="12237" SamplingRate="44100" SourceFileSize="24518" OrcaType="CriMw.CriAtomCraft.AcCore.AcOoWaveform"/>
+        <Orca OrcaName="ball00.wav" BitsPerSamples="8" Channels="1" EncodeFileSize="14759" ReloopEnd="43776" ResamplingRate="44100" SampleFrames="43776" SamplingRate="44100" SourceFileSize="43820" OrcaType="CriMw.CriAtomCraft.AcCore.AcOoWaveform"/>
+      </Orca>
+    </Orca>
+  </OrcaTree>
+</OrcaTrees>
+<!-- Copyright (c) CRI Middleware Co.,LTD. -->
+<!-- end of document -->
