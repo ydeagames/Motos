@@ -19,6 +19,8 @@
 #include "JumpEffect.h"
 #include "GameObjectManager.h"
 #include "HitEffect.h"
+#include "Resources/Sounds/WorkUnit_0/CueSheet_0.h"
+#include "ADX2Le.h"
 
 // プレイヤーの重さ
 const float Player::WEIGHT = 1.0f;
@@ -305,6 +307,8 @@ void Player::OnCollision_Enemy01(GameObject* object)
 		hitEffect->Initialize(m_position);
 		GameContext::Get<ObjectManager>()->GetGameOM()->Add(std::move(hitEffect));
 	}
+
+	GameContext::Get<Adx2Le>()->Play(CRI_CUESHEET_0_CUE_1);
 	
 	// 衝突状態へ
 	m_state = STATE_HIT;
@@ -374,6 +378,8 @@ void Player::Move(float elapsedTime, const DirectX::Keyboard::KeyboardStateTrack
 			jumpEffect->Initialize(m_position);
 			GameContext::Get<ObjectManager>()->GetGameOM()->Add(std::move(jumpEffect));
 		}
+
+		GameContext::Get<Adx2Le>()->Play(CRI_CUESHEET_0_CUE_0);
 	}
 
 	// 力を加える

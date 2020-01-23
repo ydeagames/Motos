@@ -161,6 +161,7 @@
     <ClInclude Include="EffectMask.h">
       <Filter>Transition</Filter>
     </ClInclude>
+    <ClInclude Include="Adx2Le.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -279,6 +280,7 @@
     <ClCompile Include="EffectMask.cpp">
       <Filter>Transition</Filter>
     </ClCompile>
+    <ClCompile Include="Adx2Le.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resource.rc" />

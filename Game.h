@@ -7,6 +7,7 @@
 #include "DeviceResources.h"
 #include "StepTimer.h"
 
+class Adx2Le;
 class ObjectManager;
 class GameStateManager;
 class CollisionManager;
@@ -95,4 +96,7 @@ private:
 	std::unique_ptr<GameStateManager>       m_gameStateManager;
 
 	std::unique_ptr<GameAI>					m_gameAI;
+
+	// ADX
+	std::unique_ptr<Adx2Le>					m_adx2Le;
 };

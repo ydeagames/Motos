@@ -20,6 +20,7 @@
 #include "PauseState.h"
 #include "GameAI.h"
 #include "EffectMask.h"
+#include "ADX2Le.h"
 
 extern void ExitGame();
 
@@ -35,6 +36,7 @@ Game::Game() noexcept(false)
 
 Game::~Game()
 {
+	m_adx2Le->Finalize();
 }
 
 // Initialize the Direct3D resources required to run.
@@ -67,6 +69,14 @@ void Game::Initialize(HWND window, int width, int height)
 	m_timer.SetFixedTimeStep(true);
 	m_timer.SetTargetElapsedSeconds(1.0 / 60);
 	*/
+
+
+	// ADX
+	m_adx2Le = std::make_unique<Adx2Le>();
+	m_adx2Le->Initialize(L"Resources/Sounds/MotosSound.acf");
+
+	m_adx2Le->LoadAcbFile(L"Resources/Sounds/WorkUnit_0/CueSheet_0.acb");
+	GameContext::Register<Adx2Le>(m_adx2Le);
 
 
 	DebugFont* debugFont = DebugFont::GetInstance();
@@ -128,6 +138,8 @@ void Game::Update(DX::StepTimer const& timer)
 	m_gameStateManager->Update(elapsedTime);
 	m_collisionManager->DetectCollision();
 	m_effectMask->Update(elapsedTime);
+
+	m_adx2Le->Update();
 }
 #pragma endregion
 
