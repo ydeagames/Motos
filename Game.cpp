@@ -228,10 +228,11 @@ void Game::OnWindowMoved()
 
 void Game::OnWindowSizeChanged(int width, int height)
 {
-	if (!m_deviceResources->WindowSizeChanged(width, height))
-		return;
-
-	CreateWindowSizeDependentResources();
+	m_deviceResources->CreateWindowSizeDependentResources();
+	// if (!m_deviceResources->WindowSizeChanged(width, height))
+	// 	return;
+	//
+	// CreateWindowSizeDependentResources();
 
 	// TODO: Game window is being resized.
 }
@@ -246,6 +247,9 @@ void Game::GetDefaultSize(int& width, int& height) const
 
 void Game::ChangeFullscreen(bool flag)
 {
+#ifndef WINDOWED_FULLSCREEN
+	m_deviceResources->GetSwapChain()->SetFullscreenState(flag, NULL);
+#elif 
 	if (!flag)
 	{
 		SetWindowLongPtr(m_window, GWL_STYLE, WS_OVERLAPPEDWINDOW);
@@ -267,6 +271,7 @@ void Game::ChangeFullscreen(bool flag)
 
 		ShowWindow(m_window, SW_SHOWMAXIMIZED);
 	}
+#endif
 }
 #pragma endregion
 
