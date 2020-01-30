@@ -73,6 +73,9 @@ void Enemy01::Update(float elapsedTime)
 	// 削除リクエストがあればタスクを削除
 	if (IsInvalid()) return;
 
+	// 影
+	ShadowActive(m_state != STATE_FALL && m_state != STATE_DEAD && m_activeFlag);
+
 	// アクティブフラグがfalseの場合は何もしない
 	if (!m_activeFlag) return;
 
@@ -91,9 +94,6 @@ void Enemy01::Update(float elapsedTime)
 	default:
 		break;
 	}
-
-	// 影
-	ShadowActive(m_state != STATE_FALL);
 
 	// 摩擦により速度を落とす
 	Friction(elapsedTime);
@@ -231,9 +231,11 @@ Enemy01::STATE Enemy01::GetState()
 
 void Enemy01::Reset()
 {
+	SetActive(false);
 	// プレイヤーを元の状態に戻す
 	m_dir = 0;
 	m_position = DirectX::SimpleMath::Vector3((float)m_x, 0.0f, (float)m_y);
 	m_state = STATE_NORMAL;
 	SetDisplayFlag(true);
+	SetDrawPrio(GameWindow::DRAW_OBJECT);
 }

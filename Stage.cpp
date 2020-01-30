@@ -93,6 +93,8 @@ bool Stage::LoadStageData(wchar_t* fname)
 	std::wstring str;
 	// ファイルのオープン
 	std::wifstream ifs(fname);
+	if (ifs.fail())
+		return false;
 	//----- ステージデータ -----//
 	// ヘッダ文字列
 	std::wstring stageHeadName = L"STAGE";
@@ -182,7 +184,7 @@ void Stage::SetStageData()
 				// 各状態のモデルを設定
 				m_player->SetModel(Player::NORMAL, m_playerModels[Player::NORMAL].get());
 				m_player->SetModel(Player::WING, m_playerModels[Player::WING].get());
-				m_player->SetJumpParts(true);
+				//m_player->SetJumpParts(true);
 				GameContext::Get<ObjectManager>()->GetGameOM()->Add(std::move(pPlayer));
 
 				// 床との判定関数を登録

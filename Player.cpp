@@ -33,7 +33,7 @@ const float Player::WIDTH = 0.2f;
 const float Player::HEIGHT = 0.2f;
 
 // プレイヤーの最大移動速度
-const float Player::MAX_SPEED =	0.1f;
+const float Player::MAX_SPEED = 0.1f;
 
 // ジャンプしているフレーム数
 const int Player::JUMP_FRAME = 30;
@@ -85,7 +85,7 @@ void Player::Initialize(int x, int y)
 	m_collider = std::make_unique<SphereCollider>(this, m_radius);
 }
 
-void Player::SetModel(ModelType modelType, DirectX::Model * model)
+void Player::SetModel(ModelType modelType, DirectX::Model* model)
 {
 	m_models[modelType] = model;
 }
@@ -95,6 +95,9 @@ void Player::Update(float elapsedTime)
 	// 削除リクエストがあればタスクを削除
 	if (IsInvalid()) return;
 
+	// 影
+	ShadowActive(m_state != STATE_FALL && m_state != STATE_DEAD && m_activeFlag);
+
 	// アクティブフラグがfalseの場合は何もしない
 	if (!m_activeFlag) return;
 
@@ -102,7 +105,7 @@ void Player::Update(float elapsedTime)
 	Friction(elapsedTime);
 
 	// 最大速度以上にならないよう調整
-	if (m_vel.LengthSquared() > MAX_SPEED * MAX_SPEED)
+	if (m_vel.LengthSquared() > MAX_SPEED* MAX_SPEED)
 	{
 		m_vel.Normalize();
 		m_vel *= MAX_SPEED;
@@ -126,9 +129,6 @@ void Player::Update(float elapsedTime)
 	default:
 		break;
 	}
-
-	// 影
-	ShadowActive(m_state != STATE_FALL);
 
 	// 位置に速度を足す
 	m_position += m_vel;
@@ -187,8 +187,9 @@ void Player::Render()
 		*GameContext::Get<DirectX::CommonStates>(),
 		world, camera->getViewMatrix(), camera->getProjectionMatrix());
 
-	// 衝突判定マネージャーに登録
-	GameContext::Get<CollisionManager>()->Add(GetTag(), m_collider.get());
+	if (m_state != STATE_DEAD && m_state != STATE_FALL)
+		// 衝突判定マネージャーに登録
+		GameContext::Get<CollisionManager>()->Add(GetTag(), m_collider.get());
 }
 
 void Player::State_Normal(float elapsedTime)
@@ -309,7 +310,7 @@ void Player::OnCollision_Enemy01(GameObject* object)
 	}
 
 	GameContext::Get<Adx2Le>()->Play(CRI_CUESHEET_0_CUE_1);
-	
+
 	// 衝突状態へ
 	m_state = STATE_HIT;
 }
@@ -393,6 +394,7 @@ void Player::Reset()
 	m_position = DirectX::SimpleMath::Vector3((float)m_x, 0.0f, (float)m_y);
 	m_state = STATE_NORMAL;
 	SetDisplayFlag(true);
+	SetDrawPrio(GameWindow::DRAW_OBJECT);
 }
 
 void Player::SetPowerupParts(int cnt)

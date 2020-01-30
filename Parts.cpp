@@ -51,6 +51,11 @@ void Parts::Update(float elapsedTime)
 	// 削除リクエストがあればタスクを削除
 	if (IsInvalid()) return;
 
+	// 影
+	ShadowActive(m_state != STATE_FALL && m_activeFlag);
+	
+	if (!m_activeFlag) return;
+
 	// 摩擦により速度を落とす
 	Friction(elapsedTime);
 
@@ -65,9 +70,6 @@ void Parts::Update(float elapsedTime)
 	default:
 		break;
 	}
-
-	// 影
-	ShadowActive(m_state != STATE_FALL && m_activeFlag);
 
 	// 位置に速度を足す
 	m_position += m_vel;

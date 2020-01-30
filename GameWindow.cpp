@@ -43,10 +43,10 @@ const float GameWindow::GRAVITY = 9.8f;
 const float GameWindow::FALL_SPEED = 8.f;
 
 // 落下したオブジェクトが画面から消える距離
-const float GameWindow::FALL_ROTATE_SPEED = 10.f;
+const float GameWindow::FALL_DISTANCE = 10.f;
 
 // 落下中のオブジェクトの回転速度（１秒間に１８０度回転）
-const float GameWindow::FALL_DISTANCE = 180.f;
+const float GameWindow::FALL_ROTATE_SPEED = 180.f;
 
 // ラウンド数
 const int GameWindow::ROUND_MAX = 3;
@@ -130,30 +130,33 @@ void GameWindow::Initialize()
 	void const* shaderByteCode;
 	size_t byteCodeLength;
 	m_batchEffect->GetVertexShaderBytecode(&shaderByteCode, &byteCodeLength);
-	deviceResources->GetD3DDevice()->CreateInputLayout(
+	DX::ThrowIfFailed(deviceResources->GetD3DDevice()->CreateInputLayout(
 		DirectX::VertexPositionColorTexture::InputElements,
 		DirectX::VertexPositionColorTexture::InputElementCount,
 		shaderByteCode, byteCodeLength,
-		m_inputLayout.GetAddressOf());
+		m_inputLayout.ReleaseAndGetAddressOf()));
 	// プリミティブバッチの作成
 	m_primitiveBatch = std::make_unique<DirectX::PrimitiveBatch<DirectX::VertexPositionColorTexture>>(deviceResources->GetD3DDeviceContext());
 	// ヒットエフェクト用テクスチャの読み込み
-	DirectX::CreateWICTextureFromFile(deviceResources->GetD3DDevice(),
+	DX::ThrowIfFailed(DirectX::CreateWICTextureFromFile(deviceResources->GetD3DDevice(),
 		L"Resources\\Textures\\hit_effect.png",
-		nullptr, m_hitEffectTexture.GetAddressOf());
+		nullptr, m_hitEffectTexture.ReleaseAndGetAddressOf()));
 	// ジャンプエフェクト用テクスチャの読み込み
-	DirectX::CreateWICTextureFromFile(deviceResources->GetD3DDevice(), L"Resources\\Textures\\jump_effect.png",
-		nullptr, m_jumpEffectTexture.GetAddressOf());
+	DX::ThrowIfFailed(DirectX::CreateWICTextureFromFile(deviceResources->GetD3DDevice(), L"Resources\\Textures\\jump_effect.png",
+		nullptr, m_jumpEffectTexture.ReleaseAndGetAddressOf()));
 	// 煙エフェクト用テクスチャの読み込み
-	DirectX::CreateWICTextureFromFile(deviceResources->GetD3DDevice(), L"Resources\\Textures\\smoke_effect.png",
-		nullptr, m_smokeEffectTexture.GetAddressOf());
+	DX::ThrowIfFailed(DirectX::CreateWICTextureFromFile(deviceResources->GetD3DDevice(), L"Resources\\Textures\\smoke_effect.png",
+		nullptr, m_smokeEffectTexture.ReleaseAndGetAddressOf()));
+	// パーツ選択画面用のテクスチャの読み込み
+	DX::ThrowIfFailed(DirectX::CreateWICTextureFromFile(deviceResources->GetD3DDevice(), L"Resources\\Textures\\partsSelect.png",
+		nullptr, m_partsSelectTexture.ReleaseAndGetAddressOf()));
 }
 
 void GameWindow::Update(float elapsedTime)
 {
 	auto kb = DirectX::Keyboard::Get().GetState();
 	m_tracker.Update(kb);
-	m_pStage->GetPlayer()->Move(elapsedTime, m_tracker);
+	//m_pStage->GetPlayer()->Move(elapsedTime, m_tracker);
 
 	auto effectMask = GameContext::Get<EffectMask>();
 	switch (m_gameState)
@@ -238,7 +241,12 @@ void GameWindow::Render()
 	//DirectX::SimpleMath::Matrix world;
 	//world = DirectX::SimpleMath::Matrix::CreateTranslation(4.5f, 0.0f, 5.5f);
 	//m_pShape->Draw(world, m_camera->getViewMatrix(), m_camera->getProjectionMatrix());
-}
+
+	if (m_selectPartsDisplayFlag)
+	{
+		// パーツ選択画面用の操作説明文の表示
+		GameContext::Get<DirectX::SpriteBatch>()->Draw(m_partsSelectTexture.Get(), DirectX::SimpleMath::Vector2(288, 200));
+	}}
 
 Camera* GameWindow::GetCamera()
 {
@@ -415,6 +423,8 @@ GameWindow::GAME_STATE GameWindow::PlayGame(float elapsedTime)
 			// もう一回チャレンジ
 			state = STATE_AGAIN;
 		}
+		auto effectMask = GameContext::Get<EffectMask>();
+		effectMask->Open();
 	}
 	else
 	{
