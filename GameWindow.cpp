@@ -229,7 +229,7 @@ void GameWindow::Update(float elapsedTime)
 			UpdateParts(false);
 			// ƒ^ƒCƒgƒ‹‚Ö
 			GameStateManager* gameStateManager = GameContext::Get<GameStateManager>();
-			gameStateManager->RequestState("Title");
+			gameStateManager->RequestState("Result");
 		}
 		break;
 	}

@@ -8,9 +8,6 @@
       <UniqueIdentifier>05cc9420-c977-4e2c-9dc3-6e580e203fcc</UniqueIdentifier>
       <Extensions>ico;cur;bmp;dds;dlg;fbx;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tga;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="InfoWindow">
-      <UniqueIdentifier>{c14b3f69-0a79-4e82-8178-d4d625c8b4bb}</UniqueIdentifier>
-    </Filter>
     <Filter Include="GameWindow">
       <UniqueIdentifier>{6462da9c-c6d8-4113-8ec2-4cc4ef17814a}</UniqueIdentifier>
     </Filter>
@@ -34,6 +31,9 @@
     </Filter>
     <Filter Include="Transition">
       <UniqueIdentifier>{84d3aefd-8473-429f-b14e-72b27baa68d7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="InfoWindow">
+      <UniqueIdentifier>{c14b3f69-0a79-4e82-8178-d4d625c8b4bb}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -162,6 +162,9 @@
       <Filter>Transition</Filter>
     </ClInclude>
     <ClInclude Include="Adx2Le.h" />
+    <ClInclude Include="ResultState.h">
+      <Filter>GameState</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -281,6 +284,9 @@
       <Filter>Transition</Filter>
     </ClCompile>
     <ClCompile Include="Adx2Le.cpp" />
+    <ClCompile Include="ResultState.cpp">
+      <Filter>GameState</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resource.rc" />
