@@ -158,6 +158,8 @@ void GameWindow::Update(float elapsedTime)
 	m_tracker.Update(kb);
 	//m_pStage->GetPlayer()->Move(elapsedTime, m_tracker);
 
+	m_pStage->Update();
+	
 	auto effectMask = GameContext::Get<EffectMask>();
 	switch (m_gameState)
 	{

@@ -66,6 +66,9 @@ public:
 	// プレイヤー取得関数
 	Player* GetPlayer();
 
+	// 更新
+	void Update();
+
 	// 敵
 	const std::vector<Object*>& GetEnemyList();
 	Enemy01* GetEnemy01();
@@ -116,6 +119,9 @@ private:
 	
 	// 影のモデル
 	std::unique_ptr<DirectX::Model> m_shadowModel;
+
+	// メテオのモデル
+	std::unique_ptr<DirectX::Model> m_meteoModel;
 
 	// 敵
 	std::vector<Object*> m_enemies;

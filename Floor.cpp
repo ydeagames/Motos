@@ -12,12 +12,16 @@
 #include "GameContext.h"
 #include "DeviceResources.h"
 #include "Camera.h"
+#include "ObjectManager.h"
+#include "HitEffect.h"
+#include "GameObjectManager.h"
+#include "JumpEffect.h"
 
 // ダメージの移行時間
 const float Floor::DAMEGE_DELAY_TIME = 0.2f;
 
 Floor::Floor()
-	: m_stage(nullptr), m_models{nullptr}, m_state(NONE)
+	: m_stage(nullptr), m_models{nullptr}, m_state(NONE), m_meteoTimer(-1)
 {
 	SetDrawPrio(GameWindow::DRAW_STAGE);
 }
@@ -65,6 +69,20 @@ void Floor::Update(float elapsedTime)
 			m_state = Floor::DEAD;
 		}
 	}
+
+	// メテオ
+	if (m_meteoTimer > 0)
+	{
+		m_meteoTimer -= elapsedTime;
+	}
+	else if (m_meteoTimer > -1)
+	{
+		m_meteoTimer = -1;
+		std::unique_ptr<JumpEffect> hitEffect = std::make_unique<JumpEffect>();
+		hitEffect->Initialize(m_pos);
+		GameContext::Get<ObjectManager>()->GetGameOM()->Add(std::move(hitEffect));
+		Damage();
+	}
 }
 
 void Floor::Render()
@@ -91,11 +109,30 @@ void Floor::Render()
 		GameContext::Get<DX::DeviceResources>()->GetD3DDeviceContext()->OMSetBlendState(GameContext::Get<DirectX::CommonStates>()->Additive(), nullptr, 0xffffffff);
 	});
 
+	// メテオ
+	if (m_meteoTimer > -1)
+	{
+		float t = (m_meteoTimer / m_meteoDuration);
+		m_meteoModel->Draw(GameContext::Get<DX::DeviceResources>()->GetD3DDeviceContext()
+			, *GameContext::Get<DirectX::CommonStates>()
+			, DirectX::SimpleMath::Matrix::CreateScale(.005f)
+			* DirectX::SimpleMath::Matrix::CreateRotationX(DirectX::XM_PIDIV2)
+			* DirectX::SimpleMath::Matrix::CreateRotationZ(-6 * t)
+			* world
+			* DirectX::SimpleMath::Matrix::CreateTranslation(DirectX::SimpleMath::Vector3(1, 1, 0) * 3 * t)
+			, gameWindow->GetCamera()->getViewMatrix()
+			, gameWindow->GetCamera()->getProjectionMatrix());
+	}
 }
 
 void Floor::SetModel(State state, DirectX::Model * model)
 {
 	m_models[state] = model;
+}
+
+void Floor::SetMeteoModel(DirectX::Model* model)
+{
+	m_meteoModel = model;
 }
 
 void Floor::Damage()
@@ -105,6 +142,12 @@ void Floor::Damage()
 	m_damageFlag = true;
 	// ダメージ移行タイマーセット
 	m_damageTimer = DAMEGE_DELAY_TIME;
+}
+
+// 隕石
+void Floor::Meteo()
+{
+	m_meteoTimer = m_meteoDuration;
 }
 
 void Floor::Reset()

@@ -36,6 +36,9 @@ private:
 	// モデルデータへのポインタ
 	DirectX::Model* m_models[STATE_NUM];
 
+	// メテオモデル
+	DirectX::Model* m_meteoModel = nullptr;
+
 	// 床の状態
 	State m_state;
 
@@ -47,6 +50,9 @@ private:
 
 	// ダメージが入って次の状態に移行するまでのタイマー
 	float m_damageTimer;
+
+	float m_meteoTimer;
+	float m_meteoDuration = 3;
 
 public:
 	// コンストラクタ
@@ -62,6 +68,7 @@ public:
 
 	// モデル設定関数
 	void SetModel(State state, DirectX::Model* model);
+	void SetMeteoModel(DirectX::Model* model);
 
 	// 床の状態を設定する関数
 	void SetState(Floor::State state) { m_state = state; }
@@ -71,6 +78,8 @@ public:
 
 	// ダメージを与える関数
 	void Damage();
+
+	void Meteo();
 
 	// リセット関数
 	void Reset();

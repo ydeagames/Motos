@@ -46,6 +46,9 @@ void Stage::Initialize()
 	m_floorModels[Floor::NORMAL] = DirectX::Model::CreateFromCMO(GameContext::Get<DX::DeviceResources>()->GetD3DDevice(), L"Resources\\Models\\floorPanel_00.cmo", fx);
 	m_floorModels[Floor::DAMAGED] = DirectX::Model::CreateFromCMO(GameContext::Get<DX::DeviceResources>()->GetD3DDevice(), L"Resources\\Models\\floorPanel_01.cmo", fx);
 
+	// メテオのモデル
+	m_meteoModel = DirectX::Model::CreateFromCMO(GameContext::Get<DX::DeviceResources>()->GetD3DDevice(), L"Resources\\Models\\star2.cmo", fx);
+
 	// 床のタスク生成
 	for (int j = 0; j < STAGE_H; j++)
 	{
@@ -59,6 +62,8 @@ void Stage::Initialize()
 			m_floors[j][i]->SetModel(Floor::NORMAL, m_floorModels[Floor::NORMAL].get());
 			m_floors[j][i]->SetModel(Floor::DAMAGED, m_floorModels[Floor::DAMAGED].get());
 			m_floors[j][i]->SetModel(Floor::FALL, m_floorModels[Floor::DAMAGED].get());
+			// メテオモデル
+			m_floors[j][i]->SetMeteoModel(m_meteoModel.get());
 		}
 	}
 
@@ -335,6 +340,24 @@ void Stage::ResetStageData()
 Player* Stage::GetPlayer()
 {
 	return m_player;
+}
+
+void Stage::Update()
+{
+	static std::random_device rndDev;
+	static std::mt19937 rnd{ rndDev() };
+	static std::uniform_real_distribution<float> dist;
+	static std::uniform_int_distribution<int> distX{ 0, STAGE_W - 1 };
+	static std::uniform_int_distribution<int> distY{ 0, STAGE_H - 1 };
+
+	if (dist(rnd) < .05f)
+	{
+		Floor* floor = this->GetFloor(distX(rnd), distY(rnd));
+		if ((floor != nullptr) && (floor->GetState() == Floor::State::NORMAL || floor->GetState() == Floor::State::DAMAGED))
+		{
+			floor->Meteo();
+		}
+	}
 }
 
 const std::vector<Object*>& Stage::GetEnemyList()
